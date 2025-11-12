@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>研究中心临床工具支持 | 中欧心血管代谢学会</title>
+    <!-- Tailwind CSS 引入 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome 图标 -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 自定义配置（与前几页一致） -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0066CC', // ACC 主蓝色
+                        secondary: '#003366', // 深蓝色
+                        accent: '#FF6600', // 强调色（橙色）
+                        light: '#F5F7FA', // 浅色背景
+                        dark: '#2D3748', // 深色文本
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .nav-shadow {
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+            .tool-tag {
+                @apply inline-block bg-primary/10 text-primary text-xs px-3 py-1 rounded-full mr-2 mb-2;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans text-dark bg-light">
+    <!-- 顶部通知栏（与前几页一致） -->
+    <div class="bg-primary text-white py-2 px-4 md:px-8">
+        <div class="container mx-auto flex justify-between items-center text-sm md:text-base">
+            <p>🔔 2025 年心血管医学大会 | 6月15-18日 芝加哥</p>
+            <div class="flex gap-4">
+                <a href="#" class="hover:underline"><i class="fa fa-search mr-1"></i> 搜索</a>
+                <a href="#" class="hover:underline"><i class="fa fa-user mr-1"></i> 登录/注册</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导航栏（高亮"工具与临床支持"） -->
+    <header class="bg-white nav-shadow sticky top-0 z-50">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="flex items-center justify-between py-4">
+                <!-- Logo 区域 -->
+                <div class="flex items-center gap-3">
+                    <img src="https://picsum.photos/id/56/80/80" alt="豆包头像" class="w-12 h-12 rounded-full object-cover">
+                    <div>
+                        <h1 class="text-xl md:text-2xl font-bold text-secondary">中欧心血管代谢学会</h1>
+                        <p class="text-xs text-gray-500 hidden md:block">心血管医学领域权威平台</p>
+                    </div>
+                </div>
+
+                <!-- 桌面端导航（添加"工具与临床支持"链接并高亮） -->
+                <nav class="hidden md:flex items-center gap-6">
+                    <a href="index.html" class="font-medium text-gray-700 hover:text-primary">首页</a>
+                    <a href="clinical-topics.html" class="font-medium text-gray-700 hover:text-primary">临床指南</a>
+                    <a href="latest.html" class="font-medium text-gray-700 hover:text-primary">教育资源</a>
+                    <a href="support.html" class="font-medium text-primary border-b-2 border-primary pb-1">研究中心</a>
+                    <a href="#" class="font-medium text-gray-700 hover:text-primary">会议活动</a>
+                    <a href="#" class="font-medium text-gray-700 hover:text-primary">关于我们</a>
+                    <button class="bg-accent text-white px-4 py-2 rounded-md hover:bg-accent/90 transition">
+                        加入会员
+                    </button>
+                </nav>
+
+                <!-- 移动端菜单按钮 -->
+                <button class="md:hidden text-gray-700 text-2xl" id="menuBtn">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 移动端导航菜单（添加"工具与临床支持"链接） -->
+        <div class="md:hidden bg-white w-full absolute left-0 top-full nav-shadow hidden" id="mobileMenu">
+            <div class="container mx-auto px-4 py-3 flex flex-col gap-3">
+                <a href="index.html" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">首页</a>
+                <a href="clinical-topics.html" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">临床指南</a>
+                <a href="latest.html" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">教育资源</a>
+                <a href="support.html" class="font-medium text-primary py-2 border-b border-gray-100">研究中心</a>
+                <a href="#" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">会议活动</a>
+                <a href="#" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">关于我们</a>
+                <button class="bg-accent text-white px-4 py-2 rounded-md hover:bg-accent/90 transition mt-2">
+                    加入会员
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 页面标题栏 -->
+    <section class="bg-secondary text-white py-10">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="max-w-3xl">
+                <h1 class="text-3xl md:text-4xl font-bold mb-4">研究中心临床工具支持</h1>
+                <p class="text-lg text-white/90">
+                    提供临床决策工具、风险评估计算器、编码资源和实践管理支持，助力心血管临床工作高效开展
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <!-- 工具分类筛选区域 -->
+    <section class="py-6 bg-white border-b border-gray-200">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="flex flex-wrap gap-2">
+                <button class="filter-active px-4 py-2 rounded-md hover:bg-primary/90 transition">所有工具</button>
+                <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition">风险评估工具</button>
+                <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition">临床决策工具</button>
+                <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition">编码与报销</button>
+                <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition">实践管理</button>
+                <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition">患者教育工具</button>
+                <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition">质量改进</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心工具展示区域 -->
+    <section class="py-12">
+        <div class="container mx-auto px-4 md:px-8">
+            <!-- 工具分类标题 -->
+            <div class="mb-10">
+                <h2 class="text-2xl font-bold text-secondary mb-2">热门临床工具</h2>
+                <p class="text-gray-600">权威、易用的心血管临床辅助工具，覆盖诊断、治疗、随访全流程</p>
+            </div>
+
+            <!-- 工具卡片网格 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                <!-- 工具1：心血管风险评估计算器 -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                    <div class="h-48 bg-primary/5 flex items-center justify-center">
+                        <i class="fa fa-calculator text-primary text-5xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-secondary mb-3">心血管风险评估计算器</h3>
+                        <p class="text-gray-600 mb-4">
+                            基于最新指南的10年心血管疾病风险预测工具，支持评估冠心病、卒中、心衰等疾病风险，输入血压、血脂等指标即可生成个体化风险报告。
+                        </p>
+                        <div class="mb-4">
+                            <span class="tool-tag">风险预测</span>
+                            <span class="tool-tag">冠心病</span>
+                            <span class="tool-tag">卒中</span>
+                        </div>
+                        <a href="#" class="text-primary font-medium hover:underline flex items-center">
+                            立即使用 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 工具2：房颤卒中风险分层工具（CHA₂DS₂-VASc） -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                    <div class="h-48 bg-primary/5 flex items-center justify-center">
+                        <i class="fa fa-heartbeat text-primary text-5xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-secondary mb-3">CHA₂DS₂-VASc 评分工具</h3>
+                        <p class="text-gray-600 mb-4">
+                            房颤患者卒中风险分层标准工具，通过年龄、性别、合并症等因素计算卒中风险评分，指导抗凝治疗决策，支持快速评分和结果解读。
+                        </p>
+                        <div class="mb-4">
+                            <span class="tool-tag">房颤</span>
+                            <span class="tool-tag">卒中风险</span>
+                            <span class="tool-tag">抗凝治疗</span>
+                        </div>
+                        <a href="#" class="text-primary font-medium hover:underline flex items-center">
+                            立即使用 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 工具3：心梗后管理工具包 -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                    <div class="h-48 bg-primary/5 flex items-center justify-center">
+                        <i class="fa fa-medkit text-primary text-5xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-secondary mb-3">心梗后随访管理工具包</h3>
+                        <p class="text-gray-600 mb-4">
+                            包含心梗患者出院指导、药物管理清单、复查提醒、康复计划制定等工具，支持临床医生规范随访流程，提升患者预后。
+                        </p>
+                        <div class="mb-4">
+                            <span class="tool-tag">心梗</span>
+                            <span class="tool-tag">随访管理</span>
+                            <span class="tool-tag">康复计划</span>
+                        </div>
+                        <a href="#" class="text-primary font-medium hover:underline flex items-center">
+                            下载工具包 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 工具4：编码与报销指南工具 -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                    <div class="h-48 bg-primary/5 flex items-center justify-center">
+                        <i class="fa fa-file-text-o text-primary text-5xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-secondary mb-3">心血管服务编码查询工具</h3>
+                        <p class="text-gray-600 mb-4">
+                            提供CPT编码、ICD-10编码查询，包含介入手术、诊断服务、随访管理等编码指南，支持快速匹配服务与编码，优化报销流程。
+                        </p>
+                        <div class="mb-4">
+                            <span class="tool-tag">编码查询</span>
+                            <span class="tool-tag">医保报销</span>
+                            <span class="tool-tag">CPT编码</span>
+                        </div>
+                        <a href="#" class="text-primary font-medium hover:underline flex items-center">
+                            查询编码 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 工具5：心衰管理决策工具 -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                    <div class="h-48 bg-primary/5 flex items-center justify-center">
+                        <i class="fa fa-tint text-primary text-5xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-secondary mb-3">心衰分期与治疗决策工具</h3>
+                        <p class="text-gray-600 mb-4">
+                            基于ACC/AHA心衰分期标准，输入患者症状、检查结果等信息，自动匹配分期并推荐治疗方案，包含药物选择、器械治疗指征判断。
+                        </p>
+                        <div class="mb-4">
+                            <span class="tool-tag">心衰</span>
+                            <span class="tool-tag">治疗决策</span>
+                            <span class="tool-tag">分期评估</span>
+                        </div>
+                        <a href="#" class="text-primary font-medium hover:underline flex items-center">
+                            辅助决策 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 工具6：患者教育材料生成器 -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                    <div class="h-48 bg-primary/5 flex items-center justify-center">
+                        <i class="fa fa-file-pdf-o text-primary text-5xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-secondary mb-3">心血管疾病患者教育材料生成器</h3>
+                        <p class="text-gray-600 mb-4">
+                            可自定义生成患者教育手册、饮食指导、运动建议等材料，支持选择疾病类型、文化背景、阅读难度，生成通俗易读的个性化教育内容。
+                        </p>
+                        <div class="mb-4">
+                            <span class="tool-tag">患者教育</span>
+                            <span class="tool-tag">材料生成</span>
+                            <span class="tool-tag">个性化</span>
+                        </div>
+                        <a href="#" class="text-primary font-medium hover:underline flex items-center">
+                            生成材料 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 查看全部工具按钮 -->
+            <div class="text-center">
+                <button class="bg-white border border-primary text-primary px-8 py-3 rounded-md hover:bg-primary/5 transition">
+                    查看全部工具 <i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 实践支持资源区域 -->
+    <section class="py-12 bg-light">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="mb-10">
+                <h2 class="text-2xl font-bold text-secondary mb-2">临床实践支持资源</h2>
+                <p class="text-gray-600">助力心血管临床实践规范化、高效化的配套资源</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- 左侧：实践指南与模板 -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-xl font-bold text-secondary mb-6 flex items-center">
+                        <i class="fa fa-book text-primary mr-3"></i> 实践指南与模板
+                    </h3>
+                    <div class="space-y-4">
+                        <a href="#" class="flex items-start gap-4 p-3 rounded-lg hover:bg-light transition">
+                            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa fa-file-text text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-secondary">门诊病历模板集</h4>
+                                <p class="text-gray-600 text-sm">包含冠心病、房颤、心衰等常见疾病的门诊病历模板，支持快速录入和规范记录</p>
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-start gap-4 p-3 rounded-lg hover:bg-light transition">
+                            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa fa-list-alt text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-secondary">临床路径流程图</h4>
+                                <p class="text-gray-600 text-sm">心梗、房颤、高血压等疾病的标准化临床路径，可视化展示诊断、治疗、随访流程</p>
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-start gap-4 p-3 rounded-lg hover:bg-light transition">
+                            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa fa-check-square-o text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-secondary">质量改进工具包</h4>
+                                <p class="text-gray-600 text-sm">包含临床质量指标监测表、改进方案模板，助力医疗机构提升心血管服务质量</p>
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-start gap-4 p-3 rounded-lg hover:bg-light transition">
+                            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa fa-users text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-secondary">多学科协作诊疗指南</h4>
+                                <p class="text-gray-600 text-sm">心血管疾病多学科协作流程、沟通模板，优化团队协作效率</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 右侧：培训与支持 -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-xl font-bold text-secondary mb-6 flex items-center">
+                        <i class="fa fa-graduation-cap text-primary mr-3"></i> 培训与技术支持
+                    </h3>
+                    <div class="space-y-4">
+                        <a href="#" class="flex items-start gap-4 p-3 rounded-lg hover:bg-light transition">
+                            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa fa-video-camera text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-secondary">工具使用培训视频</h4>
+                                <p class="text-gray-600 text-sm">详细讲解各类临床工具的操作流程、注意事项，支持在线观看和下载</p>
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-start gap-4 p-3 rounded-lg hover:bg-light transition">
+                            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa fa-question-circle text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-secondary">常见问题解答（FAQ）</h4>
+                                <p class="text-gray-600 text-sm">工具使用、编码报销、实践管理等常见问题的详细解答，快速解决实操难题</p>
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-start gap-4 p-3 rounded-lg hover:bg-light transition">
+                            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa fa-envelope-o text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-secondary">技术支持申请</h4>
+                                <p class="text-gray-600 text-sm">提交工具使用过程中的技术问题，获取专业团队一对一支持</p>
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-start gap-4 p-3 rounded-lg hover:bg-light transition">
+                            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa fa-calendar-check-o text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-secondary">线下工作坊预约</h4>
+                                <p class="text-gray-600 text-sm">预约面对面培训工作坊，针对医疗机构定制工具使用和实践管理培训</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 会员专属工具区域 -->
+    <section class="py-12 bg-primary/5">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="md:flex">
+                    <div class="md:w-1/2 p-8 md:p-10">
+                        <h2 class="text-2xl font-bold text-secondary mb-4">会员专属工具与服务</h2>
+                        <p class="text-gray-600 mb-6">
+                            成为ACC会员，解锁更多高级临床工具、定制化支持和专属资源，提升临床实践效率和服务质量
+                        </p>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-accent mt-1 mr-3"></i>
+                                <span>高级风险预测模型（支持多疾病联合风险评估）</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-accent mt-1 mr-3"></i>
+                                <span>定制化临床路径生成工具（适配不同医疗机构需求）</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-accent mt-1 mr-3"></i>
+                                <span>编码与报销专家一对一咨询</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-accent mt-1 mr-3"></i>
+                                <span>优先参与工具测试和新功能体验</span>
+                            </li>
+                        </ul>
+                        <button class="bg-accent text-white px-6 py-3 rounded-md hover:bg-accent/90 transition">
+                            立即加入会员
+                        </button>
+                    </div>
+                    <div class="md:w-1/2 h-64 md:h-auto bg-primary/10 flex items-center justify-center">
+                        <img src="https://picsum.photos/id/1082/600/400" alt="会员专属工具" class="w-4/5 h-auto rounded-lg shadow-sm">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部区域（与前几页一致） -->
+    <footer class="bg-secondary text-white pt-12 pb-6">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- 关于我们 -->
+                <div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <img src="https://picsum.photos/id/56/60/60" alt="头像" class="w-10 h-10 rounded-full object-cover">
+                        <h3 class="text-xl font-bold">中欧心血管代谢学会</h3>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        致力于通过教育、研究和临床实践，改善心血管疾病患者的健康 outcomes，推动全球心血管医学发展。
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition">
+                            <i class="fa fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 快速链接 -->
+                <div>
+                    <h3 class="text-lg font-bold mb-6 border-b border-white/20 pb-3">快速链接</h3>
+                    <ul class="space-y-3">
+                        <li><a href="index.html" class="text-gray-300 hover:text-white transition">首页</a></li>
+                        <li><a href="clinical-topics.html" class="text-gray-300 hover:text-white transition">临床指南</a></li>
+                        <li><a href="latest-in-cardiology.html" class="text-gray-300 hover:text-white transition">最新动态</a></li>
+                        <li><a href="tools-and-practice-support.html" class="text-gray-300 hover:text-white transition">工具与临床支持</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">教育资源</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">会议活动</a></li>
+                    </ul>
+                </div>
+
+                <!-- 联系我们 -->
+                <div>
+                    <h3 class="text-lg font-bold mb-6 border-b border-white/20 pb-3">联系我们</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fa fa-map-marker mt-1 mr-3 text-accent"></i>
+                            <span class="text-gray-300">中国湖北省武汉市张之洞路23号</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-phone mr-3 text-accent"></i>
+                            <span class="text-gray-300">+86 (27) 84567888</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-envelope mr-3 text-accent"></i>
+                            <span class="text-gray-300">info@acc.cn</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 订阅通讯 -->
+                <div>
+                    <h3 class="text-lg font-bold mb-6 border-b border-white/20 pb-3">订阅通讯</h3>
+                    <p class="text-gray-300 mb-4">
+                        订阅我们的电子通讯，及时获取最新研究、会议信息和临床资源
+                    </p>
+                    <form class="flex flex-col gap-3">
+                        <input type="email" placeholder="您的邮箱地址" class="px-4 py-3 rounded-md bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-accent">
+                        <button type="submit" class="bg-accent text-white px-4 py-3 rounded-md hover:bg-accent/90 transition">
+                            订阅
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 底部版权 -->
+            <div class="border-t border-white/10 pt-6 text-center text-gray-400 text-sm">
+                <p>© 2025 中欧心血管代谢学会. 保留所有权利。</p>
+                <div class="flex justify-center gap-4 mt-3">
+                    <a href="#" class="hover:text-white transition">隐私政策</a>
+                    <a href="#" class="hover:text-white transition">使用条款</a>
+                    <a href="#" class="hover:text-white transition">网站地图</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <button id="backToTop" class="fixed bottom-6 right-6 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-secondary">
+        <i class="fa fa-chevron-up"></i>
+    </button>
+
+    <!-- JavaScript 脚本（与前几页一致，保留筛选按钮交互） -->
+    <script>
+        // 移动端菜单切换
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            menuBtn.innerHTML = mobileMenu.classList.contains('hidden') 
+                ? '<i class="fa fa-bars"></i>' 
+                : '<i class="fa fa-times"></i>';
+        });
+
+        // 回到顶部按钮
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'invisible');
+                backToTopBtn.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopBtn.classList.remove('opacity-100', 'visible');
+                backToTopBtn.classList.add('opacity-0', 'invisible');
+            }
+        });
+        
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 筛选按钮交互（切换激活状态）
+        const filterButtons = document.querySelectorAll('.filter-active, .bg-gray-100.text-gray-700');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 移除所有按钮的激活状态
+                filterButtons.forEach(b => {
+                    b.classList.remove('filter-active');
+                    b.classList.add('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
+                });
+                // 激活当前按钮
+                btn.classList.add('filter-active');
+                btn.classList.remove('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
+            });
+        });
+    </script>
+</body>
+</html>

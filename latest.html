@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最新心血管代谢疾病研究成果 | 中欧心血管代谢学会</title>
+    <!-- Tailwind CSS 引入 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome 图标 -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 自定义配置（与前两页一致） -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0066CC', // ACC 主蓝色
+                        secondary: '#003366', // 深蓝色
+                        accent: '#FF6600', // 强调色（橙色）
+                        light: '#F5F7FA', // 浅色背景
+                        dark: '#2D3748', // 深色文本
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .nav-shadow {
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            }
+            .filter-active {
+                @apply bg-primary text-white;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans text-dark bg-light">
+    <!-- 顶部通知栏（与前两页一致） -->
+    <div class="bg-primary text-white py-2 px-4 md:px-8">
+        <div class="container mx-auto flex justify-between items-center text-sm md:text-base">
+            <p>🔔 2025 年心血管代谢与泛血管疾病医学大会 | 11月8-10日 武汉</p>
+            <div class="flex gap-4">
+                <a href="#" class="hover:underline"><i class="fa fa-search mr-1"></i> 搜索</a>
+                <a href="#" class="hover:underline"><i class="fa fa-user mr-1"></i> 登录/注册</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导航栏（高亮"Latest in Cardiology"） -->
+    <header class="bg-white nav-shadow sticky top-0 z-50">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="flex items-center justify-between py-4">
+                <!-- Logo 区域 -->
+                <div class="flex items-center gap-3">
+                    <img src="https://picsum.photos/id/56/80/80" alt="头像" class="w-12 h-12 rounded-full object-cover">
+                    <div>
+                        <h1 class="text-xl md:text-2xl font-bold text-secondary">中欧心血管代谢学会</h1>
+                        <p class="text-xs text-gray-500 hidden md:block">心血管医学领域权威平台</p>
+                    </div>
+                </div>
+
+                <!-- 桌面端导航（添加"最新动态"链接并高亮） -->
+                <nav class="hidden md:flex items-center gap-6">
+                    <a href="index.html" class="font-medium text-gray-700 hover:text-primary">首页</a>
+                    <a href="clinical-topics.html" class="font-medium text-gray-700 hover:text-primary">临床指南</a>
+                    <a href="latest-in-cardiology.html" class="font-medium text-primary border-b-2 border-primary pb-1">教育资源</a>
+                    <a href="support.html" class="font-medium text-gray-700 hover:text-primary">研究中心</a>
+                    <a href="#" class="font-medium text-gray-700 hover:text-primary">会议活动</a>
+                    <a href="#" class="font-medium text-gray-700 hover:text-primary">关于我们</a>
+                    <button class="bg-accent text-white px-4 py-2 rounded-md hover:bg-accent/90 transition">
+                        加入会员
+                    </button>
+                </nav>
+
+                <!-- 移动端菜单按钮 -->
+                <button class="md:hidden text-gray-700 text-2xl" id="menuBtn">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 移动端导航菜单（添加"最新动态"链接） -->
+        <div class="md:hidden bg-white w-full absolute left-0 top-full nav-shadow hidden" id="mobileMenu">
+            <div class="container mx-auto px-4 py-3 flex flex-col gap-3">
+                <a href="index.html" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">首页</a>
+                <a href="clinical-topics.html" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">临床指南</a>
+                <a href="latest-in-cardiology.html" class="font-medium text-primary py-2 border-b border-gray-100">教育资源</a>
+                <a href="support.html" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">研究中心</a>
+                <a href="#" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">会议活动</a>
+                <a href="#" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">关于我们</a>
+                <button class="bg-accent text-white px-4 py-2 rounded-md hover:bg-accent/90 transition mt-2">
+                    加入会员
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 页面标题栏 -->
+    <section class="bg-secondary text-white py-10">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="max-w-3xl">
+                <h1 class="text-3xl md:text-4xl font-bold mb-4">最新心血管代谢疾病研究成果</h1>
+                <p class="text-lg text-white/90">
+                    追踪心血管医学领域最新研究成果、指南更新、会议动态和临床实践进展，助力专业人士实时掌握行业前沿
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 筛选与排序区域（核心还原原页面功能） -->
+    <section class="py-6 bg-white border-b border-gray-200">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- 内容类型筛选 -->
+                <div class="flex flex-wrap gap-2">
+                    <button class="filter-active px-4 py-2 rounded-md hover:bg-primary/90 transition">全部内容</button>
+                    <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition">研究成果</button>
+                    <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition">指南更新</button>
+                    <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition">会议动态</button>
+                    <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition">专家解读</button>
+                    <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition">患者教育</button>
+                </div>
+
+                <!-- 排序下拉框（默认按发布日期降序） -->
+                <div class="ml-auto">
+                    <select class="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white">
+                        <option value="date-desc">按发布日期（最新优先）</option>
+                        <option value="date-asc">按发布日期（最早优先）</option>
+                        <option value="popular">按热门程度</option>
+                        <option value="topic">按主题分类</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 最新动态列表区域 -->
+    <section class="py-12">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- 主内容区（左侧2列） -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- 动态1：研究成果 -->
+                    <article class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                        <div class="md:flex">
+                            <div class="md:w-1/3 h-48 md:h-auto overflow-hidden">
+                                <img src="https://picsum.photos/id/1076/600/400" alt="新型抗心衰药物研究" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-6 md:w-2/3">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <span class="bg-primary/10 text-primary text-xs px-3 py-1 rounded-full">研究成果</span>
+                                    <span class="text-gray-500 text-sm">2025-06-02</span>
+                                </div>
+                                <h2 class="text-xl font-bold text-secondary mb-3">新型SGLT2抑制剂可显著降低心衰患者心血管死亡风险</h2>
+                                <p class="text-gray-600 mb-4 line-clamp-3">
+                                    发表于《Circulation》的III期临床试验显示，新型SGLT2抑制剂在随访24个月后，使射血分数降低型心衰患者的心血管死亡风险降低28%，再住院率降低32%。该研究纳入全球12个国家的8300例患者，亚组分析显示无论患者是否合并糖尿病，均能获益。专家建议将其纳入心衰一线治疗方案。
+                                </p>
+                                <div class="flex justify-between items-center">
+                                    <a href="#" class="text-primary font-medium hover:underline">阅读全文 <i class="fa fa-arrow-right ml-1"></i></a>
+                                    <div class="flex gap-3">
+                                        <button class="text-gray-500 hover:text-primary transition"><i class="fa fa-bookmark-o"></i></button>
+                                        <button class="text-gray-500 hover:text-primary transition"><i class="fa fa-share-alt"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 动态2：指南更新 -->
+                    <article class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                        <div class="md:flex">
+                            <div class="md:w-1/3 h-48 md:h-auto overflow-hidden">
+                                <img src="https://picsum.photos/id/1080/600/400" alt="房颤指南更新" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-6 md:w-2/3">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <span class="bg-accent/10 text-accent text-xs px-3 py-1 rounded-full">指南更新</span>
+                                    <span class="text-gray-500 text-sm">2025-05-28</span>
+                                </div>
+                                <h2 class="text-xl font-bold text-secondary mb-3">2025 AHA/ACC房颤指南更新：新增卒中风险分层工具</h2>
+                                <p class="text-gray-600 mb-4 line-clamp-3">
+                                    最新发布的《2025 AHA/ACC房颤患者管理指南》引入新型卒中风险分层工具（CHA₂DS₂-VASc-Plus），在原有评分基础上新增慢性肾病、外周动脉疾病等危险因素，使高风险患者识别准确率提升15%。指南同时扩展了新型口服抗凝药的适用人群，包括合并中度肝肾功能不全的患者。
+                                </p>
+                                <div class="flex justify-between items-center">
+                                    <a href="#" class="text-primary font-medium hover:underline">查看指南要点 <i class="fa fa-arrow-right ml-1"></i></a>
+                                    <div class="flex gap-3">
+                                        <button class="text-gray-500 hover:text-primary transition"><i class="fa fa-bookmark-o"></i></button>
+                                        <button class="text-gray-500 hover:text-primary transition"><i class="fa fa-share-alt"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 动态3：会议动态 -->
+                    <article class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                        <div class="md:flex">
+                            <div class="md:w-1/3 h-48 md:h-auto overflow-hidden">
+                                <img src="https://picsum.photos/id/1079/600/400" alt="ACC年会预告" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-6 md:w-2/3">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <span class="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">会议动态</span>
+                                    <span class="text-gray-500 text-sm">2025-05-15</span>
+                                </div>
+                                <h2 class="text-xl font-bold text-secondary mb-3">2025 ACC科学年会将发布50+项突破性研究</h2>
+                                <p class="text-gray-600 mb-4 line-clamp-3">
+                                    即将于11月8-10日在武汉召开的2025 中欧心血管代谢科学年会公布初步议程，将有50+项心血管领域突破性研究进行口头报告，涵盖房颤介入治疗、心衰器械治疗、冠心病精准医疗等热点方向。会议还设置"最新指南发布会"专场，邀请指南编写专家现场解读2025年最新修订的3部核心指南。
+                                </p>
+                                <div class="flex justify-between items-center">
+                                    <a href="#" class="text-primary font-medium hover:underline">查看会议议程 <i class="fa fa-arrow-right ml-1"></i></a>
+                                    <div class="flex gap-3">
+                                        <button class="text-gray-500 hover:text-primary transition"><i class="fa fa-bookmark-o"></i></button>
+                                        <button class="text-gray-500 hover:text-primary transition"><i class="fa fa-share-alt"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 动态4：专家解读 -->
+                    <article class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                        <div class="md:flex">
+                            <div class="md:w-1/3 h-48 md:h-auto overflow-hidden">
+                                <img src="https://picsum.photos/id/1082/600/400" alt="心梗治疗解读" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-6 md:w-2/3">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <span class="bg-purple-100 text-purple-700 text-xs px-3 py-1 rounded-full">专家解读</span>
+                                    <span class="text-gray-500 text-sm">2025-05-10</span>
+                                </div>
+                                <h2 class="text-xl font-bold text-secondary mb-3">专家解读：心梗后PCI治疗时机选择新共识</h2>
+                                <p class="text-gray-600 mb-4 line-clamp-3">
+                                    针对急性ST段抬高型心梗（STEMI）患者的PCI治疗时机，专家共识指出：症状发作12小时内的患者应优先选择直接PCI；12-24小时内仍有缺血症状或血流动力学不稳定的患者，建议延迟PCI；超过24小时无明显症状的患者，可择期进行PCI评估。专家强调，个体化评估需结合患者年龄、合并症及梗死相关血管情况。
+                                </p>
+                                <div class="flex justify-between items-center">
+                                    <a href="#" class="text-primary font-medium hover:underline">观看解读视频 <i class="fa fa-arrow-right ml-1"></i></a>
+                                    <div class="flex gap-3">
+                                        <button class="text-gray-500 hover:text-primary transition"><i class="fa fa-bookmark-o"></i></button>
+                                        <button class="text-gray-500 hover:text-primary transition"><i class="fa fa-share-alt"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 加载更多按钮 -->
+                    <div class="text-center mt-10">
+                        <button class="bg-white border border-primary text-primary px-8 py-3 rounded-md hover:bg-primary/5 transition">
+                            加载更多动态 <i class="fa fa-refresh ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 侧边栏（右侧1列） -->
+                <div class="space-y-8">
+                    <!-- 热门主题 -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-bold text-secondary mb-4 border-b pb-3">热门主题</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="#" class="bg-light text-primary px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition">房颤</a>
+                            <a href="#" class="bg-light text-primary px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition">心衰</a>
+                            <a href="#" class="bg-light text-primary px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition">心梗</a>
+                            <a href="#" class="bg-light text-primary px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition">高血压</a>
+                            <a href="#" class="bg-light text-primary px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition">PCI治疗</a>
+                            <a href="#" class="bg-light text-primary px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition">SGLT2抑制剂</a>
+                            <a href="#" class="bg-light text-primary px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition">指南更新</a>
+                            <a href="#" class="bg-light text-primary px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition">心律失常</a>
+                            <a href="#" class="bg-light text-primary px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition">血脂异常</a>
+                        </div>
+                    </div>
+
+                    <!-- 即将召开的会议 -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-bold text-secondary mb-4 border-b pb-3">即将召开的会议</h3>
+                        <div class="space-y-4">
+                            <div class="flex gap-4">
+                                <div class="bg-primary/10 text-primary w-16 h-16 rounded-lg flex flex-col items-center justify-center flex-shrink-0">
+                                    <span class="text-xl font-bold">15</span>
+                                    <span class="text-xs">6月</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-secondary">2025 中欧心血管代谢科学年会</h4>
+                                    <p class="text-gray-600 text-sm mb-2">武汉 | 11月8-10日</p>
+                                    <a href="#" class="text-primary text-sm hover:underline">注册参会</a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="bg-primary/10 text-primary w-16 h-16 rounded-lg flex flex-col items-center justify-center flex-shrink-0">
+                                    <span class="text-xl font-bold">28</span>
+                                    <span class="text-xs">7月</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-secondary">全球心血管影像论坛</h4>
+                                    <p class="text-gray-600 text-sm mb-2">纽约 | 7月28-30日</p>
+                                    <a href="#" class="text-primary text-sm hover:underline">查看议程</a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="bg-primary/10 text-primary w-16 h-16 rounded-lg flex flex-col items-center justify-center flex-shrink-0">
+                                    <span class="text-xl font-bold">12</span>
+                                    <span class="text-xs">8月</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-secondary">心衰治疗新进展研讨会</h4>
+                                    <p class="text-gray-600 text-sm mb-2">洛杉矶 | 8月12-14日</p>
+                                    <a href="#" class="text-primary text-sm hover:underline">提交摘要</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 订阅通讯 -->
+                    <div class="bg-primary rounded-xl p-6 text-white">
+                        <h3 class="text-lg font-bold mb-3">订阅最新动态通讯</h3>
+                        <p class="text-white/90 text-sm mb-4">
+                            每周获取心血管领域最新研究、指南和会议信息，直接发送至您的邮箱
+                        </p>
+                        <form class="flex flex-col gap-3">
+                            <input type="email" placeholder="您的邮箱地址" class="px-4 py-2 rounded-md bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-accent">
+                            <button type="submit" class="bg-accent text-white px-4 py-2 rounded-md hover:bg-accent/90 transition text-sm">
+                                立即订阅
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部区域（与前两页一致） -->
+    <footer class="bg-secondary text-white pt-12 pb-6">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- 关于我们 -->
+                <div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <img src="https://picsum.photos/id/56/60/60" alt="头像" class="w-10 h-10 rounded-full object-cover">
+                        <h3 class="text-xl font-bold">中欧心血管代谢学会</h3>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        致力于通过教育、研究和临床实践，改善心血管疾病患者的健康 outcomes，推动全球心血管医学发展。
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition">
+                            <i class="fa fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 快速链接 -->
+                <div>
+                    <h3 class="text-lg font-bold mb-6 border-b border-white/20 pb-3">快速链接</h3>
+                    <ul class="space-y-3">
+                        <li><a href="index.html" class="text-gray-300 hover:text-white transition">首页</a></li>
+                        <li><a href="clinical-topics.html" class="text-gray-300 hover:text-white transition">临床指南</a></li>
+                        <li><a href="latest-in-cardiology.html" class="text-gray-300 hover:text-white transition">最新动态</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">教育资源</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">研究中心</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">会议活动</a></li>
+                    </ul>
+                </div>
+
+                <!-- 联系我们 -->
+                <div>
+                    <h3 class="text-lg font-bold mb-6 border-b border-white/20 pb-3">联系我们</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fa fa-map-marker mt-1 mr-3 text-accent"></i>
+                            <span class="text-gray-300">中国湖北省武汉市张之洞路23号</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-phone mr-3 text-accent"></i>
+                            <span class="text-gray-300">+86 (27) 84567888</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-envelope mr-3 text-accent"></i>
+                            <span class="text-gray-300">info@acc.cn</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 订阅通讯 -->
+                <div>
+                    <h3 class="text-lg font-bold mb-6 border-b border-white/20 pb-3">订阅通讯</h3>
+                    <p class="text-gray-300 mb-4">
+                        订阅我们的电子通讯，及时获取最新研究、会议信息和临床资源
+                    </p>
+                    <form class="flex flex-col gap-3">
+                        <input type="email" placeholder="您的邮箱地址" class="px-4 py-3 rounded-md bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-accent">
+                        <button type="submit" class="bg-accent text-white px-4 py-3 rounded-md hover:bg-accent/90 transition">
+                            订阅
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 底部版权 -->
+            <div class="border-t border-white/10 pt-6 text-center text-gray-400 text-sm">
+                <p>© 2025 中欧心血管代谢学会. 保留所有权利。</p>
+                <div class="flex justify-center gap-4 mt-3">
+                    <a href="#" class="hover:text-white transition">隐私政策</a>
+                    <a href="#" class="hover:text-white transition">使用条款</a>
+                    <a href="#" class="hover:text-white transition">网站地图</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <button id="backToTop" class="fixed bottom-6 right-6 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-secondary">
+        <i class="fa fa-chevron-up"></i>
+    </button>
+
+    <!-- JavaScript 脚本（与前两页一致，新增筛选按钮交互） -->
+    <script>
+        // 移动端菜单切换
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            menuBtn.innerHTML = mobileMenu.classList.contains('hidden') 
+                ? '<i class="fa fa-bars"></i>' 
+                : '<i class="fa fa-times"></i>';
+        });
+
+        // 回到顶部按钮
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'invisible');
+                backToTopBtn.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopBtn.classList.remove('opacity-100', 'visible');
+                backToTopBtn.classList.add('opacity-0', 'invisible');
+            }
+        });
+        
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 筛选按钮交互（切换激活状态）
+        const filterButtons = document.querySelectorAll('.filter-active, .bg-gray-100.text-gray-700');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 移除所有按钮的激活状态
+                filterButtons.forEach(b => {
+                    b.classList.remove('filter-active');
+                    b.classList.add('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
+                });
+                // 激活当前按钮
+                btn.classList.add('filter-active');
+                btn.classList.remove('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
+            });
+        });
+    </script>
+</body>
+</html>
