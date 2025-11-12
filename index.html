@@ -109,31 +109,12 @@
 
     <!-- 轮播图区域 -->
     <section class="relative h-[400px] md:h-[550px] overflow-hidden">
-        <div class="carousel relative w-full h-full">
-            <!-- 轮播图1 -->  
-            <div class="carousel-item absolute inset-0 opacity-100 transition-opacity duration-1000">
-                <img src="https://picsum.photos/id/1/1920/1080" alt="心血管研究" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-r from-secondary/80 to-transparent flex items-center">
-                    <div class="container mx-auto px-4 md:px-8 text-white max-w-xl">
-                        <h2 class="text-3xl md:text-4xl font-bold mb-4">推进心血管健康的创新研究</h2>
-                        <p class="text-lg md:text-xl mb-6">汇聚全球顶尖专家，探索心脏病诊疗前沿技术与解决方案</p>
-                        <div class="flex gap-4">
-                            <button class="bg-accent text-white px-6 py-3 rounded-md hover:bg-accent/90 transition">
-                                探索研究
-                            </button>
-                            <button class="bg-white/20 backdrop-blur-sm text-white border border-white/30 px-6 py-3 rounded-md hover:bg-white/30 transition">
-                                观看视频 <i class="fa fa-play ml-2"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="carousel relative w-full h-full" id="heroCarousel"></div>
         <!-- 轮播控制按钮 -->
-        <button class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 backdrop-blur-sm text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/50 transition">
+        <button id="carouselPrev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 backdrop-blur-sm text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/50 transition">
             <i class="fa fa-chevron-left"></i>
         </button>
-        <button class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 backdrop-blur-sm text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/50 transition">
+        <button id="carouselNext" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 backdrop-blur-sm text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/50 transition">
             <i class="fa fa-chevron-right"></i>
         </button>
     </section>
@@ -455,26 +436,109 @@
             });
         });
 
-        // 轮播图自动切换（简单实现）
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.carousel-item');
-        
-        function showSlide(index) {
-            slides.forEach(slide => {
-                slide.classList.remove('opacity-100');
-                slide.classList.add('opacity-0');
+        // 轮播图自动切换
+        const carouselData = [
+            {
+                image: 'photos/carousel-1.jpg',
+                title: '推进心血管健康的创新研究',
+                description: '汇聚全球顶尖专家，探索心脏病诊疗前沿技术与解决方案',
+            },
+            {
+                image: 'photos/carousel-2.jpg',
+                title: '赋能临床实践的教育资源',
+                description: '多维度继续教育课程，助力医护人员精准诊疗',
+            },
+            {
+                image: 'photos/carousel-3.jpg',
+                title: '跨学科合作的科研平台',
+                description: '连接科研机构与行业伙伴，共同推动心血管医学进步',
+            },
+            {
+                image: 'photos/carousel-4.jpg',
+                title: '洞察前沿趋势的主题会议',
+                description: '聚焦未来医学发展方向，把握心血管领域新机遇',
+            },
+        ];
+
+        const carouselContainer = document.getElementById('heroCarousel');
+
+        if (carouselContainer && carouselData.length) {
+            carouselData.forEach((item, index) => {
+                const slide = document.createElement('div');
+                slide.className = `carousel-item absolute inset-0 transition-opacity duration-1000 ${index === 0 ? 'opacity-100' : 'opacity-0'}`;
+                slide.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-r from-secondary/80 to-transparent flex items-center">
+                        <div class="container mx-auto px-4 md:px-8 text-white max-w-xl">
+                            <h2 class="text-3xl md:text-4xl font-bold mb-4">${item.title}</h2>
+                            <p class="text-lg md:text-xl mb-6">${item.description}</p>
+                            <div class="flex gap-4">
+                                <button class="bg-accent text-white px-6 py-3 rounded-md hover:bg-accent/90 transition">
+                                    探索更多
+                                </button>
+                                <button class="bg-white/20 backdrop-blur-sm text-white border border-white/30 px-6 py-3 rounded-md hover:bg-white/30 transition">
+                                    立即了解 <i class="fa fa-arrow-right ml-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                carouselContainer.appendChild(slide);
             });
-            slides[index].classList.remove('opacity-0');
-            slides[index].classList.add('opacity-100');
+        }
+
+        let currentSlide = 0;
+        const slides = carouselContainer ? carouselContainer.querySelectorAll('.carousel-item') : [];
+        const prevBtn = document.getElementById('carouselPrev');
+        const nextBtn = document.getElementById('carouselNext');
+        let carouselInterval = null;
+
+        function showSlide(index) {
+            if (!slides.length) return;
+
+            slides.forEach((slide, slideIndex) => {
+                slide.classList.toggle('opacity-100', slideIndex === index);
+                slide.classList.toggle('opacity-0', slideIndex !== index);
+            });
         }
         
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
+        function goToSlide(index) {
+            if (!slides.length) return;
+            currentSlide = (index + slides.length) % slides.length;
             showSlide(currentSlide);
         }
-        
-        // 每5秒切换一次轮播图
-        setInterval(nextSlide, 5000);
+
+        function startCarousel() {
+            if (slides.length <= 1) return;
+            stopCarousel();
+            carouselInterval = setInterval(() => goToSlide(currentSlide + 1), 5000);
+        }
+
+        function stopCarousel() {
+            if (carouselInterval) {
+                clearInterval(carouselInterval);
+                carouselInterval = null;
+            }
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                stopCarousel();
+                goToSlide(currentSlide - 1);
+                startCarousel();
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                stopCarousel();
+                goToSlide(currentSlide + 1);
+                startCarousel();
+            });
+        }
+
+        showSlide(currentSlide);
+        startCarousel();
 
         // 订阅表单提交
         const newsletterForm = document.getElementById('newsletterForm');
