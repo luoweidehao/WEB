@@ -389,11 +389,18 @@
                     <p class="text-gray-300 mb-4">
                         订阅我们的电子通讯，及时获取最新研究、会议信息和临床资源
                     </p>
-                    <form class="flex flex-col gap-3">
-                        <input type="email" placeholder="您的邮箱地址" class="px-4 py-3 rounded-md bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-accent">
+                    <form id="newsletterForm" class="flex flex-col gap-3">
+                        <input
+                            id="newsletterEmail"
+                            type="email"
+                            placeholder="您的邮箱地址"
+                            class="px-4 py-3 rounded-md bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
+                            required
+                        >
                         <button type="submit" class="bg-accent text-white px-4 py-3 rounded-md hover:bg-accent/90 transition">
                             订阅
                         </button>
+                        <p id="newsletterFeedback" class="text-sm text-white/80 min-h-[1.5rem]" aria-live="polite"></p>
                     </form>
                 </div>
             </div>
@@ -468,6 +475,47 @@
         
         // 每5秒切换一次轮播图
         setInterval(nextSlide, 5000);
+
+        // 订阅表单提交
+        const newsletterForm = document.getElementById('newsletterForm');
+        const newsletterEmail = document.getElementById('newsletterEmail');
+        const newsletterFeedback = document.getElementById('newsletterFeedback');
+
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const email = newsletterEmail.value.trim();
+                if (!email) {
+                    newsletterFeedback.textContent = '请输入邮箱地址。';
+                    return;
+                }
+
+                newsletterFeedback.textContent = '正在发送，请稍候...';
+
+                try {
+                    const response = await fetch('/subscribe', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email }),
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        newsletterFeedback.textContent = '已发送确认邮件，请查收。';
+                        newsletterForm.reset();
+                    } else {
+                        newsletterFeedback.textContent = result.message || '发送失败，请稍后再试。';
+                    }
+                } catch (error) {
+                    console.error('订阅请求失败：', error);
+                    newsletterFeedback.textContent = '网络异常，请稍后重试。';
+                }
+            });
+        }
     </script>
 </body>
 </html>
