@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会员登录 | 中欧心血管代谢学会</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0066CC', secondary: '#003366', accent: '#FF6600', light: '#F5F7FA', dark: '#2D3748',
+                    },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .nav-shadow { box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        }
+    </style>
+</head>
+<body class="font-sans text-dark bg-light flex flex-col min-h-screen">
+
+    <div class="bg-primary text-white py-2 px-4 md:px-8">
+        <div class="container mx-auto flex justify-between items-center text-sm md:text-base">
+            <p>📢 2025 年心血管代谢与泛血管疾病医学大会 | 11月8-10日 武汉</p>
+            <div class="flex gap-4">
+                <a href="#" class="hover:underline"><i class="fa fa-search mr-1"></i> 搜索</a>
+                <a href="login.html" class="hover:underline font-bold"><i class="fa fa-user mr-1"></i> 登录/注册</a>
+            </div>
+        </div>
+    </div>
+
+    <header class="bg-white nav-shadow sticky top-0 z-50">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="flex items-center justify-between py-4">
+                <div class="flex items-center gap-3">
+                    <img src="https://picsum.photos/id/56/80/80" alt="头像" class="w-12 h-12 rounded-full object-cover">
+                    <div>
+                        <h1 class="text-xl md:text-2xl font-bold text-secondary">中欧心血管代谢学会</h1>
+                        <p class="text-xs text-gray-500 hidden md:block">心血管医学领域权威平台</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex items-center gap-6">
+                    <a href="index.html" class="font-medium text-gray-700 hover:text-primary">首页</a>
+                    <a href="clinical-topics.html" class="font-medium text-gray-700 hover:text-primary">临床指南</a>
+                    <a href="latest.html" class="font-medium text-gray-700 hover:text-primary">教育资源</a>
+                    <a href="support.html" class="font-medium text-gray-700 hover:text-primary">研究中心</a>
+                    <a href="#" class="font-medium text-gray-700 hover:text-primary">会议活动</a>
+                    <a href="#" class="font-medium text-gray-700 hover:text-primary">关于我们</a>
+                    <button class="bg-accent text-white px-4 py-2 rounded-md hover:bg-accent/90 transition">
+                        加入会员
+                    </button>
+                </nav>
+                <button class="md:hidden text-gray-700 text-2xl" id="menuBtn">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        <div class="md:hidden bg-white w-full absolute left-0 top-full nav-shadow hidden" id="mobileMenu">
+             </div>
+    </header>
+
+    <main class="flex-grow py-12 md:py-24">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="max-w-lg mx-auto bg-white p-8 md:p-12 rounded-xl shadow-lg">
+                <h1 class="text-3xl font-bold text-secondary mb-8 text-center">会员登录</h1>
+                
+                <form id="login-form" class="space-y-6">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700 mb-2">用户名</label>
+                        <input type="text" id="username" name="username" required 
+                               class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    </div>
+                    
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">密码</label>
+                        <input type="password" id="password" name="password" required
+                               class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-primary shadow-sm focus:ring-primary">
+                            <span class="ml-2 text-sm text-gray-600">记住我</span>
+                        </label>
+                        <a href="forgot-password.html" class="text-sm text-primary hover:underline">忘记密码?</a>
+                    </div>
+                    
+                    <div>
+                        <button type="submit" 
+                                class="w-full bg-primary text-white px-6 py-3 rounded-md hover:bg-secondary transition text-lg font-medium">
+                            登 录
+                        </button>
+                    </div>
+                </form>
+                
+                <div id="error-message" class="mt-4 text-center font-medium"></div>
+
+                <div class="mt-8 text-center">
+                    <p class="text-gray-600">
+                        还没有账户? 
+                        <a href="register.html" class="text-accent font-medium hover:underline">立即注册</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="bg-secondary text-white pt-12 pb-6">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="border-t border-white/10 pt-6 text-center text-gray-400 text-sm">
+                <p>© 2025 中欧心血管代谢学会. 保留所有权利。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('login-form');
+            const errorMessage = document.getElementById('error-message');
+
+            const API_URL = 'http://localhost:3000/api/login';
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                errorMessage.textContent = '';
+                errorMessage.className = 'mt-4 text-center font-medium';
+
+                const username = loginForm.username.value;
+                const password = loginForm.password.value;
+
+                try {
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, password })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.message || '登录失败,请重试。');
+                    }
+
+                    // --- 登录成功 ---
+                    // 1. 将 Token 存储在浏览器的 localStorage 中
+                    localStorage.setItem('token', data.token);
+                    // 2. 存储用户信息
+                    localStorage.setItem('user', JSON.stringify(data.user));
+
+                    // 3. 提示并跳转到首页
+                    errorMessage.textContent = '登录成功!正在跳转...';
+                    errorMessage.className = 'mt-4 text-center text-green-600 font-medium';
+
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1000);
+
+                } catch (error) {
+                    errorMessage.textContent = error.message;
+                    errorMessage.className = 'mt-4 text-center text-red-600 font-medium';
+                }
+            });
+
+            // 菜单和回到顶部JS
+            const menuBtn = document.getElementById('menuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (menuBtn) {
+                menuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuBtn.innerHTML = mobileMenu.classList.contains('hidden') 
+                        ? '<i class="fa fa-bars"></i>' 
+                        : '<i class="fa fa-times"></i>';
+                });
+            }
+        });
+    </script>
+    <script src="auth-navbar.js"></script>
+</body>
+</html>
