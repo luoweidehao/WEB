@@ -42,6 +42,10 @@
                 transform: translateY(-5px);
                 box-shadow: 0 10px 20px rgba(0,0,0,0.1);
             }
+            /* 新增样式，用于给可点击的轮播项添加手型光标 */
+            .carousel-item-link {
+                cursor: pointer;
+            }
         }
     </style>
 </head>
@@ -442,21 +446,25 @@
                 image: 'photos/carousel-1.jpg',
                 title: '推进心血管健康的创新研究',
                 description: '汇聚全球顶尖专家，探索心脏病诊疗前沿技术与解决方案',
+                link: 'https://www.bilibili.com/video/BV1MoCFB4EE1/?spm_id_from=333.337.search-card.all.click&vd_source=5eda7ca7d152b8438b31eb4352d55652',
             },
             {
                 image: 'photos/carousel-2.jpg',
                 title: '赋能临床实践的教育资源',
                 description: '多维度继续教育课程，助力医护人员精准诊疗',
+                link: 'https://www.nature.com/articles/s41586-025-09850-x',
             },
             {
                 image: 'photos/carousel-3.jpg',
                 title: '跨学科合作的科研平台',
                 description: '连接科研机构与行业伙伴，共同推动心血管医学进步',
+                link: 'https://www.bilibili.com/video/BV16H4y1e7SK/?spm_id_from=333.337.search-card.all.click&vd_source=5eda7ca7d152b8438b31eb4352d55652',
             },
             {
                 image: 'photos/carousel-4.jpg',
                 title: '洞察前沿趋势的主题会议',
                 description: '聚焦未来医学发展方向，把握心血管领域新机遇',
+                link: 'https://www.bilibili.com/video/BV1K84y1t7HV/?spm_id_from=333.337.search-card.all.click&vd_source=5eda7ca7d152b8438b31eb4352d55652',
             },
         ];
 
@@ -465,24 +473,22 @@
         if (carouselContainer && carouselData.length) {
             carouselData.forEach((item, index) => {
                 const slide = document.createElement('div');
-                slide.className = `carousel-item absolute inset-0 transition-opacity duration-1000 ${index === 0 ? 'opacity-100' : 'opacity-0'}`;
+                const slideClasses = `carousel-item absolute inset-0 transition-opacity duration-1000 ${index === 0 ? 'opacity-100' : 'opacity-0'}`;
+                slide.className = slideClasses;
+                
                 slide.innerHTML = `
                     <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-r from-secondary/80 to-transparent flex items-center">
                         <div class="container mx-auto px-4 md:px-8 text-white max-w-xl">
                             <h2 class="text-3xl md:text-4xl font-bold mb-4">${item.title}</h2>
                             <p class="text-lg md:text-xl mb-6">${item.description}</p>
-                            <div class="flex gap-4">
-                                <button class="bg-accent text-white px-6 py-3 rounded-md hover:bg-accent/90 transition">
-                                    探索更多
-                                </button>
-                                <button class="bg-white/20 backdrop-blur-sm text-white border border-white/30 px-6 py-3 rounded-md hover:bg-white/30 transition">
-                                    立即了解 <i class="fa fa-arrow-right ml-2"></i>
-                                </button>
+                            <div class="mt-4">
+                                ${item.link ? '<a href="' + item.link + '" target="_blank" rel="noopener" class="inline-flex items-center bg-white/20 backdrop-blur-sm text-white border border-white/30 px-6 py-3 rounded-md hover:bg-white/30 transition">立即了解 <i class="fa fa-arrow-right ml-2"></i></a>' : ''}
                             </div>
                         </div>
                     </div>
                 `;
+                
                 carouselContainer.appendChild(slide);
             });
         }
@@ -499,6 +505,7 @@
             slides.forEach((slide, slideIndex) => {
                 slide.classList.toggle('opacity-100', slideIndex === index);
                 slide.classList.toggle('opacity-0', slideIndex !== index);
+                slide.classList.toggle('pointer-events-none', slideIndex !== index);
             });
         }
         
@@ -537,6 +544,11 @@
             });
         }
 
+        if (carouselContainer) {
+            carouselContainer.addEventListener('mouseenter', stopCarousel);
+            carouselContainer.addEventListener('mouseleave', startCarousel);
+        }
+        
         showSlide(currentSlide);
         startCarousel();
 
