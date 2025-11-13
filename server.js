@@ -18,17 +18,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const cryptoRandomString = require('crypto-random-string');
+const dbConfig = require('./config/db-config');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-//数据库连接配置
-const dbConfig = {
-    host: 'localhost',
-    user: 'root',
-    password: 'wxh83556050',
-    database: 'acc_system_db'
-};
 
 //JWT配置
 const JWT_SECRET = 'your-super-secret-key-that-no-one-knows';
@@ -167,8 +160,24 @@ app.post('/api/request-reset', async (req, res) => {
             return res.json({ message: '如果邮箱地址正确,您将收到一封包含验证码的邮件。' });
         }
 
+        const user = users[0];
+        const now = new Date();
+        const hasActiveCode =
+            user.verification_code &&
+            user.code_expiry_time &&
+            new Date(user.code_expiry_time) > now;
+
+        if (hasActiveCode) {
+            const remainingMs = new Date(user.code_expiry_time) - now;
+            const remainingMinutes = Math.ceil(remainingMs / 60000);
+            return res.status(429).json({
+                message: `验证码已发送，请在 ${remainingMinutes} 分钟后再试。`,
+                retryAfterMinutes: remainingMinutes,
+            });
+        }
+
         const code = cryptoRandomString.default({ length: 6, type: 'numeric' });
-        const expiryTime = new Date(Date.now() + 15 * 60 * 1000); 
+        const expiryTime = new Date(Date.now() + 5 * 60 * 1000); 
 
         await connection.execute(
             "UPDATE users SET verification_code = ?, code_expiry_time = ? WHERE email = ?",
@@ -180,7 +189,7 @@ app.post('/api/request-reset', async (req, res) => {
             <p>尊敬的用户您好：</p>
             <p>您正在请求重置密码。您的验证码是：</p>
             <h2 style="font-family: Arial, sans-serif; color: #0066CC;">${code}</h2>
-            <p>此验证码将在15分钟内有效。如果您没有请求重置密码,请忽略本邮件。</p>
+            <p>此验证码将在5分钟内有效。如果您没有请求重置密码,请忽略本邮件。</p>
             <p>—— 中欧心血管代谢学会</p>
         `;
         
