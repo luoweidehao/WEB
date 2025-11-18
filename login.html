@@ -125,7 +125,7 @@
             const loginForm = document.getElementById('login-form');
             const errorMessage = document.getElementById('error-message');
 
-            const API_URL = 'http://localhost:3000/api/login';
+            const API_URL = 'http://localhost:8080/api/login';
 
             loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -165,8 +165,17 @@
                     }, 1000);
 
                 } catch (error) {
-                    errorMessage.textContent = error.message;
+                    console.error('登录错误详情:', error);
+                    let errorMsg = error.message;
+                    
+                    // 如果是网络错误，提供更详细的提示
+                    if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+                        errorMsg = '无法连接到服务器，请检查：\n1. Spring Boot 应用是否已启动（端口 8080）\n2. 是否通过 http://localhost:8080 访问页面\n3. 浏览器控制台是否有更多错误信息';
+                    }
+                    
+                    errorMessage.textContent = errorMsg;
                     errorMessage.className = 'mt-4 text-center text-red-600 font-medium';
+                    errorMessage.style.whiteSpace = 'pre-line'; // 允许换行显示
                 }
             });
 

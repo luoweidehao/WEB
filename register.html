@@ -89,7 +89,7 @@
             const registerForm = document.getElementById('register-form');
             const message = document.getElementById('message');
 
-            const API_URL = 'http://localhost:3000/api/register';
+            const API_URL = 'http://localhost:8080/api/register';
 
             registerForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -116,7 +116,7 @@
 
                 try {
                     // 2. 发送注册请求
-                    const response = await fetch('http://localhost:3000/api/register', {
+                    const response = await fetch('http://localhost:8080/api/register', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ username, email, password })
@@ -139,8 +139,17 @@
                     }, 2000);
 
                 } catch (error) {
-                    message.textContent = error.message;
+                    console.error('注册错误详情:', error);
+                    let errorMsg = error.message;
+                    
+                    // 如果是网络错误，提供更详细的提示
+                    if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+                        errorMsg = '无法连接到服务器，请检查：\n1. Spring Boot 应用是否已启动（端口 8080）\n2. 是否通过 http://localhost:8080 访问页面\n3. 浏览器控制台是否有更多错误信息';
+                    }
+                    
+                    message.textContent = errorMsg;
                     message.classList.add('text-red-600');
+                    message.style.whiteSpace = 'pre-line'; // 允许换行显示
                 }
             });
             
