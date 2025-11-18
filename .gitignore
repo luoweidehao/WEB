@@ -1,2 +1,14 @@
 node_modules/*
 config/*
+
+# Spring Boot
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.idea/
+*.iml
+*.class
+.DS_Store
+
+# Application
+application-local.yml
+application-prod.yml
