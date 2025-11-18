@@ -15,13 +15,14 @@ public class WebConfig implements WebMvcConfigurer {
         // 映射根目录下的静态文件
         String projectRoot = Paths.get("").toAbsolutePath().toString();
         
-        // 映射 HTML 文件
+        // 映射 HTML 文件（排除 /api 路径，避免干扰 API 路由）
         registry.addResourceHandler("/**")
                 .addResourceLocations(
                     "classpath:/static/",
                     "file:" + projectRoot + "/",
                     "file:" + projectRoot + "/photos/"
-                );
+                )
+                .resourceChain(false); // 禁用资源链，确保 API 路由优先
     }
 
     @Override

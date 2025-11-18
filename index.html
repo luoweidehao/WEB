@@ -374,7 +374,7 @@
                     <p class="text-gray-300 mb-4">
                         订阅我们的电子通讯，及时获取最新研究、会议信息和临床资源
                     </p>
-                    <form id="newsletterForm" class="flex flex-col gap-3">
+                    <form id="newsletterForm" class="flex flex-col gap-3" method="post" action="javascript:void(0);">
                         <input
                             id="newsletterEmail"
                             type="email"
@@ -570,7 +570,7 @@
                 newsletterFeedback.textContent = '正在发送，请稍候...';
 
                 try {
-                    const response = await fetch('/subscribe', {
+                    const response = await fetch('http://localhost:8080/api/subscribe', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -588,7 +588,11 @@
                     }
                 } catch (error) {
                     console.error('订阅请求失败：', error);
-                    newsletterFeedback.textContent = '网络异常，请稍后重试。';
+                    let errorMsg = '网络异常，请稍后重试。';
+                    if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+                        errorMsg = '无法连接到服务器，请检查 Spring Boot 应用是否已启动（端口 8080）';
+                    }
+                    newsletterFeedback.textContent = errorMsg;
                 }
             });
         }
