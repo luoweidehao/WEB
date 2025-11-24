@@ -31,14 +31,9 @@ public class SubscribeService {
     }
     
     public void sendNewsletterEmail(String email) {
-        System.out.println("\n" + "=".repeat(80));
-        System.out.println("【发送订阅确认邮件】");
-        System.out.println("  收件人邮箱: " + email);
-        
         if (mailSender == null) {
             System.err.println("  ❌ JavaMailSender 未配置！");
             System.err.println("  请检查 application.yml 中的邮件配置");
-            System.out.println("=".repeat(80) + "\n");
             throw new IllegalStateException("邮件服务未配置");
         }
         
@@ -49,14 +44,7 @@ public class SubscribeService {
             message.setSubject(DEFAULT_SUBJECT);
             message.setText(DEFAULT_NEWSLETTER_TEMPLATE);
             
-            System.out.println("  发件人: 2650090110@qq.com");
-            System.out.println("  主题: " + DEFAULT_SUBJECT);
-            System.out.println("  正在发送邮件...");
-            
             mailSender.send(message);
-            
-            System.out.println("  ✅ 邮件发送成功！");
-            System.out.println("=".repeat(80) + "\n");
         } catch (Exception e) {
             System.err.println("  ❌ 发送邮件失败！");
             System.err.println("  错误类型: " + e.getClass().getName());
@@ -66,7 +54,6 @@ public class SubscribeService {
             }
             System.err.println("  完整堆栈跟踪:");
             e.printStackTrace();
-            System.out.println("=".repeat(80) + "\n");
             throw new RuntimeException("邮件发送失败: " + e.getMessage(), e);
         }
     }

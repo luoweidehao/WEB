@@ -5,6 +5,7 @@ import com.acc.lab.dto.MembershipApplicationResponse;
 import com.acc.lab.dto.MessageResponse;
 import com.acc.lab.dto.ReviewApplicationRequest;
 import com.acc.lab.service.MembershipService;
+import com.acc.lab.service.SessionService;
 import com.acc.lab.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class MembershipController {
     @Autowired
     private JwtUtil jwtUtil;
     
+    @Autowired
+    private SessionService sessionService;
+    
     // 提交会员申请
     @PostMapping("/apply")
     public ResponseEntity<?> applyForMembership(
@@ -37,6 +41,13 @@ public class MembershipController {
             }
             
             String token = authHeader.substring(7);
+            
+            // 验证 session
+            if (!sessionService.isValidSession(token)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new MessageResponse("Session已失效，请重新登录。"));
+            }
+            
             Long userId = jwtUtil.extractUserId(token);
             
             MembershipApplicationResponse response = membershipService.submitApplication(userId, request);
@@ -61,6 +72,13 @@ public class MembershipController {
             }
             
             String token = authHeader.substring(7);
+            
+            // 验证 session
+            if (!sessionService.isValidSession(token)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new MessageResponse("Session已失效，请重新登录。"));
+            }
+            
             Long userId = jwtUtil.extractUserId(token);
             
             List<MembershipApplicationResponse> applications = membershipService.getUserApplications(userId);
@@ -84,6 +102,13 @@ public class MembershipController {
             }
             
             String token = authHeader.substring(7);
+            
+            // 验证 session
+            if (!sessionService.isValidSession(token)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new MessageResponse("Session已失效，请重新登录。"));
+            }
+            
             Long userId = jwtUtil.extractUserId(token);
             
             MembershipApplicationResponse response = membershipService.updateApplication(userId, applicationId, request);
@@ -109,6 +134,13 @@ public class MembershipController {
             }
             
             String token = authHeader.substring(7);
+            
+            // 验证 session
+            if (!sessionService.isValidSession(token)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new MessageResponse("Session已失效，请重新登录。"));
+            }
+            
             String role = jwtUtil.extractRole(token);
             
             if (!"ADMIN".equalsIgnoreCase(role)) {
@@ -137,6 +169,13 @@ public class MembershipController {
             }
             
             String token = authHeader.substring(7);
+            
+            // 验证 session
+            if (!sessionService.isValidSession(token)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new MessageResponse("Session已失效，请重新登录。"));
+            }
+            
             Long adminId = jwtUtil.extractUserId(token);
             String role = jwtUtil.extractRole(token);
             

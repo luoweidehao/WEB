@@ -5,6 +5,8 @@ import com.acc.lab.dto.LoginRequest;
 import com.acc.lab.dto.MessageResponse;
 import com.acc.lab.service.AuthService;
 import com.acc.lab.service.AdminService;
+import com.acc.lab.service.SessionService;
+import com.acc.lab.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,12 @@ public class AdminController {
     
     @Autowired
     private AdminService adminService;
+    
+    @Autowired
+    private SessionService sessionService;
+    
+    @Autowired
+    private JwtUtil jwtUtil;
     
     @PostMapping("/login")
     public ResponseEntity<?> adminLogin(@Valid @RequestBody LoginRequest request) {
@@ -49,10 +57,23 @@ public class AdminController {
     @GetMapping("/statistics")
     public ResponseEntity<?> getStatistics(@RequestHeader(value = "Authorization", required = false) String authHeader) {
         try {
-            // 简单的权限检查（实际应该使用JWT验证）
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new MessageResponse("未授权访问。"));
+            }
+            
+            String token = authHeader.substring(7);
+            
+            // 验证 session
+            if (!sessionService.isValidSession(token)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new MessageResponse("Session已失效，请重新登录。"));
+            }
+            
+            String role = jwtUtil.extractRole(token);
+            if (!"ADMIN".equalsIgnoreCase(role)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new MessageResponse("无权访问。"));
             }
             
             Map<String, Object> statistics = adminService.getStatistics();
@@ -66,10 +87,23 @@ public class AdminController {
     @GetMapping("/users")
     public ResponseEntity<?> getAllUsers(@RequestHeader(value = "Authorization", required = false) String authHeader) {
         try {
-            // 简单的权限检查（实际应该使用JWT验证）
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new MessageResponse("未授权访问。"));
+            }
+            
+            String token = authHeader.substring(7);
+            
+            // 验证 session
+            if (!sessionService.isValidSession(token)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new MessageResponse("Session已失效，请重新登录。"));
+            }
+            
+            String role = jwtUtil.extractRole(token);
+            if (!"ADMIN".equalsIgnoreCase(role)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new MessageResponse("无权访问。"));
             }
             
             return ResponseEntity.ok(adminService.getAllUsers());

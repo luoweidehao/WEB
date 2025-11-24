@@ -102,5 +102,27 @@ public class AuthController {
                 .body(new MessageResponse("获取用户信息失败。"));
         }
     }
+    
+    // 退出登录
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new MessageResponse("请先登录。"));
+            }
+            
+            String token = authHeader.substring(7);
+            MessageResponse response = authService.logout(token);
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new MessageResponse(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new MessageResponse("退出登录失败。"));
+        }
+    }
 }
 

@@ -121,7 +121,7 @@
                 errorMessage.textContent = '';
                 errorMessage.className = 'mt-4 text-center font-medium';
 
-                const username = loginForm.username.value;
+                const usernameOrEmail = loginForm.username.value;
                 const password = loginForm.password.value;
 
                 try {
@@ -130,7 +130,7 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ username, password })
+                        body: JSON.stringify({ usernameOrEmail, password })
                     });
 
                     const data = await response.json();

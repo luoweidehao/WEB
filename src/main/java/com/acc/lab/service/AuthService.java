@@ -36,6 +36,9 @@ public class AuthService {
     @Autowired
     private JwtUtil jwtUtil;
     
+    @Autowired
+    private SessionService sessionService;
+    
     @Autowired(required = false)
     private JavaMailSender mailSender;
     
@@ -77,54 +80,42 @@ public class AuthService {
         // 生成 JWT token
         String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getRole());
         
+        // 创建 session
+        sessionService.createSession(user.getId(), token);
+        
         AuthResponse.UserInfo userInfo = new AuthResponse.UserInfo(user.getUsername(), user.getRole(), user.getMembership());
         return new AuthResponse("用户注册成功!", token, userInfo);
     }
     
     public AuthResponse login(LoginRequest request) {
-        System.out.println("\n" + "=".repeat(80));
-        System.out.println("【登录请求】");
-        System.out.println("  输入用户名: " + request.getUsername());
-        System.out.println("  输入密码: " + request.getPassword());
-        System.out.println("  密码长度: " + (request.getPassword() != null ? request.getPassword().length() : 0));
+        // 判断输入是邮箱还是用户名
+        String input = request.getUsernameOrEmail();
+        User user = null;
         
-        User user = userRepository.findByUsername(request.getUsername())
-            .orElse(null);
+        if (isValidEmail(input)) {
+            // 如果是邮箱格式，通过邮箱查找
+            user = userRepository.findByEmail(input).orElse(null);
+        } else {
+            // 否则通过用户名查找
+            user = userRepository.findByUsername(input).orElse(null);
+        }
         
         if (user == null) {
-            System.out.println("  ❌ 用户不存在: " + request.getUsername());
-            System.out.println("  数据库中所有用户名:");
-            userRepository.findAll().forEach(u -> System.out.println("    - " + u.getUsername() + " (ID: " + u.getId() + ")"));
-            System.out.println("=".repeat(80) + "\n");
             throw new IllegalArgumentException("用户名或密码无效。");
         }
         
-        System.out.println("  ✅ 找到用户:");
-        System.out.println("    ID: " + user.getId());
-        System.out.println("    用户名: " + user.getUsername());
-        System.out.println("    邮箱: " + user.getEmail());
-        System.out.println("    角色: " + user.getRole());
-        System.out.println("    数据库密码哈希: " + (user.getPasswordHash() != null ? 
-            user.getPasswordHash().substring(0, Math.min(30, user.getPasswordHash().length())) + "..." : "无"));
-        
         // 验证密码
         boolean passwordMatches = passwordEncoder.matches(request.getPassword(), user.getPasswordHash());
-        System.out.println("  密码匹配结果: " + (passwordMatches ? "✅ 匹配" : "❌ 不匹配"));
         
         if (!passwordMatches) {
-            System.out.println("  ❌ 密码验证失败");
-            System.out.println("    输入的密码: " + request.getPassword());
-            System.out.println("    数据库密码哈希长度: " + (user.getPasswordHash() != null ? user.getPasswordHash().length() : 0));
-            System.out.println("=".repeat(80) + "\n");
             throw new IllegalArgumentException("用户名或密码无效。");
         }
         
         // 生成 JWT token
         String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getRole());
         
-        System.out.println("  ✅ 登录成功！");
-        System.out.println("    生成的 Token: " + token.substring(0, Math.min(50, token.length())) + "...");
-        System.out.println("=".repeat(80) + "\n");
+        // 创建 session
+        sessionService.createSession(user.getId(), token);
         
         AuthResponse.UserInfo userInfo = new AuthResponse.UserInfo(user.getUsername(), user.getRole(), user.getMembership());
         return new AuthResponse("登录成功!", token, userInfo);
@@ -164,15 +155,9 @@ public class AuthService {
         userRepository.save(user);
         
         // 发送邮件
-        System.out.println("\n" + "=".repeat(80));
-        System.out.println("【发送密码重置验证码邮件】");
-        System.out.println("  收件人邮箱: " + user.getEmail());
-        System.out.println("  验证码: " + code);
-        
         if (mailSender == null) {
             System.err.println("  ❌ JavaMailSender 未配置！");
             System.err.println("  请检查 application.yml 中的邮件配置");
-            System.out.println("=".repeat(80) + "\n");
         } else {
             try {
                 SimpleMailMessage message = new SimpleMailMessage();
@@ -188,14 +173,7 @@ public class AuthService {
                     code
                 ));
                 
-                System.out.println("  发件人: 2650090110@qq.com");
-                System.out.println("  主题: 您的密码重置验证码");
-                System.out.println("  正在发送邮件...");
-                
                 mailSender.send(message);
-                
-                System.out.println("  ✅ 邮件发送成功！");
-                System.out.println("=".repeat(80) + "\n");
             } catch (Exception e) {
                 System.err.println("  ❌ 发送邮件失败！");
                 System.err.println("  错误类型: " + e.getClass().getName());
@@ -205,7 +183,6 @@ public class AuthService {
                 }
                 System.err.println("  完整堆栈跟踪:");
                 e.printStackTrace();
-                System.out.println("=".repeat(80) + "\n");
                 // 记录错误但不抛出异常，避免泄露信息
             }
         }
@@ -241,6 +218,11 @@ public class AuthService {
     
     public AuthResponse.UserInfo getCurrentUserInfo(String token) {
         try {
+            // 验证 session 是否存在且有效
+            if (!sessionService.isValidSession(token)) {
+                throw new IllegalArgumentException("Session已失效，请重新登录。");
+            }
+            
             Long userId = jwtUtil.extractUserId(token);
             User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("用户不存在。"));
@@ -248,6 +230,19 @@ public class AuthService {
             return new AuthResponse.UserInfo(user.getUsername(), user.getRole(), user.getMembership());
         } catch (Exception e) {
             throw new IllegalArgumentException("无效的token或用户不存在。");
+        }
+    }
+    
+    /**
+     * 退出登录：删除 session
+     */
+    @Transactional
+    public MessageResponse logout(String token) {
+        try {
+            sessionService.logout(token);
+            return new MessageResponse("退出登录成功。");
+        } catch (Exception e) {
+            throw new IllegalArgumentException("退出登录失败。");
         }
     }
 }
