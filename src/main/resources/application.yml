@@ -50,6 +50,11 @@ spring:
     resources:
       static-locations: classpath:/static/,file:./,file:./photos/
       add-mappings: true
+      cache:
+        period: 0  # 开发环境禁用缓存，生产环境建议设置为 3600 或更高
+        cachecontrol:
+          no-cache: true
+          must-revalidate: true
 
 # JWT 配置
 jwt:
