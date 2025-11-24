@@ -89,7 +89,7 @@
             const registerForm = document.getElementById('register-form');
             const message = document.getElementById('message');
 
-            const API_URL = 'http://localhost:3000/api/register';
+            const API_URL = 'http://localhost:8080/api/register';
 
             registerForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -116,7 +116,7 @@
 
                 try {
                     // 2. 发送注册请求
-                    const response = await fetch('http://localhost:3000/api/register', {
+                    const response = await fetch(API_URL, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ username, email, password })
