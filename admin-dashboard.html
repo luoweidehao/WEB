@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员控制台 | 中欧心血管代谢学会</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0066CC', secondary: '#003366', accent: '#FF6600', light: '#F5F7FA', dark: '#2D3748',
+                    },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .nav-shadow { box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        }
+    </style>
+</head>
+<body class="font-sans text-dark bg-light min-h-screen">
+
+    <!-- 顶部导航栏 -->
+    <header class="bg-red-600 text-white nav-shadow sticky top-0 z-50">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="flex items-center justify-between py-4">
+                <div class="flex items-center gap-3">
+                    <i class="fa fa-shield text-2xl"></i>
+                    <div>
+                        <h1 class="text-xl md:text-2xl font-bold">管理员控制台</h1>
+                        <p class="text-xs text-red-100 hidden md:block">中欧心血管代谢学会</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span id="admin-username" class="hidden md:block text-sm">
+                        <i class="fa fa-user-circle mr-1"></i>
+                        <span id="username-text">加载中...</span>
+                    </span>
+                    <a href="index.html" class="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-md transition text-sm">
+                        <i class="fa fa-home mr-1"></i>返回首页
+                    </a>
+                    <button id="logout-btn" class="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-md transition text-sm">
+                        <i class="fa fa-sign-out mr-1"></i>退出登录
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 md:px-8 py-8">
+        <!-- 欢迎区域 -->
+        <div class="bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl p-6 md:p-8 mb-8 shadow-lg">
+            <h2 class="text-2xl md:text-3xl font-bold mb-2">欢迎回来，管理员！</h2>
+            <p class="text-red-100">在这里您可以管理系统用户、内容和其他设置</p>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">总用户数</p>
+                        <p class="text-3xl font-bold text-gray-800" id="total-users">-</p>
+                    </div>
+                    <div class="bg-blue-100 rounded-full p-4">
+                        <i class="fa fa-users text-blue-600 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">今日新增</p>
+                        <p class="text-3xl font-bold text-gray-800" id="today-users">-</p>
+                    </div>
+                    <div class="bg-green-100 rounded-full p-4">
+                        <i class="fa fa-user-plus text-green-600 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-yellow-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">订阅用户</p>
+                        <p class="text-3xl font-bold text-gray-800" id="subscribers">-</p>
+                    </div>
+                    <div class="bg-yellow-100 rounded-full p-4">
+                        <i class="fa fa-envelope text-yellow-600 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-red-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">管理员</p>
+                        <p class="text-3xl font-bold text-gray-800" id="admins">-</p>
+                    </div>
+                    <div class="bg-red-100 rounded-full p-4">
+                        <i class="fa fa-shield text-red-600 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 功能区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- 会员申请审核 -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-bold text-gray-800">
+                        <i class="fa fa-file-text mr-2 text-accent"></i>会员申请审核
+                    </h3>
+                    <div class="flex gap-2">
+                        <button id="filter-pending" class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-md hover:bg-yellow-200 transition text-sm">
+                            待审核
+                        </button>
+                        <button id="refresh-applications" class="px-3 py-1 bg-primary text-white rounded-md hover:bg-secondary transition text-sm">
+                            <i class="fa fa-refresh mr-1"></i>刷新
+                        </button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto max-h-96 overflow-y-auto">
+                    <div id="applications-list" class="space-y-4">
+                        <div class="text-center text-gray-500 py-8">
+                            <i class="fa fa-spinner fa-spin mr-2"></i>加载中...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 用户管理 -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-bold text-gray-800">
+                        <i class="fa fa-users mr-2 text-primary"></i>用户管理
+                    </h3>
+                    <button id="refresh-users" class="px-3 py-1 bg-primary text-white rounded-md hover:bg-secondary transition text-sm">
+                        <i class="fa fa-refresh mr-1"></i>刷新
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-2 text-left text-gray-700">用户名</th>
+                                <th class="px-4 py-2 text-left text-gray-700">邮箱</th>
+                                <th class="px-4 py-2 text-left text-gray-700">角色</th>
+                                <th class="px-4 py-2 text-left text-gray-700">会员</th>
+                                <th class="px-4 py-2 text-left text-gray-700">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body" class="divide-y divide-gray-200">
+                            <tr>
+                                <td colspan="5" class="px-4 py-8 text-center text-gray-500">
+                                    <i class="fa fa-spinner fa-spin mr-2"></i>加载中...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 快速操作 -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-6">
+                    <i class="fa fa-bolt mr-2 text-accent"></i>快速操作
+                </h3>
+                <div class="space-y-4">
+                    <button class="w-full px-4 py-3 bg-primary text-white rounded-md hover:bg-secondary transition text-left">
+                        <i class="fa fa-user-plus mr-2"></i>创建新用户
+                    </button>
+                    <button class="w-full px-4 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition text-left">
+                        <i class="fa fa-envelope mr-2"></i>发送邮件通知
+                    </button>
+                    <button class="w-full px-4 py-3 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition text-left">
+                        <i class="fa fa-download mr-2"></i>导出用户数据
+                    </button>
+                    <button class="w-full px-4 py-3 bg-red-600 text-white rounded-md hover:bg-red-700 transition text-left">
+                        <i class="fa fa-cog mr-2"></i>系统设置
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 申请详情模态框 -->
+        <div id="application-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+                    <h3 class="text-xl font-bold text-gray-800">
+                        <i class="fa fa-file-text mr-2 text-accent"></i>会员申请详情
+                    </h3>
+                    <button onclick="closeApplicationModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fa fa-times text-2xl"></i>
+                    </button>
+                </div>
+                
+                <div class="p-6">
+                    <div id="application-detail-content" class="space-y-6">
+                        <!-- 内容将通过JavaScript填充 -->
+                    </div>
+                    
+                    <div id="review-section" class="mt-6 pt-6 border-t border-gray-200">
+                        <h4 class="text-lg font-bold text-gray-800 mb-4">审核操作</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="review-notes" class="block text-sm font-medium text-gray-700 mb-2">
+                                    审核备注
+                                </label>
+                                <textarea id="review-notes" rows="3" 
+                                          placeholder="请输入审核备注（可选）"
+                                          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                            </div>
+                            <div class="flex gap-3">
+                                <button onclick="submitReview('APPROVED')" 
+                                        class="flex-1 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
+                                    <i class="fa fa-check mr-2"></i>批准申请
+                                </button>
+                                <button onclick="submitReview('REJECTED')" 
+                                        class="flex-1 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition">
+                                    <i class="fa fa-times mr-2"></i>拒绝申请
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 最近活动 -->
+        <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-6">
+                <i class="fa fa-clock-o mr-2 text-secondary"></i>最近活动
+            </h3>
+            <div id="recent-activities" class="space-y-4">
+                <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-md">
+                    <div class="bg-blue-100 rounded-full p-3">
+                        <i class="fa fa-user-plus text-blue-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-gray-800">新用户注册</p>
+                        <p class="text-sm text-gray-600">刚刚</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-secondary text-white pt-8 pb-6 mt-12">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="border-t border-white/10 pt-6 text-center text-gray-400 text-sm">
+                <p>© 2025 中欧心血管代谢学会. 保留所有权利。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const API_URL = 'http://localhost:8080/api';
+
+        // 检查管理员权限
+        function checkAdminAuth() {
+            const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
+            const isAdmin = localStorage.getItem('isAdmin');
+
+            if (!token || !userStr || isAdmin !== 'true') {
+                alert('您没有管理员权限，正在跳转到登录页面...');
+                window.location.href = 'admin-login.html';
+                return false;
+            }
+
+            try {
+                const user = JSON.parse(userStr);
+                if (!user.role || user.role.toUpperCase() !== 'ADMIN') {
+                    alert('您不是管理员，无权访问此页面。');
+                    window.location.href = 'admin-login.html';
+                    return false;
+                }
+                document.getElementById('username-text').textContent = user.username;
+                return true;
+            } catch (e) {
+                console.error('解析用户信息失败:', e);
+                window.location.href = 'admin-login.html';
+                return false;
+            }
+        }
+
+        // 加载统计数据
+        async function loadStatistics() {
+            try {
+                const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/admin/statistics`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('total-users').textContent = data.totalUsers || 0;
+                    document.getElementById('today-users').textContent = data.todayUsers || 0;
+                    document.getElementById('subscribers').textContent = data.subscribers || 0;
+                    document.getElementById('admins').textContent = data.admins || 0;
+                } else {
+                    console.error('加载统计数据失败');
+                }
+            } catch (error) {
+                console.error('加载统计数据错误:', error);
+            }
+        }
+
+        // 加载用户列表
+        async function loadUsers() {
+            try {
+                const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/admin/users`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const users = await response.json();
+                    const tbody = document.getElementById('users-table-body');
+                    
+                    if (users.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="5" class="px-4 py-8 text-center text-gray-500">
+                                    暂无用户数据
+                                </td>
+                            </tr>
+                        `;
+                    } else {
+                        tbody.innerHTML = users.map(user => `
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3">${user.username}</td>
+                                <td class="px-4 py-3">${user.email}</td>
+                                <td class="px-4 py-3">
+                                    <span class="px-2 py-1 rounded text-xs ${
+                                        user.role && user.role.toUpperCase() === 'ADMIN' 
+                                            ? 'bg-red-100 text-red-800' 
+                                            : 'bg-blue-100 text-blue-800'
+                                    }">
+                                        ${user.role && user.role.toUpperCase() === 'ADMIN' ? '管理员' : '普通用户'}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <span class="px-2 py-1 rounded text-xs ${
+                                        user.membership && user.membership.toLowerCase() === 'member'
+                                            ? 'bg-green-100 text-green-800' 
+                                            : 'bg-gray-100 text-gray-600'
+                                    }">
+                                        ${user.membership && user.membership.toLowerCase() === 'member' ? '会员' : '非会员'}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <button class="text-primary hover:text-secondary text-sm">
+                                        <i class="fa fa-edit mr-1"></i>编辑
+                                    </button>
+                                </td>
+                            </tr>
+                        `).join('');
+                    }
+                } else {
+                    document.getElementById('users-table-body').innerHTML = `
+                        <tr>
+                            <td colspan="5" class="px-4 py-8 text-center text-red-500">
+                                加载失败，请刷新重试
+                            </td>
+                        </tr>
+                    `;
+                }
+            } catch (error) {
+                console.error('加载用户列表错误:', error);
+                document.getElementById('users-table-body').innerHTML = `
+                    <tr>
+                        <td colspan="5" class="px-4 py-8 text-center text-red-500">
+                            无法连接到服务器
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // 加载会员申请列表
+        async function loadApplications(status = 'PENDING') {
+            try {
+                const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
+                const url = status ? `${API_URL}/membership/admin/applications?status=${status}` : `${API_URL}/membership/admin/applications`;
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const applications = await response.json();
+                    const listContainer = document.getElementById('applications-list');
+                    
+                    if (applications.length === 0) {
+                        listContainer.innerHTML = `
+                            <div class="text-center text-gray-500 py-8">
+                                <i class="fa fa-inbox text-4xl mb-2"></i>
+                                <p>暂无申请记录</p>
+                            </div>
+                        `;
+                    } else {
+                        listContainer.innerHTML = applications.map(app => {
+                            const statusColor = {
+                                'PENDING': 'bg-yellow-100 text-yellow-800',
+                                'APPROVED': 'bg-green-100 text-green-800',
+                                'REJECTED': 'bg-red-100 text-red-800'
+                            }[app.status] || 'bg-gray-100 text-gray-800';
+                            
+                            const statusText = {
+                                'PENDING': '待审核',
+                                'APPROVED': '已通过',
+                                'REJECTED': '已拒绝'
+                            }[app.status] || app.status;
+                            
+                            return `
+                                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="flex-1">
+                                            <h4 class="font-bold text-gray-800">${app.fullName}</h4>
+                                            <p class="text-sm text-gray-600">${app.username} (${app.email})</p>
+                                        </div>
+                                        <span class="px-2 py-1 rounded text-xs ${statusColor}">
+                                            ${statusText}
+                                        </span>
+                                    </div>
+                                    <div class="text-sm text-gray-700 space-y-1 mb-3">
+                                        ${app.institution ? `<p><i class="fa fa-building mr-2"></i>${app.institution}</p>` : ''}
+                                        ${app.position ? `<p><i class="fa fa-briefcase mr-2"></i>${app.position}</p>` : ''}
+                                        ${app.specialization ? `<p><i class="fa fa-stethoscope mr-2"></i>${app.specialization}</p>` : ''}
+                                    </div>
+                                    ${app.status === 'PENDING' ? `
+                                    <div class="flex gap-2 mt-3">
+                                        <button onclick="showApplicationDetail(${app.id})" 
+                                                class="w-full px-3 py-2 bg-primary text-white rounded-md hover:bg-secondary transition text-sm">
+                                            <i class="fa fa-eye mr-1"></i>查看详情并审核
+                                        </button>
+                                    </div>
+                                    ` : app.adminNotes ? `
+                                    <div class="mt-3 p-2 bg-gray-50 rounded text-xs text-gray-600">
+                                        <strong>审核备注：</strong>${app.adminNotes}
+                                    </div>
+                                    ` : ''}
+                                    <div class="text-xs text-gray-500 mt-2">
+                                        申请时间: ${new Date(app.createdAt).toLocaleString('zh-CN')}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    }
+                } else {
+                    document.getElementById('applications-list').innerHTML = `
+                        <div class="text-center text-red-500 py-8">
+                            加载失败，请刷新重试
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('加载申请列表错误:', error);
+                document.getElementById('applications-list').innerHTML = `
+                    <div class="text-center text-red-500 py-8">
+                        无法连接到服务器
+                    </div>
+                `;
+            }
+        }
+
+        // 当前正在审核的申请ID
+        let currentApplicationId = null;
+        let currentApplicationData = null;
+
+        // 显示申请详情
+        async function showApplicationDetail(applicationId) {
+            try {
+                const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/membership/admin/applications`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const applications = await response.json();
+                    const application = applications.find(app => app.id === applicationId);
+                    
+                    if (application) {
+                        currentApplicationId = applicationId;
+                        currentApplicationData = application;
+                        displayApplicationDetail(application);
+                        document.getElementById('application-modal').classList.remove('hidden');
+                    } else {
+                        alert('未找到该申请记录。');
+                    }
+                } else {
+                    alert('加载申请详情失败，请重试。');
+                }
+            } catch (error) {
+                console.error('加载申请详情错误:', error);
+                alert('加载申请详情失败，请检查网络连接。');
+            }
+        }
+
+        // 显示申请详情内容
+        function displayApplicationDetail(app) {
+            const content = document.getElementById('application-detail-content');
+            
+            const statusColor = {
+                'PENDING': 'bg-yellow-100 text-yellow-800',
+                'APPROVED': 'bg-green-100 text-green-800',
+                'REJECTED': 'bg-red-100 text-red-800'
+            }[app.status] || 'bg-gray-100 text-gray-800';
+            
+            const statusText = {
+                'PENDING': '待审核',
+                'APPROVED': '已通过',
+                'REJECTED': '已拒绝'
+            }[app.status] || app.status;
+
+            content.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- 基本信息 -->
+                    <div class="space-y-4">
+                        <h4 class="text-lg font-bold text-gray-800 border-b pb-2">基本信息</h4>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-sm font-medium text-gray-600">姓名</label>
+                                <p class="text-gray-800">${app.fullName || '-'}</p>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-gray-600">用户名</label>
+                                <p class="text-gray-800">${app.username || '-'}</p>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-gray-600">邮箱</label>
+                                <p class="text-gray-800">${app.email || '-'}</p>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-gray-600">联系电话</label>
+                                <p class="text-gray-800">${app.phone || '-'}</p>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-gray-600">申请状态</label>
+                                <p><span class="px-2 py-1 rounded text-xs ${statusColor}">${statusText}</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 工作信息 -->
+                    <div class="space-y-4">
+                        <h4 class="text-lg font-bold text-gray-800 border-b pb-2">工作信息</h4>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-sm font-medium text-gray-600">工作单位</label>
+                                <p class="text-gray-800">${app.institution || '-'}</p>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-gray-600">职位/职称</label>
+                                <p class="text-gray-800">${app.position || '-'}</p>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-gray-600">专业领域</label>
+                                <p class="text-gray-800">${app.specialization || '-'}</p>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-gray-600">从业年限</label>
+                                <p class="text-gray-800">${app.yearsOfExperience ? app.yearsOfExperience + ' 年' : '-'}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 详细信息 -->
+                <div class="space-y-4 mt-6">
+                    <h4 class="text-lg font-bold text-gray-800 border-b pb-2">详细信息</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-sm font-medium text-gray-600 block mb-2">教育背景</label>
+                            <div class="p-3 bg-gray-50 rounded-md text-gray-800 min-h-[60px]">
+                                ${app.educationBackground || '未填写'}
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium text-gray-600 block mb-2">研究方向</label>
+                            <div class="p-3 bg-gray-50 rounded-md text-gray-800 min-h-[60px]">
+                                ${app.researchInterests || '未填写'}
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium text-gray-600 block mb-2">申请动机</label>
+                            <div class="p-3 bg-gray-50 rounded-md text-gray-800 min-h-[80px]">
+                                ${app.motivation || '未填写'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 审核历史 -->
+                ${app.reviewedAt ? `
+                <div class="space-y-4 mt-6 pt-6 border-t border-gray-200">
+                    <h4 class="text-lg font-bold text-gray-800 border-b pb-2">审核历史</h4>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i class="fa fa-user"></i>
+                            <span>审核人：${app.reviewedBy || '未知'}</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i class="fa fa-clock-o"></i>
+                            <span>审核时间：${new Date(app.reviewedAt).toLocaleString('zh-CN')}</span>
+                        </div>
+                        ${app.adminNotes ? `
+                        <div class="mt-2">
+                            <label class="text-sm font-medium text-gray-600 block mb-1">审核备注</label>
+                            <div class="p-3 bg-blue-50 rounded-md text-gray-800">
+                                ${app.adminNotes}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+                ` : ''}
+
+                <div class="text-xs text-gray-500 mt-4 pt-4 border-t border-gray-200">
+                    申请时间: ${new Date(app.createdAt).toLocaleString('zh-CN')}
+                </div>
+            `;
+
+            // 如果已经审核过，隐藏审核操作区域
+            if (app.status !== 'PENDING') {
+                document.getElementById('review-section').classList.add('hidden');
+            } else {
+                document.getElementById('review-section').classList.remove('hidden');
+                document.getElementById('review-notes').value = '';
+            }
+        }
+
+        // 关闭模态框
+        function closeApplicationModal() {
+            document.getElementById('application-modal').classList.add('hidden');
+            currentApplicationId = null;
+            currentApplicationData = null;
+        }
+
+        // 提交审核
+        async function submitReview(status) {
+            if (!currentApplicationId) {
+                alert('错误：未找到申请记录。');
+                return;
+            }
+
+            const notes = document.getElementById('review-notes').value.trim();
+            
+            if (status === 'REJECTED' && !notes) {
+                if (!confirm('拒绝申请时建议填写拒绝原因。是否继续？')) {
+                    return;
+                }
+            }
+
+            try {
+                const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/membership/admin/review/${currentApplicationId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        status: status,
+                        adminNotes: notes
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert(status === 'APPROVED' ? '申请已批准！' : '申请已拒绝。');
+                    closeApplicationModal();
+                    loadApplications('PENDING');
+                    loadUsers();
+                    loadStatistics();
+                } else {
+                    alert(data.message || '审核失败，请重试。');
+                }
+            } catch (error) {
+                console.error('审核申请错误:', error);
+                alert('审核失败，请检查网络连接后重试。');
+            }
+        }
+
+        // 点击模态框外部关闭
+        document.addEventListener('click', (e) => {
+            const modal = document.getElementById('application-modal');
+            if (e.target === modal) {
+                closeApplicationModal();
+            }
+        });
+
+        // 退出登录
+        function logout() {
+            if (confirm('确定要退出管理员系统吗?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('user');
+                localStorage.removeItem('isAdmin');
+                window.location.href = 'admin-login.html';
+            }
+        }
+
+        // 页面加载
+        document.addEventListener('DOMContentLoaded', () => {
+            if (checkAdminAuth()) {
+                loadStatistics();
+                loadUsers();
+                loadApplications('PENDING');
+            }
+
+            // 绑定事件
+            document.getElementById('logout-btn').addEventListener('click', logout);
+            document.getElementById('refresh-users').addEventListener('click', () => {
+                loadUsers();
+                loadStatistics();
+            });
+            document.getElementById('refresh-applications').addEventListener('click', () => {
+                loadApplications('PENDING');
+            });
+            document.getElementById('filter-pending').addEventListener('click', () => {
+                loadApplications('PENDING');
+            });
+        });
+    </script>
+</body>
+</html>
+

@@ -80,5 +80,27 @@ public class AuthController {
                 .body(new MessageResponse("服务器内部错误。"));
         }
     }
+    
+    // 获取当前用户信息
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new MessageResponse("请先登录。"));
+            }
+            
+            String token = authHeader.substring(7);
+            AuthResponse.UserInfo userInfo = authService.getCurrentUserInfo(token);
+            return ResponseEntity.ok(userInfo);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new MessageResponse(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new MessageResponse("获取用户信息失败。"));
+        }
+    }
 }
 

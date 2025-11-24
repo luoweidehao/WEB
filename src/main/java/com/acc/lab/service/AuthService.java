@@ -77,7 +77,7 @@ public class AuthService {
         // 生成 JWT token
         String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getRole());
         
-        AuthResponse.UserInfo userInfo = new AuthResponse.UserInfo(user.getUsername(), user.getRole());
+        AuthResponse.UserInfo userInfo = new AuthResponse.UserInfo(user.getUsername(), user.getRole(), user.getMembership());
         return new AuthResponse("用户注册成功!", token, userInfo);
     }
     
@@ -126,7 +126,7 @@ public class AuthService {
         System.out.println("    生成的 Token: " + token.substring(0, Math.min(50, token.length())) + "...");
         System.out.println("=".repeat(80) + "\n");
         
-        AuthResponse.UserInfo userInfo = new AuthResponse.UserInfo(user.getUsername(), user.getRole());
+        AuthResponse.UserInfo userInfo = new AuthResponse.UserInfo(user.getUsername(), user.getRole(), user.getMembership());
         return new AuthResponse("登录成功!", token, userInfo);
     }
     
@@ -237,6 +237,18 @@ public class AuthService {
         userRepository.save(user);
         
         return new MessageResponse("密码重置成功!您现在可以使用新密码登录。");
+    }
+    
+    public AuthResponse.UserInfo getCurrentUserInfo(String token) {
+        try {
+            Long userId = jwtUtil.extractUserId(token);
+            User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("用户不存在。"));
+            
+            return new AuthResponse.UserInfo(user.getUsername(), user.getRole(), user.getMembership());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("无效的token或用户不存在。");
+        }
     }
 }
 

@@ -39,6 +39,9 @@ public class User {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     
+    @Column(length = 20)
+    private String membership; // 会员状态: "member" 表示会员, null 表示非会员
+    
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

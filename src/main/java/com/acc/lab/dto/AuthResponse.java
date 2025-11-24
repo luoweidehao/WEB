@@ -18,6 +18,7 @@ public class AuthResponse {
     public static class UserInfo {
         private String username;
         private String role;
+        private String membership;
     }
 }
 
