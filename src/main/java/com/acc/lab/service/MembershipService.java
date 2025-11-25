@@ -44,14 +44,13 @@ public class MembershipService {
             // 如果存在待审核的申请，更新它
             application = existingApplication;
             application.setFullName(request.getFullName());
+            application.setIdCard(request.getIdCard());
             application.setPhone(request.getPhone());
             application.setInstitution(request.getInstitution());
             application.setPosition(request.getPosition());
-            application.setSpecialization(request.getSpecialization());
-            application.setYearsOfExperience(request.getYearsOfExperience());
-            application.setEducationBackground(request.getEducationBackground());
-            application.setResearchInterests(request.getResearchInterests());
-            application.setMotivation(request.getMotivation());
+            application.setDoctorCertificateUrl(request.getDoctorCertificateUrl());
+            application.setEmploymentProofUrl(request.getEmploymentProofUrl());
+            application.setNotes(request.getNotes());
             // 保持状态为PENDING，清除之前的审核信息
             application.setStatus("PENDING");
             application.setAdminNotes(null);
@@ -62,14 +61,13 @@ public class MembershipService {
             application = new MembershipApplication();
             application.setUserId(userId);
             application.setFullName(request.getFullName());
+            application.setIdCard(request.getIdCard());
             application.setPhone(request.getPhone());
             application.setInstitution(request.getInstitution());
             application.setPosition(request.getPosition());
-            application.setSpecialization(request.getSpecialization());
-            application.setYearsOfExperience(request.getYearsOfExperience());
-            application.setEducationBackground(request.getEducationBackground());
-            application.setResearchInterests(request.getResearchInterests());
-            application.setMotivation(request.getMotivation());
+            application.setDoctorCertificateUrl(request.getDoctorCertificateUrl());
+            application.setEmploymentProofUrl(request.getEmploymentProofUrl());
+            application.setNotes(request.getNotes());
             application.setStatus("PENDING");
         }
         
@@ -104,14 +102,13 @@ public class MembershipService {
         
         // 更新申请信息
         application.setFullName(request.getFullName());
+        application.setIdCard(request.getIdCard());
         application.setPhone(request.getPhone());
         application.setInstitution(request.getInstitution());
         application.setPosition(request.getPosition());
-        application.setSpecialization(request.getSpecialization());
-        application.setYearsOfExperience(request.getYearsOfExperience());
-        application.setEducationBackground(request.getEducationBackground());
-        application.setResearchInterests(request.getResearchInterests());
-        application.setMotivation(request.getMotivation());
+        application.setDoctorCertificateUrl(request.getDoctorCertificateUrl());
+        application.setEmploymentProofUrl(request.getEmploymentProofUrl());
+        application.setNotes(request.getNotes());
         // 清除之前的审核信息（如果有）
         application.setAdminNotes(null);
         application.setReviewedBy(null);
@@ -181,14 +178,13 @@ public class MembershipService {
             response.setEmail(user.getEmail());
         }
         response.setFullName(application.getFullName());
+        response.setIdCard(application.getIdCard());
         response.setPhone(application.getPhone());
         response.setInstitution(application.getInstitution());
         response.setPosition(application.getPosition());
-        response.setSpecialization(application.getSpecialization());
-        response.setYearsOfExperience(application.getYearsOfExperience());
-        response.setEducationBackground(application.getEducationBackground());
-        response.setResearchInterests(application.getResearchInterests());
-        response.setMotivation(application.getMotivation());
+        response.setDoctorCertificateUrl(application.getDoctorCertificateUrl());
+        response.setEmploymentProofUrl(application.getEmploymentProofUrl());
+        response.setNotes(application.getNotes());
         response.setStatus(application.getStatus());
         response.setAdminNotes(application.getAdminNotes());
         if (application.getReviewedBy() != null) {

@@ -24,29 +24,26 @@ public class MembershipApplication {
     @Column(name = "full_name", nullable = false, length = 100)
     private String fullName;
     
+    @Column(name = "id_card", nullable = false, length = 18)
+    private String idCard;  // 身份证号
+    
     @Column(name = "phone", length = 20)
     private String phone;
     
-    @Column(name = "institution", length = 200)
-    private String institution;
+    @Column(name = "institution", nullable = false, length = 200)
+    private String institution;  // 单位
     
-    @Column(name = "position", length = 100)
-    private String position;
+    @Column(name = "position", nullable = false, length = 100)
+    private String position;  // 职务/职称
     
-    @Column(name = "specialization", length = 200)
-    private String specialization;
+    @Column(name = "doctor_certificate_url", nullable = false, length = 500)
+    private String doctorCertificateUrl;  // 执业医师证照片路径
     
-    @Column(name = "years_of_experience")
-    private Integer yearsOfExperience;
+    @Column(name = "employment_proof_url", nullable = false, length = 500)
+    private String employmentProofUrl;  // 在职证明照片路径
     
-    @Column(name = "education_background", columnDefinition = "TEXT")
-    private String educationBackground;
-    
-    @Column(name = "research_interests", columnDefinition = "TEXT")
-    private String researchInterests;
-    
-    @Column(name = "motivation", columnDefinition = "TEXT")
-    private String motivation;
+    @Column(name = "notes", columnDefinition = "TEXT")
+    private String notes;  // 备注
     
     @Column(name = "status", length = 20)
     private String status = "PENDING"; // PENDING, APPROVED, REJECTED

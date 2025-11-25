@@ -73,10 +73,12 @@
                             </div>
                             
                             <div>
-                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-                                    联系电话
+                                <label for="idCard" class="block text-sm font-medium text-gray-700 mb-2">
+                                    身份证号 <span class="text-red-500">*</span>
                                 </label>
-                                <input type="tel" id="phone" name="phone" 
+                                <input type="text" id="idCard" name="idCard" required 
+                                       maxlength="18" pattern="^[1-9]\d{5}(18|19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}[0-9Xx]$"
+                                       placeholder="请输入18位身份证号"
                                        class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                             </div>
                         </div>
@@ -84,62 +86,67 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="institution" class="block text-sm font-medium text-gray-700 mb-2">
-                                    工作单位
+                                    单位 <span class="text-red-500">*</span>
                                 </label>
-                                <input type="text" id="institution" name="institution" 
+                                <input type="text" id="institution" name="institution" required 
                                        class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                             </div>
                             
                             <div>
                                 <label for="position" class="block text-sm font-medium text-gray-700 mb-2">
-                                    职位/职称
+                                    职务/职称 <span class="text-red-500">*</span>
                                 </label>
-                                <input type="text" id="position" name="position" 
+                                <input type="text" id="position" name="position" required 
                                        class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                             </div>
                         </div>
 
                         <div>
-                            <label for="specialization" class="block text-sm font-medium text-gray-700 mb-2">
-                                专业领域
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+                                联系电话
                             </label>
-                            <input type="text" id="specialization" name="specialization" 
-                                   placeholder="例如：心血管内科、心脏外科等"
+                            <input type="tel" id="phone" name="phone" 
                                    class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                         </div>
 
-                        <div>
-                            <label for="yearsOfExperience" class="block text-sm font-medium text-gray-700 mb-2">
-                                从业年限
-                            </label>
-                            <input type="number" id="yearsOfExperience" name="yearsOfExperience" min="0" 
-                                   class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="doctorCertificate" class="block text-sm font-medium text-gray-700 mb-2">
+                                    执业医师证照片 <span class="text-red-500">*</span>
+                                </label>
+                                <input type="file" id="doctorCertificate" name="doctorCertificate" accept="image/*" required
+                                       class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <div id="doctorCertificatePreview" class="mt-2 hidden">
+                                    <img id="doctorCertificateImg" src="" alt="预览" class="max-w-full h-32 object-contain border rounded">
+                                    <button type="button" onclick="removeImage('doctorCertificate')" class="mt-2 text-red-600 text-sm hover:underline">
+                                        <i class="fa fa-times mr-1"></i>移除图片
+                                    </button>
+                                </div>
+                                <input type="hidden" id="doctorCertificateUrl" name="doctorCertificateUrl">
+                            </div>
+                            
+                            <div>
+                                <label for="employmentProof" class="block text-sm font-medium text-gray-700 mb-2">
+                                    在职证明 <span class="text-red-500">*</span>
+                                </label>
+                                <input type="file" id="employmentProof" name="employmentProof" accept="image/*" required
+                                       class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <div id="employmentProofPreview" class="mt-2 hidden">
+                                    <img id="employmentProofImg" src="" alt="预览" class="max-w-full h-32 object-contain border rounded">
+                                    <button type="button" onclick="removeImage('employmentProof')" class="mt-2 text-red-600 text-sm hover:underline">
+                                        <i class="fa fa-times mr-1"></i>移除图片
+                                    </button>
+                                </div>
+                                <input type="hidden" id="employmentProofUrl" name="employmentProofUrl">
+                            </div>
                         </div>
 
                         <div>
-                            <label for="educationBackground" class="block text-sm font-medium text-gray-700 mb-2">
-                                教育背景
+                            <label for="notes" class="block text-sm font-medium text-gray-700 mb-2">
+                                备注
                             </label>
-                            <textarea id="educationBackground" name="educationBackground" rows="3"
-                                      placeholder="请填写您的学历、毕业院校等信息"
-                                      class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
-                        </div>
-
-                        <div>
-                            <label for="researchInterests" class="block text-sm font-medium text-gray-700 mb-2">
-                                研究方向
-                            </label>
-                            <textarea id="researchInterests" name="researchInterests" rows="3"
-                                      placeholder="请描述您的主要研究方向"
-                                      class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
-                        </div>
-
-                        <div>
-                            <label for="motivation" class="block text-sm font-medium text-gray-700 mb-2">
-                                申请动机 <span class="text-red-500">*</span>
-                            </label>
-                            <textarea id="motivation" name="motivation" rows="4" required
-                                      placeholder="请说明您希望加入会员的原因和期望"
+                            <textarea id="notes" name="notes" rows="4"
+                                      placeholder="其他需要说明的信息（可选）"
                                       class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
                         </div>
                         
@@ -177,6 +184,61 @@
         let currentApplicationId = null;
         let isEditMode = false;
 
+        // 上传图片
+        async function uploadImage(file, inputId) {
+            if (!file) return null;
+            
+            const token = localStorage.getItem('token');
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            try {
+                const response = await fetch(`${API_URL}/membership/upload-image`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.url) {
+                    return data.url;
+                } else {
+                    throw new Error(data.message || '上传失败');
+                }
+            } catch (error) {
+                console.error('上传图片错误:', error);
+                alert('图片上传失败: ' + error.message);
+                return null;
+            }
+        }
+
+        // 预览图片
+        function previewImage(input, previewId, imgId, urlInputId) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(previewId).classList.remove('hidden');
+                    document.getElementById(imgId).src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 移除图片
+        function removeImage(inputId) {
+            const input = document.getElementById(inputId);
+            const previewId = inputId + 'Preview';
+            const urlInputId = inputId + 'Url';
+            
+            input.value = '';
+            document.getElementById(previewId).classList.add('hidden');
+            document.getElementById(urlInputId).value = '';
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
             const form = document.getElementById('membership-form');
             const errorMessage = document.getElementById('error-message');
@@ -191,6 +253,15 @@
                 form.style.pointerEvents = 'none';
                 return;
             }
+
+            // 图片预览事件
+            document.getElementById('doctorCertificate').addEventListener('change', function(e) {
+                previewImage(e.target, 'doctorCertificatePreview', 'doctorCertificateImg', 'doctorCertificateUrl');
+            });
+            
+            document.getElementById('employmentProof').addEventListener('change', function(e) {
+                previewImage(e.target, 'employmentProofPreview', 'employmentProofImg', 'employmentProofUrl');
+            });
 
             // 检查是否有待审核的申请
             try {
@@ -211,14 +282,23 @@
                         
                         // 填充表单
                         form.fullName.value = pendingApp.fullName || '';
+                        form.idCard.value = pendingApp.idCard || '';
                         form.phone.value = pendingApp.phone || '';
                         form.institution.value = pendingApp.institution || '';
                         form.position.value = pendingApp.position || '';
-                        form.specialization.value = pendingApp.specialization || '';
-                        form.yearsOfExperience.value = pendingApp.yearsOfExperience || '';
-                        form.educationBackground.value = pendingApp.educationBackground || '';
-                        form.researchInterests.value = pendingApp.researchInterests || '';
-                        form.motivation.value = pendingApp.motivation || '';
+                        form.notes.value = pendingApp.notes || '';
+                        
+                        // 填充图片
+                        if (pendingApp.doctorCertificateUrl) {
+                            document.getElementById('doctorCertificateUrl').value = pendingApp.doctorCertificateUrl;
+                            document.getElementById('doctorCertificateImg').src = 'http://localhost:8080' + pendingApp.doctorCertificateUrl;
+                            document.getElementById('doctorCertificatePreview').classList.remove('hidden');
+                        }
+                        if (pendingApp.employmentProofUrl) {
+                            document.getElementById('employmentProofUrl').value = pendingApp.employmentProofUrl;
+                            document.getElementById('employmentProofImg').src = 'http://localhost:8080' + pendingApp.employmentProofUrl;
+                            document.getElementById('employmentProofPreview').classList.remove('hidden');
+                        }
                         
                         // 更新页面标题和按钮文字
                         document.querySelector('h1').textContent = '修改会员申请';
@@ -245,16 +325,70 @@
                 errorMessage.textContent = '';
                 errorMessage.className = 'text-center font-medium';
 
+                // 验证必填字段
+                if (!form.fullName.value.trim()) {
+                    errorMessage.textContent = '请填写姓名';
+                    errorMessage.className = 'text-center text-red-600 font-medium';
+                    return;
+                }
+                if (!form.idCard.value.trim()) {
+                    errorMessage.textContent = '请填写身份证号';
+                    errorMessage.className = 'text-center text-red-600 font-medium';
+                    return;
+                }
+                if (!form.institution.value.trim()) {
+                    errorMessage.textContent = '请填写单位';
+                    errorMessage.className = 'text-center text-red-600 font-medium';
+                    return;
+                }
+                if (!form.position.value.trim()) {
+                    errorMessage.textContent = '请填写职务/职称';
+                    errorMessage.className = 'text-center text-red-600 font-medium';
+                    return;
+                }
+
+                // 上传图片
+                let doctorCertificateUrl = document.getElementById('doctorCertificateUrl').value;
+                let employmentProofUrl = document.getElementById('employmentProofUrl').value;
+
+                const doctorCertFile = document.getElementById('doctorCertificate').files[0];
+                const employmentProofFile = document.getElementById('employmentProof').files[0];
+
+                if (doctorCertFile) {
+                    errorMessage.textContent = '正在上传执业医师证照片...';
+                    errorMessage.className = 'text-center text-blue-600 font-medium';
+                    doctorCertificateUrl = await uploadImage(doctorCertFile, 'doctorCertificate');
+                    if (!doctorCertificateUrl) return;
+                }
+
+                if (employmentProofFile) {
+                    errorMessage.textContent = '正在上传在职证明...';
+                    errorMessage.className = 'text-center text-blue-600 font-medium';
+                    employmentProofUrl = await uploadImage(employmentProofFile, 'employmentProof');
+                    if (!employmentProofUrl) return;
+                }
+
+                if (!doctorCertificateUrl) {
+                    errorMessage.textContent = '请上传执业医师证照片';
+                    errorMessage.className = 'text-center text-red-600 font-medium';
+                    return;
+                }
+
+                if (!employmentProofUrl) {
+                    errorMessage.textContent = '请上传在职证明';
+                    errorMessage.className = 'text-center text-red-600 font-medium';
+                    return;
+                }
+
                 const formData = {
                     fullName: form.fullName.value.trim(),
+                    idCard: form.idCard.value.trim(),
                     phone: form.phone.value.trim(),
                     institution: form.institution.value.trim(),
                     position: form.position.value.trim(),
-                    specialization: form.specialization.value.trim(),
-                    yearsOfExperience: form.yearsOfExperience.value ? parseInt(form.yearsOfExperience.value) : null,
-                    educationBackground: form.educationBackground.value.trim(),
-                    researchInterests: form.researchInterests.value.trim(),
-                    motivation: form.motivation.value.trim()
+                    doctorCertificateUrl: doctorCertificateUrl,
+                    employmentProofUrl: employmentProofUrl,
+                    notes: form.notes.value.trim()
                 };
 
                 try {

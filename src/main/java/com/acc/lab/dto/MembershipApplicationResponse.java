@@ -15,14 +15,13 @@ public class MembershipApplicationResponse {
     private String username;
     private String email;
     private String fullName;
+    private String idCard;
     private String phone;
     private String institution;
     private String position;
-    private String specialization;
-    private Integer yearsOfExperience;
-    private String educationBackground;
-    private String researchInterests;
-    private String motivation;
+    private String doctorCertificateUrl;
+    private String employmentProofUrl;
+    private String notes;
     private String status;
     private String adminNotes;
     private String reviewedBy;

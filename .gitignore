@@ -12,3 +12,4 @@ target/
 # Application
 application-local.yml
 application-prod.yml
+photos/membership/*

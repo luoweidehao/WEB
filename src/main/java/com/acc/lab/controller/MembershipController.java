@@ -12,8 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/membership")
@@ -199,6 +208,77 @@ public class MembershipController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new MessageResponse("审核失败，请稍后重试。"));
+        }
+    }
+    
+    // 上传图片
+    @PostMapping("/upload-image")
+    public ResponseEntity<?> uploadImage(
+            @RequestHeader(value = "Authorization", required = false) String authHeader,
+            @RequestParam("file") MultipartFile file) {
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new MessageResponse("请先登录。"));
+            }
+            
+            String token = authHeader.substring(7);
+            
+            // 验证 session
+            if (!sessionService.isValidSession(token)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new MessageResponse("Session已失效，请重新登录。"));
+            }
+            
+            if (file.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new MessageResponse("文件不能为空。"));
+            }
+            
+            // 检查文件类型
+            String contentType = file.getContentType();
+            if (contentType == null || !contentType.startsWith("image/")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new MessageResponse("只能上传图片文件。"));
+            }
+            
+            // 检查文件大小（限制为 5MB）
+            if (file.getSize() > 5 * 1024 * 1024) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new MessageResponse("图片大小不能超过 5MB。"));
+            }
+            
+            // 创建上传目录
+            String uploadDir = "photos/membership/";
+            File dir = new File(uploadDir);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            
+            // 生成唯一文件名
+            String originalFilename = file.getOriginalFilename();
+            String extension = originalFilename != null && originalFilename.contains(".") 
+                ? originalFilename.substring(originalFilename.lastIndexOf(".")) 
+                : ".jpg";
+            String filename = UUID.randomUUID().toString() + extension;
+            String filepath = uploadDir + filename;
+            
+            // 保存文件
+            Path path = Paths.get(filepath);
+            Files.write(path, file.getBytes());
+            
+            // 返回文件路径
+            Map<String, String> response = new HashMap<>();
+            response.put("url", "/" + filepath.replace("\\", "/"));
+            response.put("message", "上传成功");
+            
+            return ResponseEntity.ok(response);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new MessageResponse("文件上传失败：" + e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new MessageResponse("上传失败，请稍后重试。"));
         }
     }
 }
