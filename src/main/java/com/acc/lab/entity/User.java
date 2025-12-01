@@ -30,12 +30,6 @@ public class User {
     @Column(length = 20)
     private String role = "USER"; // 默认角色
     
-    @Column(name = "verification_code", length = 10)
-    private String verificationCode;
-    
-    @Column(name = "code_expiry_time")
-    private LocalDateTime codeExpiryTime;
-    
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     

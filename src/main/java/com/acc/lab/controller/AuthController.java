@@ -7,12 +7,17 @@ import com.acc.lab.dto.RegisterRequest;
 import com.acc.lab.dto.RequestResetRequest;
 import com.acc.lab.dto.ResetPasswordRequest;
 import com.acc.lab.exception.TooManyRequestsException;
+import com.acc.lab.dto.SendRegisterCodeRequest;
 import com.acc.lab.service.AuthService;
+import com.acc.lab.service.CaptchaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -21,6 +26,44 @@ public class AuthController {
     
     @Autowired
     private AuthService authService;
+    
+    @Autowired
+    private CaptchaService captchaService;
+    
+    /**
+     * 获取验证码图片
+     */
+    @GetMapping("/captcha")
+    public ResponseEntity<?> getCaptcha() {
+        try {
+            String captchaId = UUID.randomUUID().toString();
+            Map<String, String> result = captchaService.generateCaptcha(captchaId);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new MessageResponse("生成验证码失败。"));
+        }
+    }
+    
+    /**
+     * 发送注册邮箱验证码
+     */
+    @PostMapping("/send-register-code")
+    public ResponseEntity<?> sendRegisterCode(@Valid @RequestBody SendRegisterCodeRequest request) {
+        try {
+            MessageResponse response = authService.sendRegisterCode(request.getEmail());
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new MessageResponse(e.getMessage()));
+        } catch (TooManyRequestsException e) {
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                .body(e.getResponse());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new MessageResponse("服务器内部错误。"));
+        }
+    }
     
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {

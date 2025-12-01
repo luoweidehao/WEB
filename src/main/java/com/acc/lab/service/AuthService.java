@@ -7,6 +7,7 @@ import com.acc.lab.dto.RegisterRequest;
 import com.acc.lab.dto.RequestResetRequest;
 import com.acc.lab.dto.ResetPasswordRequest;
 import com.acc.lab.entity.User;
+import com.acc.lab.entity.VerificationCode;
 import com.acc.lab.exception.TooManyRequestsException;
 import com.acc.lab.repository.UserRepository;
 import com.acc.lab.util.JwtUtil;
@@ -42,6 +43,12 @@ public class AuthService {
     @Autowired(required = false)
     private JavaMailSender mailSender;
     
+    @Autowired
+    private CaptchaService captchaService;
+    
+    @Autowired
+    private EmailVerificationService emailVerificationService;
+    
     private static final Random random = new Random();
     
     public boolean isValidEmail(String email) {
@@ -52,11 +59,88 @@ public class AuthService {
         return String.format("%06d", random.nextInt(1000000));
     }
     
+    /**
+     * 发送注册邮箱验证码
+     */
+    @Transactional
+    public MessageResponse sendRegisterCode(String email) {
+        // 验证邮箱格式
+        if (!isValidEmail(email)) {
+            throw new IllegalArgumentException("请输入正确的邮箱地址。");
+        }
+        
+        // 检查邮箱是否已被注册
+        if (userRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("该邮箱已被注册。");
+        }
+        
+        // 检查是否可以重新发送（距离创建时间是否超过1分钟）
+        long remainingCooldownSeconds = emailVerificationService.getRemainingCooldownSeconds(
+            email,
+            VerificationCode.CodeType.REGISTER
+        );
+        if (remainingCooldownSeconds > 0) {
+            MessageResponse response = new MessageResponse();
+            response.setMessage("验证码发送过于频繁，请稍后再试。");
+            response.setRetryAfterSeconds((int) remainingCooldownSeconds);
+            throw new TooManyRequestsException(response);
+        }
+        
+        // 生成验证码
+        String code = emailVerificationService.generateCode(email, VerificationCode.CodeType.REGISTER);
+        
+        // 发送邮件
+        if (mailSender == null) {
+            System.err.println("  ❌ JavaMailSender 未配置！");
+            System.err.println("  请检查 application.yml 中的邮件配置");
+            // 开发环境：直接返回验证码（仅用于测试）
+            return new MessageResponse("验证码已生成（开发模式）: " + code);
+        } else {
+            try {
+                SimpleMailMessage message = new SimpleMailMessage();
+                message.setFrom("2650090110@qq.com");
+                message.setTo(email);
+                message.setSubject("您的注册验证码");
+                message.setText(String.format(
+                    "尊敬的用户您好：\n\n" +
+                    "您正在注册中欧心血管代谢学会账户。您的验证码是：\n\n" +
+                    "%s\n\n" +
+                    "此验证码将在5分钟内有效。如果您没有注册账户,请忽略本邮件。\n\n" +
+                    "—— 中欧心血管代谢学会",
+                    code
+                ));
+                
+                mailSender.send(message);
+            } catch (Exception e) {
+                System.err.println("  ❌ 发送邮件失败！");
+                System.err.println("  错误类型: " + e.getClass().getName());
+                System.err.println("  错误消息: " + e.getMessage());
+                if (e.getCause() != null) {
+                    System.err.println("  原因: " + e.getCause().getMessage());
+                }
+                System.err.println("  完整堆栈跟踪:");
+                e.printStackTrace();
+                throw new IllegalArgumentException("发送验证码失败，请稍后重试。");
+            }
+        }
+        
+        return new MessageResponse("验证码已发送到您的邮箱，请查收。");
+    }
+    
     @Transactional
     public AuthResponse register(RegisterRequest request) {
         // 验证邮箱格式
         if (!isValidEmail(request.getEmail())) {
             throw new IllegalArgumentException("请输入正确的邮箱地址。");
+        }
+        
+        // 验证邮箱验证码
+        if (request.getEmailCode() == null || request.getEmailCode().trim().isEmpty()) {
+            throw new IllegalArgumentException("请填写邮箱验证码。");
+        }
+        
+        if (!emailVerificationService.validateCode(request.getEmail(), request.getEmailCode(), VerificationCode.CodeType.REGISTER)) {
+            throw new IllegalArgumentException("邮箱验证码错误或已过期，请重新获取。");
         }
         
         // 检查用户名或邮箱是否已存在
@@ -88,6 +172,15 @@ public class AuthService {
     }
     
     public AuthResponse login(LoginRequest request) {
+        // 验证图片验证码
+        if (request.getCaptchaId() == null || request.getCaptcha() == null) {
+            throw new IllegalArgumentException("请填写验证码。");
+        }
+        
+        if (!captchaService.validateCaptcha(request.getCaptchaId(), request.getCaptcha())) {
+            throw new IllegalArgumentException("验证码错误或已过期，请刷新后重试。");
+        }
+        
         // 判断输入是邮箱还是用户名
         String input = request.getUsernameOrEmail();
         User user = null;
@@ -129,30 +222,28 @@ public class AuthService {
         
         User user = userRepository.findByEmail(request.getEmail()).orElse(null);
         
-        // 为了安全，即使用户不存在也返回成功消息
+        // 用户不存在，直接返回错误
         if (user == null) {
-            return new MessageResponse("如果邮箱地址正确,您将收到一封包含验证码的邮件。");
+            throw new IllegalArgumentException("该邮箱地址未注册，无法找回密码。");
         }
         
-        // 检查是否有有效的验证码
-        LocalDateTime now = LocalDateTime.now();
-        if (user.getVerificationCode() != null && 
-            user.getCodeExpiryTime() != null && 
-            user.getCodeExpiryTime().isAfter(now)) {
-            long remainingMinutes = java.time.Duration.between(now, user.getCodeExpiryTime()).toMinutes();
+        // 检查是否可以重新发送（距离创建时间是否超过1分钟）
+        long remainingCooldownSeconds = emailVerificationService.getRemainingCooldownSeconds(
+            request.getEmail(),
+            VerificationCode.CodeType.FORGET_PASSWORD
+        );
+        if (remainingCooldownSeconds > 0) {
             MessageResponse response = new MessageResponse();
-            response.setMessage("验证码已发送，请在 " + remainingMinutes + " 分钟后再试。");
-            response.setRetryAfterMinutes((int) remainingMinutes);
+            response.setMessage("验证码发送过于频繁，请稍后再试。");
+            response.setRetryAfterSeconds((int) remainingCooldownSeconds);
             throw new TooManyRequestsException(response);
         }
         
-        // 生成验证码
-        String code = generateVerificationCode();
-        LocalDateTime expiryTime = now.plusMinutes(5);
-        
-        user.setVerificationCode(code);
-        user.setCodeExpiryTime(expiryTime);
-        userRepository.save(user);
+        // 生成验证码（使用VerificationCode表）
+        String code = emailVerificationService.generateCode(
+            request.getEmail(),
+            VerificationCode.CodeType.FORGET_PASSWORD
+        );
         
         // 发送邮件
         if (mailSender == null) {
@@ -196,21 +287,23 @@ public class AuthService {
             throw new IllegalArgumentException("请输入正确的邮箱地址。");
         }
         
-        User user = userRepository.findByEmailAndVerificationCode(
-            request.getEmail(), 
-            request.getCode()
-        ).orElseThrow(() -> new IllegalArgumentException("验证码无效或已过期。"));
+        // 验证验证码（使用VerificationCode表）
+        boolean isValid = emailVerificationService.validateCode(
+            request.getEmail(),
+            request.getCode(),
+            VerificationCode.CodeType.FORGET_PASSWORD
+        );
         
-        // 检查验证码是否过期
-        if (user.getCodeExpiryTime() == null || 
-            LocalDateTime.now().isAfter(user.getCodeExpiryTime())) {
+        if (!isValid) {
             throw new IllegalArgumentException("验证码无效或已过期。");
         }
         
+        // 查找用户
+        User user = userRepository.findByEmail(request.getEmail())
+            .orElseThrow(() -> new IllegalArgumentException("用户不存在。"));
+        
         // 更新密码
         user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
-        user.setVerificationCode(null);
-        user.setCodeExpiryTime(null);
         userRepository.save(user);
         
         return new MessageResponse("密码重置成功!您现在可以使用新密码登录。");
