@@ -269,9 +269,8 @@
         function checkAdminAuth() {
             const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
             const userStr = localStorage.getItem('user');
-            const isAdmin = localStorage.getItem('isAdmin');
 
-            if (!token || !userStr || isAdmin !== 'true') {
+            if (!token || !userStr) {
                 alert('您没有管理员权限，正在跳转到登录页面...');
                 window.location.href = 'admin-login.html';
                 return false;
@@ -279,11 +278,20 @@
 
             try {
                 const user = JSON.parse(userStr);
+                // 检查用户角色是否为管理员（主要检查）
                 if (!user.role || user.role.toUpperCase() !== 'ADMIN') {
                     alert('您不是管理员，无权访问此页面。');
                     window.location.href = 'admin-login.html';
                     return false;
                 }
+                
+                // 如果用户是管理员但没有设置相关标志，自动设置
+                const isAdmin = localStorage.getItem('isAdmin');
+                if (isAdmin !== 'true') {
+                    localStorage.setItem('adminToken', token);
+                    localStorage.setItem('isAdmin', 'true');
+                }
+                
                 document.getElementById('username-text').textContent = user.username;
                 return true;
             } catch (e) {
