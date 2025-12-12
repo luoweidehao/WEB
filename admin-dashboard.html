@@ -169,24 +169,136 @@
                 </div>
             </div>
 
+            <!-- 博客管理 -->
+            <div class="bg-white rounded-lg shadow-md p-6 lg:col-span-2">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-bold text-gray-800">
+                        <i class="fa fa-file-text mr-2 text-primary"></i>博客管理
+                    </h3>
+                    <div class="flex gap-2">
+                        <button id="refresh-blogs" class="px-3 py-1 bg-primary text-white rounded-md hover:bg-secondary transition text-sm">
+                            <i class="fa fa-refresh mr-1"></i>刷新
+                        </button>
+                        <button id="create-blog-btn" class="px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 transition text-sm">
+                            <i class="fa fa-plus mr-1"></i>创建博客
+                        </button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-2 text-left text-gray-700">标题</th>
+                                <th class="px-4 py-2 text-left text-gray-700">作者</th>
+                                <th class="px-4 py-2 text-left text-gray-700">状态</th>
+                                <th class="px-4 py-2 text-left text-gray-700">浏览次数</th>
+                                <th class="px-4 py-2 text-left text-gray-700">创建时间</th>
+                                <th class="px-4 py-2 text-left text-gray-700">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="blogs-table-body" class="divide-y divide-gray-200">
+                            <tr>
+                                <td colspan="6" class="px-4 py-8 text-center text-gray-500">
+                                    <i class="fa fa-spinner fa-spin mr-2"></i>加载中...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- 快速操作 -->
             <div class="bg-white rounded-lg shadow-md p-6">
                 <h3 class="text-xl font-bold text-gray-800 mb-6">
                     <i class="fa fa-bolt mr-2 text-accent"></i>快速操作
                 </h3>
                 <div class="space-y-4">
-                    <button class="w-full px-4 py-3 bg-primary text-white rounded-md hover:bg-secondary transition text-left">
-                        <i class="fa fa-user-plus mr-2"></i>创建新用户
+                    <button id="quick-create-blog-btn" class="w-full px-4 py-3 bg-primary text-white rounded-md hover:bg-secondary transition text-left">
+                        <i class="fa fa-file-text mr-2"></i>创建博客文章
                     </button>
                     <button class="w-full px-4 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition text-left">
-                        <i class="fa fa-envelope mr-2"></i>发送邮件通知
+                        <i class="fa fa-user-plus mr-2"></i>创建新用户
                     </button>
                     <button class="w-full px-4 py-3 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition text-left">
+                        <i class="fa fa-envelope mr-2"></i>发送邮件通知
+                    </button>
+                    <button class="w-full px-4 py-3 bg-orange-600 text-white rounded-md hover:bg-orange-700 transition text-left">
                         <i class="fa fa-download mr-2"></i>导出用户数据
                     </button>
                     <button class="w-full px-4 py-3 bg-red-600 text-white rounded-md hover:bg-red-700 transition text-left">
                         <i class="fa fa-cog mr-2"></i>系统设置
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 博客编辑模态框 -->
+        <div id="blog-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+                    <h3 class="text-xl font-bold text-gray-800">
+                        <i class="fa fa-file-text mr-2 text-primary"></i><span id="blog-modal-title">创建博客</span>
+                    </h3>
+                    <button onclick="closeBlogModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fa fa-times text-2xl"></i>
+                    </button>
+                </div>
+                
+                <div class="p-6">
+                    <form id="blog-form" class="space-y-4">
+                        <div>
+                            <label for="blog-title" class="block text-sm font-medium text-gray-700 mb-2">
+                                标题 <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="blog-title" required
+                                   placeholder="请输入博客标题"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        
+                        <div>
+                            <label for="blog-summary" class="block text-sm font-medium text-gray-700 mb-2">
+                                摘要
+                            </label>
+                            <textarea id="blog-summary" rows="3"
+                                      placeholder="请输入博客摘要（可选）"
+                                      class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label for="blog-content" class="block text-sm font-medium text-gray-700 mb-2">
+                                内容 <span class="text-red-500">*</span>
+                            </label>
+                            <textarea id="blog-content" rows="15" required
+                                      placeholder="请输入博客内容（支持HTML）"
+                                      class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary font-mono text-sm"></textarea>
+                            <p class="text-xs text-gray-500 mt-1">提示：支持HTML格式，可以使用 &lt;p&gt;、&lt;h1&gt;、&lt;img&gt; 等标签</p>
+                        </div>
+                        
+                        <div>
+                            <label for="blog-cover-image" class="block text-sm font-medium text-gray-700 mb-2">
+                                封面图片URL
+                            </label>
+                            <input type="text" id="blog-cover-image"
+                                   placeholder="请输入封面图片URL（可选）"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        
+                        <div>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="blog-published" class="mr-2">
+                                <span class="text-sm font-medium text-gray-700">立即发布</span>
+                            </label>
+                        </div>
+                        
+                        <div class="flex gap-3 pt-4">
+                            <button type="submit" class="flex-1 px-4 py-2 bg-primary text-white rounded-md hover:bg-secondary transition">
+                                <i class="fa fa-save mr-2"></i>保存
+                            </button>
+                            <button type="button" onclick="closeBlogModal()" class="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition">
+                                取消
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -753,6 +865,7 @@
                 loadStatistics();
                 loadUsers();
                 loadApplications('PENDING');
+                loadBlogs();
             }
 
             // 绑定事件
@@ -767,6 +880,253 @@
             document.getElementById('filter-pending').addEventListener('click', () => {
                 loadApplications('PENDING');
             });
+
+            // 博客管理相关
+            document.getElementById('create-blog-btn').addEventListener('click', () => {
+                openBlogModal();
+            });
+            // 快速操作中的创建博客按钮
+            const quickCreateBlogBtn = document.getElementById('quick-create-blog-btn');
+            if (quickCreateBlogBtn) {
+                quickCreateBlogBtn.addEventListener('click', () => {
+                    openBlogModal();
+                });
+            }
+            document.getElementById('refresh-blogs').addEventListener('click', () => {
+                loadBlogs();
+            });
+            document.getElementById('blog-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                saveBlog();
+            });
+        });
+
+        // ========== 博客管理功能 ==========
+        let currentBlogId = null;
+
+        // 加载博客列表
+        async function loadBlogs() {
+            try {
+                const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/blog/admin/posts`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const blogs = await response.json();
+                    const tbody = document.getElementById('blogs-table-body');
+                    
+                    if (blogs.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="6" class="px-4 py-8 text-center text-gray-500">
+                                    暂无博客文章
+                                </td>
+                            </tr>
+                        `;
+                    } else {
+                        tbody.innerHTML = blogs.map(blog => {
+                            const statusColor = blog.isPublished 
+                                ? 'bg-green-100 text-green-800' 
+                                : 'bg-yellow-100 text-yellow-800';
+                            const statusText = blog.isPublished ? '已发布' : '草稿';
+                            
+                            return `
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3">
+                                        <div class="font-medium text-gray-800">${blog.title || '-'}</div>
+                                        ${blog.summary ? `<div class="text-xs text-gray-500 mt-1">${blog.summary.substring(0, 50)}${blog.summary.length > 50 ? '...' : ''}</div>` : ''}
+                                    </td>
+                                    <td class="px-4 py-3">${blog.authorName || '-'}</td>
+                                    <td class="px-4 py-3">
+                                        <span class="px-2 py-1 rounded text-xs ${statusColor}">
+                                            ${statusText}
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3">${blog.viewCount || 0}</td>
+                                    <td class="px-4 py-3 text-xs text-gray-600">
+                                        ${blog.createdAt ? new Date(blog.createdAt).toLocaleString('zh-CN') : '-'}
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div class="flex gap-2">
+                                            <button onclick="editBlog(${blog.id})" 
+                                                    class="text-primary hover:text-secondary text-sm">
+                                                <i class="fa fa-edit mr-1"></i>编辑
+                                            </button>
+                                            <button onclick="deleteBlog(${blog.id})" 
+                                                    class="text-red-600 hover:text-red-700 text-sm">
+                                                <i class="fa fa-trash mr-1"></i>删除
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('');
+                    }
+                } else {
+                    document.getElementById('blogs-table-body').innerHTML = `
+                        <tr>
+                            <td colspan="6" class="px-4 py-8 text-center text-red-500">
+                                加载失败，请刷新重试
+                            </td>
+                        </tr>
+                    `;
+                }
+            } catch (error) {
+                console.error('加载博客列表错误:', error);
+                document.getElementById('blogs-table-body').innerHTML = `
+                    <tr>
+                        <td colspan="6" class="px-4 py-8 text-center text-red-500">
+                            无法连接到服务器
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // 打开博客编辑模态框
+        function openBlogModal(blogId = null) {
+            currentBlogId = blogId;
+            const modal = document.getElementById('blog-modal');
+            const form = document.getElementById('blog-form');
+            
+            if (blogId) {
+                document.getElementById('blog-modal-title').textContent = '编辑博客';
+                loadBlogDetail(blogId);
+            } else {
+                document.getElementById('blog-modal-title').textContent = '创建博客';
+                form.reset();
+                document.getElementById('blog-published').checked = false;
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        // 关闭博客编辑模态框
+        function closeBlogModal() {
+            document.getElementById('blog-modal').classList.add('hidden');
+            currentBlogId = null;
+            document.getElementById('blog-form').reset();
+        }
+
+        // 加载博客详情
+        async function loadBlogDetail(blogId) {
+            try {
+                const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/blog/admin/posts/${blogId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const blog = await response.json();
+                    document.getElementById('blog-title').value = blog.title || '';
+                    document.getElementById('blog-summary').value = blog.summary || '';
+                    document.getElementById('blog-content').value = blog.content || '';
+                    document.getElementById('blog-cover-image').value = blog.coverImageUrl || '';
+                    document.getElementById('blog-published').checked = blog.isPublished || false;
+                } else {
+                    alert('加载博客详情失败，请重试。');
+                }
+            } catch (error) {
+                console.error('加载博客详情错误:', error);
+                alert('加载博客详情失败，请检查网络连接。');
+            }
+        }
+
+        // 编辑博客
+        function editBlog(blogId) {
+            openBlogModal(blogId);
+        }
+
+        // 保存博客
+        async function saveBlog() {
+            try {
+                const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
+                const title = document.getElementById('blog-title').value.trim();
+                const content = document.getElementById('blog-content').value.trim();
+                const summary = document.getElementById('blog-summary').value.trim();
+                const coverImageUrl = document.getElementById('blog-cover-image').value.trim();
+                const isPublished = document.getElementById('blog-published').checked;
+
+                if (!title || !content) {
+                    alert('标题和内容不能为空！');
+                    return;
+                }
+
+                const url = currentBlogId 
+                    ? `${API_URL}/blog/admin/posts/${currentBlogId}`
+                    : `${API_URL}/blog/admin/posts`;
+                const method = currentBlogId ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        title,
+                        content,
+                        summary: summary || null,
+                        coverImageUrl: coverImageUrl || null,
+                        isPublished
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert(currentBlogId ? '博客更新成功！' : '博客创建成功！');
+                    closeBlogModal();
+                    loadBlogs();
+                } else {
+                    alert(data.message || '保存失败，请重试。');
+                }
+            } catch (error) {
+                console.error('保存博客错误:', error);
+                alert('保存失败，请检查网络连接后重试。');
+            }
+        }
+
+        // 删除博客
+        async function deleteBlog(blogId) {
+            if (!confirm('确定要删除这篇博客吗？此操作不可恢复。')) {
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/blog/admin/posts/${blogId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('博客删除成功！');
+                    loadBlogs();
+                } else {
+                    alert(data.message || '删除失败，请重试。');
+                }
+            } catch (error) {
+                console.error('删除博客错误:', error);
+                alert('删除失败，请检查网络连接后重试。');
+            }
+        }
+
+        // 点击模态框外部关闭
+        document.addEventListener('click', (e) => {
+            const blogModal = document.getElementById('blog-modal');
+            if (e.target === blogModal) {
+                closeBlogModal();
+            }
         });
     </script>
 </body>

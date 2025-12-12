@@ -78,6 +78,7 @@
                 <!-- 桌面端导航 -->
                 <nav class="hidden md:flex items-center gap-6">
                     <a href="#" class="font-medium text-primary hover:text-secondary">首页</a>
+                    <a href="blogs.html" class="font-medium text-gray-700 hover:text-primary">博客</a>
                     <a href="clinical-topics.html" class="font-medium text-gray-700 hover:text-primary">临床指南</a>
                     <a href="latest.html" class="font-medium text-gray-700 hover:text-primary">教育资源</a>
                     <a href="support.html" class="font-medium text-gray-700 hover:text-primary">研究中心</a>
@@ -99,6 +100,7 @@
         <div class="md:hidden bg-white w-full absolute left-0 top-full nav-shadow hidden" id="mobileMenu">
             <div class="container mx-auto px-4 py-3 flex flex-col gap-3">
                 <a href="#" class="font-medium text-primary py-2 border-b border-gray-100">首页</a>
+                <a href="blogs.html" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">博客</a>
                 <a href="clinical-topics.html" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">临床指南</a>
                 <a href="latest.html" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">教育资源</a>
                 <a href="support.html" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">研究中心</a>
@@ -133,7 +135,7 @@
             </div>
 
             <!-- 卡片网格 -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                 <!-- 卡片1 -->
                 <div class="bg-light rounded-xl p-6 card-hover">
                     <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-5">
@@ -141,36 +143,48 @@
                     </div>
                     <h3 class="text-xl font-bold mb-3 text-secondary">临床指南</h3>
                     <p class="text-gray-600 mb-4">基于最新研究的心血管疾病诊断与治疗指南，助力临床决策</p>
-                    <a href="#" class="text-primary font-medium hover:underline flex items-center">
+                    <a href="clinical-topics.html" class="text-primary font-medium hover:underline flex items-center">
                         查看指南 <i class="fa fa-arrow-right ml-2"></i>
                     </a>
                 </div>
 
-                <!-- 卡片2 -->
+                <!-- 卡片2 - 博客 -->
                 <div class="bg-light rounded-xl p-6 card-hover">
                     <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-5">
-                        <i class="fa fa-graduation-cap text-primary text-2xl"></i>
+                        <i class="fa fa-file-text text-primary text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 text-secondary">教育资源</h3>
-                    <p class="text-gray-600 mb-4">在线课程、研讨会和培训材料，提升心血管专业人员技能</p>
-                    <a href="#" class="text-primary font-medium hover:underline flex items-center">
-                        浏览课程 <i class="fa fa-arrow-right ml-2"></i>
+                    <h3 class="text-xl font-bold mb-3 text-secondary">博客文章</h3>
+                    <p class="text-gray-600 mb-4">最新医学资讯、临床研究和学术观点，了解行业前沿动态</p>
+                    <a href="blogs.html" class="text-primary font-medium hover:underline flex items-center">
+                        阅读博客 <i class="fa fa-arrow-right ml-2"></i>
                     </a>
                 </div>
 
                 <!-- 卡片3 -->
                 <div class="bg-light rounded-xl p-6 card-hover">
                     <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-5">
-                        <i class="fa fa-flask text-primary text-2xl"></i>
+                        <i class="fa fa-graduation-cap text-primary text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 text-secondary">研究中心</h3>
-                    <p class="text-gray-600 mb-4">最新心血管研究成果、数据共享平台和科研合作机会</p>
-                    <a href="#" class="text-primary font-medium hover:underline flex items-center">
-                        探索研究 <i class="fa fa-arrow-right ml-2"></i>
+                    <h3 class="text-xl font-bold mb-3 text-secondary">教育资源</h3>
+                    <p class="text-gray-600 mb-4">在线课程、研讨会和培训材料，提升心血管专业人员技能</p>
+                    <a href="latest.html" class="text-primary font-medium hover:underline flex items-center">
+                        浏览课程 <i class="fa fa-arrow-right ml-2"></i>
                     </a>
                 </div>
 
                 <!-- 卡片4 -->
+                <div class="bg-light rounded-xl p-6 card-hover">
+                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-5">
+                        <i class="fa fa-flask text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-secondary">研究中心</h3>
+                    <p class="text-gray-600 mb-4">最新心血管研究成果、数据共享平台和科研合作机会</p>
+                    <a href="support.html" class="text-primary font-medium hover:underline flex items-center">
+                        探索研究 <i class="fa fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+
+                <!-- 卡片5 -->
                 <div class="bg-light rounded-xl p-6 card-hover">
                     <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-5">
                         <i class="fa fa-calendar text-primary text-2xl"></i>
@@ -229,58 +243,30 @@
         </div>
     </section>
 
-    <!-- 新闻动态区域 -->
+    <!-- 博客文章区域 -->
     <section class="py-12 bg-white">
         <div class="container mx-auto px-4 md:px-8">
             <div class="flex justify-between items-end mb-8">
                 <div>
-                    <h2 class="text-2xl md:text-3xl font-bold text-secondary mb-2">最新行业动态</h2>
+                    <h2 class="text-2xl md:text-3xl font-bold text-secondary mb-2">最新博客文章</h2>
                     <p class="text-gray-600">了解心血管医学领域的最新研究、政策和事件</p>
                 </div>
-                <a href="#" class="text-primary font-medium hover:underline flex items-center hidden md:flex">
-                    查看全部新闻 <i class="fa fa-arrow-right ml-2"></i>
+                <a href="blogs.html" class="text-primary font-medium hover:underline flex items-center hidden md:flex">
+                    查看全部博客 <i class="fa fa-arrow-right ml-2"></i>
                 </a>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- 新闻1 -->
-                <div class="rounded-xl overflow-hidden shadow-sm card-hover">
-                    <img src="https://picsum.photos/id/1076/600/400" alt="研究新闻" class="w-full h-48 object-cover">
-                    <div class="p-5">
-                        <span class="text-xs text-gray-500 mb-2 block">2025-05-10</span>
-                        <h3 class="text-lg font-bold mb-2 text-secondary">新型抗心衰药物临床试验取得突破性进展</h3>
-                        <p class="text-gray-600 mb-4 line-clamp-2">该药物可显著降低心衰患者再住院率，为慢性心衰治疗提供新选择...</p>
-                        <a href="#" class="text-primary font-medium hover:underline">阅读详情</a>
-                    </div>
-                </div>
-
-                <!-- 新闻2 -->
-                <div class="rounded-xl overflow-hidden shadow-sm card-hover">
-                    <img src="https://picsum.photos/id/1082/600/400" alt="指南更新" class="w-full h-48 object-cover">
-                    <div class="p-5">
-                        <span class="text-xs text-gray-500 mb-2 block">2025-04-28</span>
-                        <h3 class="text-lg font-bold mb-2 text-secondary">2025版房颤诊断与治疗指南正式发布</h3>
-                        <p class="text-gray-600 mb-4 line-clamp-2">指南更新了房颤筛查、卒中预防和节律控制等关键推荐，强调个体化治疗...</p>
-                        <a href="#" class="text-primary font-medium hover:underline">阅读详情</a>
-                    </div>
-                </div>
-
-                <!-- 新闻3 -->
-                <div class="rounded-xl overflow-hidden shadow-sm card-hover">
-                    <img src="https://picsum.photos/id/1060/600/400" alt="会议预告" class="w-full h-48 object-cover">
-                    <div class="p-5">
-                        <span class="text-xs text-gray-500 mb-2 block">2025-04-15</span>
-                        <h3 class="text-lg font-bold mb-2 text-secondary">全球心血管影像技术论坛将于7月召开</h3>
-                        <p class="text-gray-600 mb-4 line-clamp-2">论坛将聚焦AI在心血管影像中的应用，展示最新影像学诊断技术...</p>
-                        <a href="#" class="text-primary font-medium hover:underline">阅读详情</a>
-                    </div>
+            <div id="blog-preview" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- 博客文章将通过JavaScript动态加载 -->
+                <div class="col-span-3 text-center text-gray-500 py-8">
+                    <i class="fa fa-spinner fa-spin mr-2"></i>加载中...
                 </div>
             </div>
 
             <!-- 移动端查看全部按钮 -->
             <div class="mt-8 text-center md:hidden">
-                <a href="#" class="inline-block bg-white border border-primary text-primary px-6 py-3 rounded-md hover:bg-primary/5 transition">
-                    查看全部新闻 <i class="fa fa-arrow-right ml-2"></i>
+                <a href="blogs.html" class="inline-block bg-white border border-primary text-primary px-6 py-3 rounded-md hover:bg-primary/5 transition">
+                    查看全部博客 <i class="fa fa-arrow-right ml-2"></i>
                 </a>
             </div>
         </div>
@@ -596,6 +582,77 @@
                 }
             });
         }
+
+        // 加载博客预览（首页显示最新3篇）
+        async function loadBlogPreview() {
+            try {
+                const response = await fetch('http://localhost:8080/api/blog/posts');
+                
+                if (response.ok) {
+                    const blogs = await response.json();
+                    const container = document.getElementById('blog-preview');
+                    
+                    if (blogs.length === 0) {
+                        container.innerHTML = `
+                            <div class="col-span-3 text-center text-gray-500 py-8">
+                                <i class="fa fa-file-text text-4xl mb-4"></i>
+                                <p>暂无博客文章</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    // 只显示最新的3篇
+                    const previewBlogs = blogs.slice(0, 3);
+                    
+                    container.innerHTML = previewBlogs.map(blog => {
+                        const coverImage = blog.coverImageUrl 
+                            ? `<img src="${blog.coverImageUrl}" alt="${blog.title}" class="w-full h-48 object-cover">`
+                            : `<div class="w-full h-48 bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                                <i class="fa fa-file-text text-white text-4xl"></i>
+                               </div>`;
+                        
+                        const summary = blog.summary || (blog.content ? blog.content.substring(0, 100).replace(/<[^>]*>/g, '') + '...' : '');
+                        const publishDate = blog.publishedAt 
+                            ? new Date(blog.publishedAt).toLocaleDateString('zh-CN')
+                            : (blog.createdAt ? new Date(blog.createdAt).toLocaleDateString('zh-CN') : '');
+                        
+                        return `
+                            <div class="rounded-xl overflow-hidden shadow-sm card-hover cursor-pointer" 
+                                 onclick="window.location.href='blog-detail.html?id=${blog.id}'">
+                                ${coverImage}
+                                <div class="p-5">
+                                    <span class="text-xs text-gray-500 mb-2 block">${publishDate}</span>
+                                    <h3 class="text-lg font-bold mb-2 text-secondary line-clamp-2">${blog.title}</h3>
+                                    <p class="text-gray-600 mb-4 line-clamp-2">${summary}</p>
+                                    <a href="blog-detail.html?id=${blog.id}" class="text-primary font-medium hover:underline">
+                                        阅读详情 <i class="fa fa-arrow-right ml-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    document.getElementById('blog-preview').innerHTML = `
+                        <div class="col-span-3 text-center text-gray-500 py-8">
+                            <p>加载失败，请刷新重试</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('加载博客预览错误:', error);
+                document.getElementById('blog-preview').innerHTML = `
+                    <div class="col-span-3 text-center text-gray-500 py-8">
+                        <p>无法连接到服务器</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 页面加载时加载博客预览
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBlogPreview();
+        });
     </script>
     <script src="auth-navbar.js"></script>
     <script src="membership-check.js"></script>

@@ -109,6 +109,29 @@ CREATE TABLE `verification_codes`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for blog_posts
+-- ----------------------------
+DROP TABLE IF EXISTS `blog_posts`;
+CREATE TABLE `blog_posts`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `summary` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `author_id` bigint NOT NULL,
+  `author_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `cover_image_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `is_published` bit(1) NOT NULL DEFAULT b'0',
+  `view_count` bigint NULL DEFAULT 0,
+  `created_at` datetime(6) NULL DEFAULT NULL,
+  `updated_at` datetime(6) NULL DEFAULT NULL,
+  `published_at` datetime(6) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_author_id`(`author_id` ASC) USING BTREE,
+  INDEX `idx_is_published`(`is_published` ASC) USING BTREE,
+  INDEX `idx_published_at`(`published_at` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Records of verification_codes
 -- ----------------------------
 INSERT INTO `verification_codes` VALUES (1, '943995', '2025-11-25 16:46:12.456230', '2025-11-25 16:51:12.455230', '2650090110@qq.com', 'FORGET_PASSWORD', b'0');
