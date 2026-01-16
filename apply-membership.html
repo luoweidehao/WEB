@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>申请加入会员 | 中欧心血管代谢学会</title>
+    <title>申请加入会员 | 中欧心血管代谢联盟</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#0066CC', secondary: '#003366', accent: '#FF6600', light: '#F5F7FA', dark: '#2D3748',
+                        primary: '#1A2B4C',
+                        secondary: '#20345D',
+                        accent: '#3A86FF',
+                        light: '#F8F9FA',
+                        dark: '#333333',
                     },
                     fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
                 }
@@ -21,42 +25,151 @@
     <style type="text/tailwindcss">
         @layer utilities {
             .nav-shadow { box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+            .nav-underline::after {
+                content: "";
+                display: block;
+                height: 2px;
+                background: #1a2b4c;
+                width: 100%;
+                margin-top: 6px;
+            }
+            .nav-dropdown:hover .dropdown-menu,
+            .nav-dropdown:focus-within .dropdown-menu {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body class="font-sans text-dark bg-light flex flex-col min-h-screen">
-
-    <div class="bg-primary text-white py-2 px-4 md:px-8">
-        <div class="container mx-auto flex justify-between items-center text-sm md:text-base">
-            <p>📢 2025 年心血管代谢与泛血管疾病医学大会 | 11月8-10日 武汉</p>
-            <div class="flex gap-4">
-                <a href="index.html" class="hover:underline"><i class="fa fa-home mr-1"></i> 返回首页</a>
-                <a href="login.html" class="hover:underline"><i class="fa fa-user mr-1"></i> 登录/注册</a>
-            </div>
-        </div>
-    </div>
-
-    <header class="bg-white nav-shadow sticky top-0 z-50">
-        <div class="container mx-auto px-4 md:px-8">
-            <div class="flex items-center justify-between py-4">
-                <div class="flex items-center gap-3">
-                    <img src="https://picsum.photos/id/56/80/80" alt="头像" class="w-12 h-12 rounded-full object-cover">
-                    <div>
-                        <h1 class="text-xl md:text-2xl font-bold text-secondary">中欧心血管代谢学会</h1>
-                        <p class="text-xs text-gray-500 hidden md:block">会员申请</p>
+    <header class="sticky top-0 z-50 shadow-sm">
+        <div class="bg-[#1A2B4C] text-white">
+            <div class="max-w-[1240px] mx-auto px-6">
+                <div class="h-12 flex items-center justify-between">
+                    <div class="text-lg font-semibold tracking-wide">
+                        <span class="block text-xs uppercase text-white/70">China-Europe Cardiometabolic Alliance</span>
+                        <span class="text-xl font-bold">中欧心血管代谢联盟</span>
+                    </div>
+                    <div class="flex items-center space-x-6 text-sm" id="topbar-actions">
+                        <button class="flex items-center space-x-2 hover:text-[#3A86FF] transition" type="button">
+                            <span class="iconify" data-icon="material-symbols:search"></span>
+                            <span>搜索</span>
+                        </button>
+                        <button class="hover:text-[#3A86FF] transition" type="button">EN / 中文</button>
+                        <div class="relative" id="user-menu-container">
+                            <a class="flex items-center space-x-2 hover:text-[#3A86FF] transition" href="login.html" id="user-login-link">
+                                <span class="iconify" data-icon="material-symbols:person"></span>
+                                <span>用户登录</span>
+                            </a>
+                            <button class="hidden items-center space-x-2" id="user-menu-button" type="button">
+                                <span class="iconify" data-icon="material-symbols:person"></span>
+                                <span id="user-name"></span>
+                                <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
+                            </button>
+                            <div class="dropdown-menu absolute right-0 top-full mt-3 w-44 bg-white text-[#333333] border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                                <a class="block px-4 py-2 text-sm hover:bg-[#F8F9FA]" href="#">个人资料</a>
+                                <a class="block px-4 py-2 text-sm hover:bg-[#F8F9FA]" href="#">账户设置</a>
+                                <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-[#F8F9FA]" id="logout-button" type="button">
+                                    退出登录
+                                </button>
+                            </div>
+                        </div>
+                        <a class="hidden flex items-center space-x-2 hover:text-[#3A86FF] transition" href="admin-dashboard.html" id="admin-link">
+                            <span class="iconify" data-icon="material-symbols:shield-person"></span>
+                            <span>管理员管理</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="bg-white">
+            <div class="max-w-[1240px] mx-auto px-6">
+                <nav class="h-16 flex items-center justify-between text-lg text-[#333333]">
+                    <a class="font-semibold text-[#1A2B4C] nav-underline" href="index.html">首页</a>
+                    <div class="relative nav-dropdown">
+                        <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+                            关于我们
+                            <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
+                        </button>
+                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">学会简介</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">学会领导</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">组织构架</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">学会动态</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">联系我们</a>
+                        </div>
+                    </div>
+                    <div class="relative nav-dropdown">
+                        <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+                            学术资源
+                            <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
+                        </button>
+                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">研究进展</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">文献解读</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">学术工具</a>
+                        </div>
+                    </div>
+                    <div class="relative nav-dropdown">
+                        <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+                            合作交流
+                            <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
+                        </button>
+                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">合作项目</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">合作机构</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">成果展示</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">访问交流</a>
+                        </div>
+                    </div>
+                    <div class="relative nav-dropdown">
+                        <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+                            会议信息
+                            <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
+                        </button>
+                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">年度大会</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">会议日历</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">直播与回放</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">会议资料</a>
+                        </div>
+                    </div>
+                    <div class="relative nav-dropdown">
+                        <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+                            指南与共识
+                            <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
+                        </button>
+                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">指南库</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">共识申明</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">指南解读</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">患者教育</a>
+                        </div>
+                    </div>
+                    <div class="relative nav-dropdown">
+                        <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+                            会员服务
+                            <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
+                        </button>
+                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">会员权益</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">加入我们</a>
+                            <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">会员专区</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
     </header>
 
-    <main class="flex-grow py-12 md:py-24">
+    <main class="flex-grow py-12 md:py-24 bg-light">
         <div class="container mx-auto px-4 md:px-8">
             <div class="max-w-3xl mx-auto">
-                <div class="bg-white p-8 md:p-12 rounded-xl shadow-lg">
+                <div class="bg-white p-8 md:p-12 rounded-xl shadow-lg border border-gray-100">
                     <div class="text-center mb-8">
-                        <div class="inline-flex items-center justify-center w-16 h-16 bg-accent/10 rounded-full mb-4">
-                            <i class="fa fa-user-plus text-accent text-2xl"></i>
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
+                            <span class="iconify text-primary text-3xl" data-icon="ph:user-plus-bold"></span>
                         </div>
                         <h1 class="text-3xl font-bold text-secondary mb-2">申请加入会员</h1>
                         <p class="text-gray-600">请填写以下信息，我们将在3-5个工作日内审核您的申请</p>
@@ -79,7 +192,7 @@
                                 <input type="text" id="idCard" name="idCard" required 
                                        maxlength="18" pattern="^[1-9]\d{5}(18|19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}[0-9Xx]$"
                                        placeholder="请输入18位身份证号"
-                                       class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                             </div>
                         </div>
 
@@ -97,7 +210,7 @@
                                     职务/职称 <span class="text-red-500">*</span>
                                 </label>
                                 <input type="text" id="position" name="position" required 
-                                       class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                             </div>
                         </div>
 
@@ -119,7 +232,7 @@
                                 <div id="doctorCertificatePreview" class="mt-2 hidden">
                                     <img id="doctorCertificateImg" src="" alt="预览" class="max-w-full h-32 object-contain border rounded">
                                     <button type="button" onclick="removeImage('doctorCertificate')" class="mt-2 text-red-600 text-sm hover:underline">
-                                        <i class="fa fa-times mr-1"></i>移除图片
+                                        <span class="iconify mr-1" data-icon="material-symbols:close"></span>移除图片
                                     </button>
                                 </div>
                                 <input type="hidden" id="doctorCertificateUrl" name="doctorCertificateUrl">
@@ -134,7 +247,7 @@
                                 <div id="employmentProofPreview" class="mt-2 hidden">
                                     <img id="employmentProofImg" src="" alt="预览" class="max-w-full h-32 object-contain border rounded">
                                     <button type="button" onclick="removeImage('employmentProof')" class="mt-2 text-red-600 text-sm hover:underline">
-                                        <i class="fa fa-times mr-1"></i>移除图片
+                                        <span class="iconify mr-1" data-icon="material-symbols:close"></span>移除图片
                                     </button>
                                 </div>
                                 <input type="hidden" id="employmentProofUrl" name="employmentProofUrl">
@@ -155,14 +268,14 @@
                         <div>
                             <button type="submit" 
                                     class="w-full bg-primary text-white px-6 py-3 rounded-md hover:bg-secondary transition text-lg font-medium">
-                                <i class="fa fa-paper-plane mr-2"></i>提交申请
+                                <span class="iconify mr-2" data-icon="ph:paper-plane-right-fill"></span>提交申请
                             </button>
                         </div>
                     </form>
 
                     <div class="mt-8 p-4 bg-blue-50 rounded-md">
                         <p class="text-sm text-gray-700">
-                            <i class="fa fa-info-circle text-primary mr-2"></i>
+                            <span class="iconify text-primary mr-2" data-icon="material-symbols:info"></span>
                             <strong>温馨提示：</strong>提交申请后，您可以在个人中心查看审核进度。审核通过后，您将获得会员身份。
                         </p>
                     </div>
@@ -174,7 +287,7 @@
     <footer class="bg-secondary text-white pt-12 pb-6">
         <div class="container mx-auto px-4 md:px-8">
             <div class="border-t border-white/10 pt-6 text-center text-gray-400 text-sm">
-                <p>© 2025 中欧心血管代谢学会. 保留所有权利。</p>
+                <p>© 2025 中欧心血管代谢联盟. 保留所有权利。</p>
             </div>
         </div>
     </footer>
@@ -302,14 +415,14 @@
                         
                         // 更新页面标题和按钮文字
                         document.querySelector('h1').textContent = '修改会员申请';
-                        submitButton.innerHTML = '<i class="fa fa-save mr-2"></i>保存修改';
+                        submitButton.innerHTML = '<span class="iconify mr-2" data-icon="material-symbols:save"></span>保存修改';
                         
                         // 显示提示信息
                         const infoDiv = document.createElement('div');
                         infoDiv.className = 'mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-md';
                         infoDiv.innerHTML = `
                             <p class="text-sm text-yellow-800">
-                                <i class="fa fa-info-circle mr-2"></i>
+                                <span class="iconify mr-2" data-icon="material-symbols:info"></span>
                                 <strong>提示：</strong>您已有一份待审核的申请，可以在此修改申请信息。
                             </p>
                         `;
@@ -442,7 +555,61 @@
             });
         });
     </script>
-    <script src="auth-navbar.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userMenuContainer = document.getElementById('user-menu-container');
+            const userLoginLink = document.getElementById('user-login-link');
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userName = document.getElementById('user-name');
+            const adminLink = document.getElementById('admin-link');
+            const logoutButton = document.getElementById('logout-button');
+            const dropdownMenu = userMenuContainer?.querySelector('.dropdown-menu');
+
+            const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
+
+            if (token && userStr) {
+                let user = null;
+                try {
+                    user = JSON.parse(userStr);
+                } catch (error) {
+                    user = null;
+                }
+
+                if (user) {
+                    userLoginLink.classList.add('hidden');
+                    userMenuButton.classList.remove('hidden');
+                    userMenuButton.classList.add('flex', 'items-center');
+                    userName.textContent = user.username || '用户';
+
+                    const isAdmin = user.role && user.role.toUpperCase() === 'ADMIN';
+                    if (isAdmin) {
+                        adminLink.classList.remove('hidden');
+                        adminLink.classList.add('flex');
+                    }
+                }
+            }
+
+            userMenuButton?.addEventListener('click', (event) => {
+                event.stopPropagation();
+                dropdownMenu?.classList.toggle('opacity-0');
+                dropdownMenu?.classList.toggle('invisible');
+                dropdownMenu?.classList.toggle('-translate-y-2');
+            });
+
+            document.addEventListener('click', () => {
+                if (!dropdownMenu) return;
+                dropdownMenu.classList.add('opacity-0', 'invisible', '-translate-y-2');
+            });
+
+            logoutButton?.addEventListener('click', () => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('isAdmin');
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
 </body>
 </html>
-

@@ -1,660 +1,477 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>中欧心血管代谢学会 (模拟)</title>
-    <!-- Tailwind CSS 引入 -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome 图标 -->
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <!-- 自定义配置 -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#0066CC', // ACC 主蓝色
-                        secondary: '#003366', // 深蓝色
-                        accent: '#FF6600', // 强调色（橙色）
-                        light: '#F5F7FA', // 浅色背景
-                        dark: '#2D3748', // 深色文本
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    },
-                }
-            }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .content-auto {
-                content-visibility: auto;
-            }
-            .nav-shadow {
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-            .card-hover {
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-            }
-            .card-hover:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            }
-            /* 新增样式，用于给可点击的轮播项添加手型光标 */
-            .carousel-item-link {
-                cursor: pointer;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>中欧心血管代谢联盟 - 官方网站</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+  <style>
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .nav-underline::after {
+      content: "";
+      display: block;
+      height: 2px;
+      background: #1a2b4c;
+      width: 100%;
+      margin-top: 6px;
+    }
+    .nav-dropdown:hover .dropdown-menu,
+    .nav-dropdown:focus-within .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+  </style>
 </head>
-<body class="font-sans text-dark bg-light">
-    <!-- 顶部通知栏 -->
-    <div class="bg-primary text-white py-2 px-4 md:px-8">
-        <div class="container mx-auto flex justify-between items-center text-sm md:text-base">
-            <p>🔔 2025 年心血管代谢与泛血管疾病医学大会 | 11月8-10日 武汉</p>
-            <div class="flex gap-4">
-                <a href="#" class="hover:underline"><i class="fa fa-search mr-1"></i> 搜索</a>
-                <a href="login.html" class="hover:underline"><i class="fa fa-user mr-1"></i> 登录/注册</a>
+<body class="bg-white text-[#333333] font-sans">
+  <!-- 顶栏 -->
+  <header class="sticky top-0 z-50 shadow-sm">
+    <div class="bg-[#1A2B4C] text-white">
+      <div class="max-w-[1240px] mx-auto px-6">
+        <div class="h-12 flex items-center justify-between">
+          <div class="text-lg font-semibold tracking-wide">
+            <span class="block text-xs uppercase text-white/70">China-Europe Cardiometabolic Alliance</span>
+            <span class="text-xl font-bold">中欧心血管代谢联盟</span>
+          </div>
+          <div class="flex items-center space-x-6 text-sm" id="topbar-actions">
+            <button class="flex items-center space-x-2 hover:text-[#3A86FF] transition" type="button">
+              <span class="iconify" data-icon="material-symbols:search"></span>
+              <span>搜索</span>
+            </button>
+            <button class="hover:text-[#3A86FF] transition" type="button">EN / 中文</button>
+            <div class="relative" id="user-menu-container">
+              <a class="flex items-center space-x-2 hover:text-[#3A86FF] transition" href="login.html" id="user-login-link">
+                <span class="iconify" data-icon="material-symbols:person"></span>
+                <span>用户登录</span>
+              </a>
+              <button class="hidden items-center space-x-2" id="user-menu-button" type="button">
+                <span class="iconify" data-icon="material-symbols:person"></span>
+                <span id="user-name"></span>
+                <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
+              </button>
+              <div class="dropdown-menu absolute right-0 top-full mt-3 w-44 bg-white text-[#333333] border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                <a class="block px-4 py-2 text-sm hover:bg-[#F8F9FA]" href="#">个人资料</a>
+                <a class="block px-4 py-2 text-sm hover:bg-[#F8F9FA]" href="#">账户设置</a>
+                <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-[#F8F9FA]" id="logout-button" type="button">
+                  退出登录
+                </button>
+              </div>
             </div>
+            <a class="hidden flex items-center space-x-2 hover:text-[#3A86FF] transition" href="admin-dashboard.html" id="admin-link">
+              <span class="iconify" data-icon="material-symbols:shield-person"></span>
+              <span>管理员管理</span>
+            </a>
+          </div>
         </div>
+      </div>
     </div>
-
-    <!-- 导航栏 -->
-    <header class="bg-white nav-shadow sticky top-0 z-50">
-        <div class="container mx-auto px-4 md:px-8">
-            <div class="flex items-center justify-between py-4">
-                <!-- Logo 区域 -->
-                <div class="flex items-center gap-3">
-                    <!-- 头像代替 ACC Logo -->
-                    <img src="https://picsum.photos/id/56/80/80" alt="头像" class="w-12 h-12 rounded-full object-cover">
-                    <div>
-                        <h1 class="text-xl md:text-2xl font-bold text-secondary">中欧心血管代谢学会</h1>
-                        <p class="text-xs text-gray-500 hidden md:block">心血管医学领域权威平台</p>
-                    </div>
-                </div>
-
-                <!-- 桌面端导航 -->
-                <nav class="hidden md:flex items-center gap-6">
-                    <a href="#" class="font-medium text-primary hover:text-secondary">首页</a>
-                    <a href="blogs.html" class="font-medium text-gray-700 hover:text-primary">博客</a>
-                    <a href="clinical-topics.html" class="font-medium text-gray-700 hover:text-primary">临床指南</a>
-                    <a href="latest.html" class="font-medium text-gray-700 hover:text-primary">教育资源</a>
-                    <a href="support.html" class="font-medium text-gray-700 hover:text-primary">研究中心</a>
-                    <a href="#" class="font-medium text-gray-700 hover:text-primary">会议活动</a>
-                    <a href="#" class="font-medium text-gray-700 hover:text-primary">关于我们</a>
-                    <a href="apply-membership.html" class="bg-accent text-white px-4 py-2 rounded-md hover:bg-accent/90 transition">
-                        加入会员
-                    </a>
-                </nav>
-
-                <!-- 移动端菜单按钮 -->
-                <button class="md:hidden text-gray-700 text-2xl" id="menuBtn">
-                    <i class="fa fa-bars"></i>
-                </button>
+    <div class="bg-white">
+      <div class="max-w-[1240px] mx-auto px-6">
+        <nav class="h-16 flex items-center justify-between text-lg text-[#333333]">
+          <a class="font-semibold text-[#1A2B4C] nav-underline" href="#">首页</a>
+          <div class="relative nav-dropdown">
+            <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+              关于我们
+              <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
+            </button>
+            <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">学会简介</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">学会领导</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">组织构架</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">学会动态</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">联系我们</a>
             </div>
+          </div>
+          <div class="relative nav-dropdown">
+            <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+              学术资源
+              <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
+            </button>
+            <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">研究进展</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">文献解读</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">学术工具</a>
+            </div>
+          </div>
+          <div class="relative nav-dropdown">
+            <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+              合作交流
+              <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
+            </button>
+            <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">合作项目</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">合作机构</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">成果展示</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">访问交流</a>
+            </div>
+          </div>
+          <div class="relative nav-dropdown">
+            <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+              会议信息
+              <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
+            </button>
+            <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">年度大会</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">会议日历</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">直播与回放</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">会议资料</a>
+            </div>
+          </div>
+          <div class="relative nav-dropdown">
+            <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+              指南与共识
+              <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
+            </button>
+            <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">指南库</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">共识申明</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">指南解读</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">患者教育</a>
+            </div>
+          </div>
+          <div class="relative nav-dropdown">
+            <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+              会员服务
+              <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
+            </button>
+            <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">会员权益</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">加入我们</a>
+              <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">会员专区</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <section class="relative h-[500px] bg-gradient-to-r from-[#1A2B4C] via-[#20345D] to-[#27437A] text-white">
+    <div class="max-w-[1240px] mx-auto px-6 h-full flex items-center">
+      <div class="grid grid-cols-12 gap-10 w-full items-center">
+        <div class="col-span-12 lg:col-span-6 space-y-6">
+          <p class="text-sm uppercase tracking-[0.3em] text-white/70">Official Academic Medical Alliance</p>
+          <h1 class="text-4xl font-bold leading-tight">以心血管代谢为核心的<br />国际学术协作平台</h1>
+          <p class="text-base text-white/80 leading-relaxed">
+            联合中欧顶尖医疗机构与科研团队，推动心血管代谢领域的基础研究、临床转化与国际交流。
+          </p>
+          <div class="flex items-center space-x-4">
+            <button class="bg-[#3A86FF] text-white px-6 py-3 rounded-md font-semibold hover:opacity-90 transition">了解联盟</button>
+            <button class="border border-[#3A86FF] text-[#3A86FF] px-6 py-3 rounded-md font-semibold hover:bg-white hover:text-[#1A2B4C] transition">加入合作</button>
+          </div>
         </div>
-
-        <!-- 移动端导航菜单 -->
-        <div class="md:hidden bg-white w-full absolute left-0 top-full nav-shadow hidden" id="mobileMenu">
-            <div class="container mx-auto px-4 py-3 flex flex-col gap-3">
-                <a href="#" class="font-medium text-primary py-2 border-b border-gray-100">首页</a>
-                <a href="blogs.html" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">博客</a>
-                <a href="clinical-topics.html" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">临床指南</a>
-                <a href="latest.html" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">教育资源</a>
-                <a href="support.html" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">研究中心</a>
-                <a href="#" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">会议活动</a>
-                <a href="#" class="font-medium text-gray-700 py-2 border-b border-gray-100 hover:text-primary">关于我们</a>
-                <button class="bg-accent text-white px-4 py-2 rounded-md hover:bg-accent/90 transition mt-2">
-                    加入会员
-                </button>
+        <div class="col-span-12 lg:col-span-6">
+          <div class="bg-white/10 rounded-2xl p-6">
+            <div class="relative overflow-hidden rounded-xl h-[320px]" id="banner-carousel">
+              <img
+                alt="联盟核心成员"
+                class="w-full h-full object-cover transition-opacity duration-500"
+                id="banner-image"
+                src="https://modao.cc/agent-py/media/generated_images/2026-01-16/40d46cf8cd0749ffa7ef30c893e34703.jpg"
+              />
+              <div class="absolute bottom-4 left-4 bg-white/90 text-[#1A2B4C] px-4 py-2 rounded-md text-sm font-semibold">
+                核心成员协作展示
+              </div>
+              <div class="absolute bottom-4 right-4 flex space-x-2" id="banner-dots"></div>
             </div>
+            <div class="mt-4 grid grid-cols-3 gap-3 text-sm text-white/80">
+              <div>
+                <p class="text-2xl font-bold text-white">36+</p>
+                <p>成员机构</p>
+              </div>
+              <div>
+                <p class="text-2xl font-bold text-white">120+</p>
+                <p>合作项目</p>
+              </div>
+              <div>
+                <p class="text-2xl font-bold text-white">15</p>
+                <p>国际联合中心</p>
+              </div>
+            </div>
+          </div>
         </div>
-    </header>
+      </div>
+    </div>
+  </section>
 
-    <!-- 轮播图区域 -->
-    <section class="relative h-[400px] md:h-[550px] overflow-hidden">
-        <div class="carousel relative w-full h-full" id="heroCarousel"></div>
-        <!-- 轮播控制按钮 -->
-        <button id="carouselPrev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 backdrop-blur-sm text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/50 transition">
-            <i class="fa fa-chevron-left"></i>
-        </button>
-        <button id="carouselNext" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 backdrop-blur-sm text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/50 transition">
-            <i class="fa fa-chevron-right"></i>
-        </button>
-    </section>
-
-    <!-- 核心板块区域 -->
-    <section class="py-12 bg-white">
-        <div class="container mx-auto px-4 md:px-8">
-            <!-- 板块标题 -->
-            <div class="text-center mb-12">
-                <h2 class="text-2xl md:text-3xl font-bold text-secondary mb-4">心血管医学核心资源</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">为临床医生、研究者和患者提供权威的心血管医学知识与服务</p>
-            </div>
-
-            <!-- 卡片网格 -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-                <!-- 卡片1 -->
-                <div class="bg-light rounded-xl p-6 card-hover">
-                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-5">
-                        <i class="fa fa-book text-primary text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-secondary">临床指南</h3>
-                    <p class="text-gray-600 mb-4">基于最新研究的心血管疾病诊断与治疗指南，助力临床决策</p>
-                    <a href="clinical-topics.html" class="text-primary font-medium hover:underline flex items-center">
-                        查看指南 <i class="fa fa-arrow-right ml-2"></i>
-                    </a>
-                </div>
-
-                <!-- 卡片2 - 博客 -->
-                <div class="bg-light rounded-xl p-6 card-hover">
-                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-5">
-                        <i class="fa fa-file-text text-primary text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-secondary">博客文章</h3>
-                    <p class="text-gray-600 mb-4">最新医学资讯、临床研究和学术观点，了解行业前沿动态</p>
-                    <a href="blogs.html" class="text-primary font-medium hover:underline flex items-center">
-                        阅读博客 <i class="fa fa-arrow-right ml-2"></i>
-                    </a>
-                </div>
-
-                <!-- 卡片3 -->
-                <div class="bg-light rounded-xl p-6 card-hover">
-                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-5">
-                        <i class="fa fa-graduation-cap text-primary text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-secondary">教育资源</h3>
-                    <p class="text-gray-600 mb-4">在线课程、研讨会和培训材料，提升心血管专业人员技能</p>
-                    <a href="latest.html" class="text-primary font-medium hover:underline flex items-center">
-                        浏览课程 <i class="fa fa-arrow-right ml-2"></i>
-                    </a>
-                </div>
-
-                <!-- 卡片4 -->
-                <div class="bg-light rounded-xl p-6 card-hover">
-                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-5">
-                        <i class="fa fa-flask text-primary text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-secondary">研究中心</h3>
-                    <p class="text-gray-600 mb-4">最新心血管研究成果、数据共享平台和科研合作机会</p>
-                    <a href="support.html" class="text-primary font-medium hover:underline flex items-center">
-                        探索研究 <i class="fa fa-arrow-right ml-2"></i>
-                    </a>
-                </div>
-
-                <!-- 卡片5 -->
-                <div class="bg-light rounded-xl p-6 card-hover">
-                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-5">
-                        <i class="fa fa-calendar text-primary text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-secondary">会议活动</h3>
-                    <p class="text-gray-600 mb-4">全球顶级心血管医学会议，汇聚行业专家交流前沿理念</p>
-                    <a href="#" class="text-primary font-medium hover:underline flex items-center">
-                        查看日程 <i class="fa fa-arrow-right ml-2"></i>
-                    </a>
-                </div>
-            </div>
+  <!-- 核心价值 -->
+  <section class="bg-white py-16">
+    <div class="max-w-[1240px] mx-auto px-6">
+      <div class="flex items-center justify-between mb-10">
+        <div>
+          <p class="text-sm text-[#999999]">Core Values</p>
+          <h2 class="text-2xl font-semibold text-[#333333]">联盟三大核心价值</h2>
         </div>
-    </section>
-
-    <!-- 特色内容区域 -->
-    <section class="py-12 bg-light">
-        <div class="container mx-auto px-4 md:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-                <!-- 左侧图片 -->
-                <div class="rounded-xl overflow-hidden shadow-lg">
-                    <!-- 头像代替会议图片 -->
-                    <img src="https://picsum.photos/id/56/800/600" alt="心血管会议" class="w-full h-auto object-cover">
-                </div>
-
-                <!-- 右侧内容 -->
-                <div>
-                    <span class="inline-block bg-primary/10 text-primary px-4 py-1 rounded-full text-sm font-medium mb-4">2025 重点活动</span>
-                    <h2 class="text-2xl md:text-3xl font-bold text-secondary mb-4">第74届美国心脏病学会科学年会</h2>
-                    <p class="text-gray-600 mb-6 text-lg">
-                        汇聚全球15,000+心血管领域专家，共同探讨心脏病诊疗创新技术、最新研究成果和临床实践经验。会议涵盖主题演讲、分会场讨论、技能工作坊等多种形式。
-                    </p>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-start">
-                            <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
-                            <span>120+ 场专题研讨会，覆盖房颤、心梗、心衰等热点领域</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
-                            <span>500+ 篇最新研究海报展示，发布前沿科研成果</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
-                            <span>专家面对面咨询，解答临床疑难问题</span>
-                        </li>
-                    </ul>
-                    <div class="flex flex-wrap gap-4">
-                        <button class="bg-primary text-white px-6 py-3 rounded-md hover:bg-primary/90 transition">
-                            注册参会
-                        </button>
-                        <button class="bg-white text-primary border border-primary px-6 py-3 rounded-md hover:bg-primary/5 transition">
-                            查看会议议程
-                        </button>
-                    </div>
-                </div>
-            </div>
+        <button class="text-[#3A86FF] text-sm font-semibold">查看详细</button>
+      </div>
+      <div class="grid md:grid-cols-3 gap-10">
+        <div class="text-center space-y-4">
+          <div class="w-16 h-16 rounded-full bg-[#F1F5FF] flex items-center justify-center mx-auto">
+            <span class="iconify text-3xl text-[#3A86FF]" data-icon="ph:flask-bold"></span>
+          </div>
+          <h3 class="text-xl font-semibold">研究合作</h3>
+          <p class="text-[#666666] text-base leading-relaxed">跨国科研团队协同创新，构建系统性心血管代谢研究网络。</p>
         </div>
-    </section>
-
-    <!-- 博客文章区域 -->
-    <section class="py-12 bg-white">
-        <div class="container mx-auto px-4 md:px-8">
-            <div class="flex justify-between items-end mb-8">
-                <div>
-                    <h2 class="text-2xl md:text-3xl font-bold text-secondary mb-2">最新博客文章</h2>
-                    <p class="text-gray-600">了解心血管医学领域的最新研究、政策和事件</p>
-                </div>
-                <a href="blogs.html" class="text-primary font-medium hover:underline flex items-center hidden md:flex">
-                    查看全部博客 <i class="fa fa-arrow-right ml-2"></i>
-                </a>
-            </div>
-
-            <div id="blog-preview" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- 博客文章将通过JavaScript动态加载 -->
-                <div class="col-span-3 text-center text-gray-500 py-8">
-                    <i class="fa fa-spinner fa-spin mr-2"></i>加载中...
-                </div>
-            </div>
-
-            <!-- 移动端查看全部按钮 -->
-            <div class="mt-8 text-center md:hidden">
-                <a href="blogs.html" class="inline-block bg-white border border-primary text-primary px-6 py-3 rounded-md hover:bg-primary/5 transition">
-                    查看全部博客 <i class="fa fa-arrow-right ml-2"></i>
-                </a>
-            </div>
+        <div class="text-center space-y-4">
+          <div class="w-16 h-16 rounded-full bg-[#F1F5FF] flex items-center justify-center mx-auto">
+            <span class="iconify text-3xl text-[#3A86FF]" data-icon="ph:graduation-cap-bold"></span>
+          </div>
+          <h3 class="text-xl font-semibold">学术交流</h3>
+          <p class="text-[#666666] text-base leading-relaxed">举办多层次学术会议与培训，提升临床与科研交流效率。</p>
         </div>
-    </section>
-
-    <!-- 会员招募区域 -->
-    <section class="py-16 bg-primary relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-1/2 h-full bg-secondary/20 -skew-x-12 transform origin-top-right"></div>
-        <div class="container mx-auto px-4 md:px-8 relative z-10">
-            <div class="max-w-3xl mx-auto text-center text-white">
-                <h2 class="text-2xl md:text-4xl font-bold mb-6">加入我们，共建心血管健康未来</h2>
-                <p class="text-lg md:text-xl mb-8 text-white/90">
-                    成为ACC会员，享受独家临床资源、学术交流机会和职业发展支持，与全球心血管专家共同推进医学进步
-                </p>
-                <div class="flex flex-wrap justify-center gap-4">
-                    <button id="join-now-btn" class="bg-accent text-white px-8 py-3 rounded-md hover:bg-accent/90 transition text-lg">
-                        立即加入
-                    </button>
-                    <button class="bg-white/20 backdrop-blur-sm text-white border border-white/30 px-8 py-3 rounded-md hover:bg-white/30 transition text-lg">
-                        了解会员权益
-                    </button>
-                </div>
-            </div>
+        <div class="text-center space-y-4">
+          <div class="w-16 h-16 rounded-full bg-[#F1F5FF] flex items-center justify-center mx-auto">
+            <span class="iconify text-3xl text-[#3A86FF]" data-icon="ph:heartbeat-bold"></span>
+          </div>
+          <h3 class="text-xl font-semibold">临床实践</h3>
+          <p class="text-[#666666] text-base leading-relaxed">推动最新循证医学成果在临床落地，提升患者全周期管理质量。</p>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- 底部区域 -->
-    <footer class="bg-secondary text-white pt-12 pb-6">
-        <div class="container mx-auto px-4 md:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                <!-- 关于我们 -->
-                <div>
-                    <div class="flex items-center gap-3 mb-6">
-                        <img src="https://picsum.photos/id/56/60/60" alt="头像" class="w-10 h-10 rounded-full object-cover">
-                        <h3 class="text-xl font-bold">中欧心血管代谢学会</h3>
-                    </div>
-                    <p class="text-gray-300 mb-6">
-                        致力于通过教育、研究和临床实践，改善心血管代谢类疾病患者的健康，推动全球心血管医学发展。
-                    </p>
-                    <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition">
-                            <i class="fa fa-facebook"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition">
-                            <i class="fa fa-twitter"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition">
-                            <i class="fa fa-linkedin"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition">
-                            <i class="fa fa-youtube"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- 快速链接 -->
-                <div>
-                    <h3 class="text-lg font-bold mb-6 border-b border-white/20 pb-3">快速链接</h3>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-300 hover:text-white transition">临床指南</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition">教育资源</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition">研究中心</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition">会议活动</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition">会员服务</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white transition">患者教育</a></li>
-                    </ul>
-                </div>
-
-                <!-- 联系我们 -->
-                <div>
-                    <h3 class="text-lg font-bold mb-6 border-b border-white/20 pb-3">联系我们</h3>
-                    <ul class="space-y-3">
-                        <li class="flex items-start">
-                            <i class="fa fa-map-marker mt-1 mr-3 text-accent"></i>
-                            <span class="text-gray-300">中国湖北省武汉市张之洞路23号</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fa fa-phone mr-3 text-accent"></i>
-                            <span class="text-gray-300">+86 (27) 84567888</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fa fa-envelope mr-3 text-accent"></i>
-                            <span class="text-gray-300">info@acc.cn</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- 订阅通讯 -->
-                <div>
-                    <h3 class="text-lg font-bold mb-6 border-b border-white/20 pb-3">订阅通讯</h3>
-                    <p class="text-gray-300 mb-4">
-                        订阅我们的电子通讯，及时获取最新研究、会议信息和临床资源
-                    </p>
-                    <form id="newsletterForm" class="flex flex-col gap-3" method="post" action="javascript:void(0);">
-                        <input
-                            id="newsletterEmail"
-                            type="email"
-                            placeholder="您的邮箱地址"
-                            class="px-4 py-3 rounded-md bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-accent"
-                            required
-                        >
-                        <button type="submit" class="bg-accent text-white px-4 py-3 rounded-md hover:bg-accent/90 transition">
-                            订阅
-                        </button>
-                        <p id="newsletterFeedback" class="text-sm text-white/80 min-h-[1.5rem]" aria-live="polite"></p>
-                    </form>
-                </div>
-            </div>
-
-            <!-- 底部版权 -->
-            <div class="border-t border-white/10 pt-6 text-center text-gray-400 text-sm">
-                <p>© 2025 中欧心血管代谢学会. 保留所有权利。</p>
-                <div class="flex justify-center gap-4 mt-3">
-                    <a href="#" class="hover:text-white transition">隐私政策</a>
-                    <a href="#" class="hover:text-white transition">使用条款</a>
-                    <a href="#" class="hover:text-white transition">网站地图</a>
-                </div>
-            </div>
+  <!-- 最新动态 -->
+  <section class="bg-[#F8F9FA] py-16">
+    <div class="max-w-[1240px] mx-auto px-6">
+      <div class="flex items-center justify-between mb-10">
+        <div>
+          <p class="text-sm text-[#999999]">Latest Updates</p>
+          <h2 class="text-2xl font-semibold text-[#333333]">最新新闻与学术活动</h2>
         </div>
-    </footer>
+        <button class="text-[#3A86FF] text-sm font-semibold">进入新闻中心</button>
+      </div>
+      <div class="grid lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-7 bg-white rounded-xl shadow-sm overflow-hidden">
+          <img
+            alt="特色新闻"
+            class="w-full h-64 object-cover"
+            src="https://modao.cc/agent-py/media/generated_images/2026-01-16/045b5600b3c946aabc5ce0c4052718c2.jpg"
+          />
+          <div class="p-6 space-y-3">
+            <p class="text-xs text-[#999999]">2026.01.16 · 重点新闻</p>
+            <h3 class="text-xl font-semibold text-[#333333]">中欧心血管代谢联盟发布年度联合研究报告</h3>
+            <p class="text-[#666666] leading-relaxed">聚焦代谢综合征与心血管并发症的跨区域对比研究，形成全球协作指南。</p>
+            <button class="text-[#3A86FF] font-semibold text-sm">阅读全文 →</button>
+          </div>
+        </div>
+        <div class="lg:col-span-5 space-y-4">
+          <div class="bg-white rounded-xl shadow-sm p-5 hover:-translate-y-1 transition">
+            <p class="text-xs text-[#999999]">2026.01.12</p>
+            <h4 class="font-semibold text-[#333333]">学术沙龙：心肾代谢协同管理实践</h4>
+            <p class="text-sm text-[#666666]">聚焦慢病共病患者的联合治疗路径。</p>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm p-5 hover:-translate-y-1 transition">
+            <p class="text-xs text-[#999999]">2026.01.08</p>
+            <h4 class="font-semibold text-[#333333]">国际会议预告：心血管代谢前沿论坛</h4>
+            <p class="text-sm text-[#666666]">专家解读前沿治疗药物与数字化管理。</p>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm p-5 hover:-translate-y-1 transition">
+            <p class="text-xs text-[#999999]">2026.01.05</p>
+            <h4 class="font-semibold text-[#333333]">联盟完成第三批研究项目立项</h4>
+            <p class="text-sm text-[#666666]">覆盖遗传学、精准诊断与干预策略。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- 回到顶部按钮 -->
-    <button id="backToTop" class="fixed bottom-6 right-6 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-secondary">
-        <i class="fa fa-chevron-up"></i>
-    </button>
+  <!-- 合作伙伴 -->
+  <section class="bg-white py-16">
+    <div class="max-w-[1240px] mx-auto px-6">
+      <div class="flex items-center justify-between mb-10">
+        <div>
+          <p class="text-sm text-[#999999]">Partners</p>
+          <h2 class="text-2xl font-semibold text-[#333333]">合作伙伴</h2>
+        </div>
+        <button class="text-[#3A86FF] text-sm font-semibold">查看全部</button>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+        <div class="h-20 bg-[#F8F9FA] rounded-md flex items-center justify-center grayscale hover:grayscale-0 hover:-translate-y-1 transition">Logo A</div>
+        <div class="h-20 bg-[#F8F9FA] rounded-md flex items-center justify-center grayscale hover:grayscale-0 hover:-translate-y-1 transition">Logo B</div>
+        <div class="h-20 bg-[#F8F9FA] rounded-md flex items-center justify-center grayscale hover:grayscale-0 hover:-translate-y-1 transition">Logo C</div>
+        <div class="h-20 bg-[#F8F9FA] rounded-md flex items-center justify-center grayscale hover:grayscale-0 hover:-translate-y-1 transition">Logo D</div>
+        <div class="h-20 bg-[#F8F9FA] rounded-md flex items-center justify-center grayscale hover:grayscale-0 hover:-translate-y-1 transition">Logo E</div>
+        <div class="h-20 bg-[#F8F9FA] rounded-md flex items-center justify-center grayscale hover:grayscale-0 hover:-translate-y-1 transition">Logo F</div>
+      </div>
+    </div>
+  </section>
 
-    <!-- JavaScript 脚本 -->
-    <script>
-        // 移动端菜单切换
-        const menuBtn = document.getElementById('menuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            menuBtn.innerHTML = mobileMenu.classList.contains('hidden') 
-                ? '<i class="fa fa-bars"></i>' 
-                : '<i class="fa fa-times"></i>';
+  <!-- 统计数据 -->
+  <section class="bg-[#1A2B4C] py-16 text-white">
+    <div class="max-w-[1240px] mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-8 text-center">
+        <div class="space-y-2">
+          <p class="text-4xl font-bold">68</p>
+          <p class="text-white/80">合作机构数</p>
+        </div>
+        <div class="space-y-2">
+          <p class="text-4xl font-bold">240+</p>
+          <p class="text-white/80">研究项目</p>
+        </div>
+        <div class="space-y-2">
+          <p class="text-4xl font-bold">1200+</p>
+          <p class="text-white/80">专家成员</p>
+        </div>
+        <div class="space-y-2">
+          <p class="text-4xl font-bold">32</p>
+          <p class="text-white/80">年度活动</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="bg-[#1A2B4C] text-white pt-16 pb-10">
+    <div class="max-w-[1240px] mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-10">
+        <div class="space-y-4">
+          <h3 class="text-xl font-semibold">中欧心血管代谢联盟</h3>
+          <p class="text-sm text-white/70">China-Europe Cardiometabolic Alliance</p>
+          <div class="space-y-2 text-sm text-white/70">
+            <p>地址：上海市浦东新区科创大道 88 号</p>
+            <p>电话：+86 21 8888 6666</p>
+            <p>邮箱：contact@cma-global.org</p>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-base font-semibold mb-4">关于我们</h4>
+          <ul class="space-y-2 text-sm text-white/70">
+            <li>学会简介</li>
+            <li>学会领导</li>
+            <li>组织构架</li>
+            <li>学会动态</li>
+            <li>联系我们</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-base font-semibold mb-4">学术资源</h4>
+          <ul class="space-y-2 text-sm text-white/70">
+            <li>研究进展</li>
+            <li>文献解读</li>
+            <li>学术工具</li>
+            <li>合作项目</li>
+            <li>会议日历</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-base font-semibold mb-4">关注我们</h4>
+          <div class="flex items-center space-x-3 mb-6">
+            <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#3A86FF] transition" href="#">
+              <span class="iconify" data-icon="ph:wechat-logo-bold"></span>
+            </a>
+            <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#3A86FF] transition" href="#">
+              <span class="iconify" data-icon="ph:linkedin-logo-bold"></span>
+            </a>
+            <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#3A86FF] transition" href="#">
+              <span class="iconify" data-icon="ph:twitter-logo-bold"></span>
+            </a>
+          </div>
+          <button class="bg-white/10 text-white text-sm px-4 py-2 rounded-md hover:bg-white/20 transition">中文版本切换</button>
+        </div>
+      </div>
+      <div class="border-t border-white/10 mt-12 pt-6 text-sm text-white/60 flex flex-col md:flex-row items-start md:items-center justify-between gap-2">
+        <p>版权所有 © 2026 中欧心血管代谢联盟</p>
+        <p>沪ICP备20260001号</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const bannerImages = [
+      "https://modao.cc/agent-py/media/generated_images/2026-01-16/40d46cf8cd0749ffa7ef30c893e34703.jpg",
+      "https://modao.cc/agent-py/media/generated_images/2026-01-16/037bf8a52d2746a3be51b2f1eaa53554.jpg",
+      "https://modao.cc/agent-py/media/generated_images/2026-01-16/9f425e34d765480eb20ca612ad69503b.jpg"
+    ];
+
+    const bannerImage = document.getElementById("banner-image");
+    const bannerDots = document.getElementById("banner-dots");
+    let bannerIndex = 0;
+
+    function renderDots() {
+      bannerDots.innerHTML = "";
+      bannerImages.forEach((_, index) => {
+        const dot = document.createElement("button");
+        dot.className = `w-2.5 h-2.5 rounded-full ${index === bannerIndex ? "bg-[#3A86FF]" : "bg-white/40"}`;
+        dot.addEventListener("click", () => {
+          bannerIndex = index;
+          updateBanner();
         });
+        bannerDots.appendChild(dot);
+      });
+    }
 
-        // 回到顶部按钮
-        const backToTopBtn = document.getElementById('backToTop');
-        
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTopBtn.classList.remove('opacity-0', 'invisible');
-                backToTopBtn.classList.add('opacity-100', 'visible');
-            } else {
-                backToTopBtn.classList.remove('opacity-100', 'visible');
-                backToTopBtn.classList.add('opacity-0', 'invisible');
-            }
-        });
-        
-        backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
+    function updateBanner() {
+      bannerImage.style.opacity = 0;
+      setTimeout(() => {
+        bannerImage.src = bannerImages[bannerIndex];
+        bannerImage.style.opacity = 1;
+        renderDots();
+      }, 200);
+    }
 
-        // 轮播图自动切换
-        const carouselData = [
-            {
-                image: 'photos/carousel-1.jpg',
-                title: '推进心血管健康的创新研究',
-                description: '汇聚全球顶尖专家，探索心脏病诊疗前沿技术与解决方案',
-                link: 'https://www.bilibili.com/video/BV1MoCFB4EE1/?spm_id_from=333.337.search-card.all.click&vd_source=5eda7ca7d152b8438b31eb4352d55652',
-            },
-            {
-                image: 'photos/carousel-2.jpg',
-                title: '赋能临床实践的教育资源',
-                description: '多维度继续教育课程，助力医护人员精准诊疗',
-                link: 'https://www.nature.com/articles/s41586-025-09850-x',
-            },
-            {
-                image: 'photos/carousel-3.jpg',
-                title: '跨学科合作的科研平台',
-                description: '连接科研机构与行业伙伴，共同推动心血管医学进步',
-                link: 'https://www.bilibili.com/video/BV16H4y1e7SK/?spm_id_from=333.337.search-card.all.click&vd_source=5eda7ca7d152b8438b31eb4352d55652',
-            },
-            {
-                image: 'photos/carousel-4.jpg',
-                title: '洞察前沿趋势的主题会议',
-                description: '聚焦未来医学发展方向，把握心血管领域新机遇',
-                link: 'https://www.bilibili.com/video/BV1K84y1t7HV/?spm_id_from=333.337.search-card.all.click&vd_source=5eda7ca7d152b8438b31eb4352d55652',
-            },
-        ];
-
-        const carouselContainer = document.getElementById('heroCarousel');
-
-        if (carouselContainer && carouselData.length) {
-            carouselData.forEach((item, index) => {
-                const slide = document.createElement('div');
-                const slideClasses = `carousel-item absolute inset-0 transition-opacity duration-1000 ${index === 0 ? 'opacity-100' : 'opacity-0'}`;
-                slide.className = slideClasses;
-                
-                slide.innerHTML = `
-                    <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-r from-secondary/80 to-transparent flex items-center">
-                        <div class="container mx-auto px-4 md:px-8 text-white max-w-xl">
-                            <h2 class="text-3xl md:text-4xl font-bold mb-4">${item.title}</h2>
-                            <p class="text-lg md:text-xl mb-6">${item.description}</p>
-                            <div class="mt-4">
-                                ${item.link ? '<a href="' + item.link + '" target="_blank" rel="noopener" class="inline-flex items-center bg-white/20 backdrop-blur-sm text-white border border-white/30 px-6 py-3 rounded-md hover:bg-white/30 transition">立即了解 <i class="fa fa-arrow-right ml-2"></i></a>' : ''}
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                carouselContainer.appendChild(slide);
-            });
-        }
-
-        let currentSlide = 0;
-        const slides = carouselContainer ? carouselContainer.querySelectorAll('.carousel-item') : [];
-        const prevBtn = document.getElementById('carouselPrev');
-        const nextBtn = document.getElementById('carouselNext');
-        let carouselInterval = null;
-
-        function showSlide(index) {
-            if (!slides.length) return;
-
-            slides.forEach((slide, slideIndex) => {
-                slide.classList.toggle('opacity-100', slideIndex === index);
-                slide.classList.toggle('opacity-0', slideIndex !== index);
-                slide.classList.toggle('pointer-events-none', slideIndex !== index);
-            });
-        }
-        
-        function goToSlide(index) {
-            if (!slides.length) return;
-            currentSlide = (index + slides.length) % slides.length;
-            showSlide(currentSlide);
-        }
-
-        function startCarousel() {
-            if (slides.length <= 1) return;
-            stopCarousel();
-            carouselInterval = setInterval(() => goToSlide(currentSlide + 1), 5000);
-        }
-
-        function stopCarousel() {
-            if (carouselInterval) {
-                clearInterval(carouselInterval);
-                carouselInterval = null;
-            }
-        }
-
-        if (prevBtn) {
-            prevBtn.addEventListener('click', () => {
-                stopCarousel();
-                goToSlide(currentSlide - 1);
-                startCarousel();
-            });
-        }
-
-        if (nextBtn) {
-            nextBtn.addEventListener('click', () => {
-                stopCarousel();
-                goToSlide(currentSlide + 1);
-                startCarousel();
-            });
-        }
-
-        if (carouselContainer) {
-            carouselContainer.addEventListener('mouseenter', stopCarousel);
-            carouselContainer.addEventListener('mouseleave', startCarousel);
-        }
-        
-        showSlide(currentSlide);
-        startCarousel();
-
-        // 订阅表单提交
-        const newsletterForm = document.getElementById('newsletterForm');
-        const newsletterEmail = document.getElementById('newsletterEmail');
-        const newsletterFeedback = document.getElementById('newsletterFeedback');
-
-        if (newsletterForm) {
-            newsletterForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
-
-                const email = newsletterEmail.value.trim();
-                if (!email) {
-                    newsletterFeedback.textContent = '请输入邮箱地址。';
-                    return;
-                }
-
-                newsletterFeedback.textContent = '正在发送，请稍候...';
-
-                try {
-                    const response = await fetch('http://localhost:8080/api/subscribe', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ email }),
-                    });
-
-                    const result = await response.json();
-
-                    if (response.ok && result.success) {
-                        newsletterFeedback.textContent = '已发送确认邮件，请查收。';
-                        newsletterForm.reset();
-                    } else {
-                        newsletterFeedback.textContent = result.message || '发送失败，请稍后再试。';
-                    }
-                } catch (error) {
-                    console.error('订阅请求失败：', error);
-                    let errorMsg = '网络异常，请稍后重试。';
-                    if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
-                        errorMsg = '无法连接到服务器，请检查 Spring Boot 应用是否已启动（端口 8080）';
-                    }
-                    newsletterFeedback.textContent = errorMsg;
-                }
-            });
-        }
-
-        // 加载博客预览（首页显示最新3篇）
-        async function loadBlogPreview() {
-            try {
-                const response = await fetch('http://localhost:8080/api/blog/posts');
-                
-                if (response.ok) {
-                    const blogs = await response.json();
-                    const container = document.getElementById('blog-preview');
-                    
-                    if (blogs.length === 0) {
-                        container.innerHTML = `
-                            <div class="col-span-3 text-center text-gray-500 py-8">
-                                <i class="fa fa-file-text text-4xl mb-4"></i>
-                                <p>暂无博客文章</p>
-                            </div>
-                        `;
-                        return;
-                    }
-                    
-                    // 只显示最新的3篇
-                    const previewBlogs = blogs.slice(0, 3);
-                    
-                    container.innerHTML = previewBlogs.map(blog => {
-                        const coverImage = blog.coverImageUrl 
-                            ? `<img src="${blog.coverImageUrl}" alt="${blog.title}" class="w-full h-48 object-cover">`
-                            : `<div class="w-full h-48 bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                                <i class="fa fa-file-text text-white text-4xl"></i>
-                               </div>`;
-                        
-                        const summary = blog.summary || (blog.content ? blog.content.substring(0, 100).replace(/<[^>]*>/g, '') + '...' : '');
-                        const publishDate = blog.publishedAt 
-                            ? new Date(blog.publishedAt).toLocaleDateString('zh-CN')
-                            : (blog.createdAt ? new Date(blog.createdAt).toLocaleDateString('zh-CN') : '');
-                        
-                        return `
-                            <div class="rounded-xl overflow-hidden shadow-sm card-hover cursor-pointer" 
-                                 onclick="window.location.href='blog-detail.html?id=${blog.id}'">
-                                ${coverImage}
-                                <div class="p-5">
-                                    <span class="text-xs text-gray-500 mb-2 block">${publishDate}</span>
-                                    <h3 class="text-lg font-bold mb-2 text-secondary line-clamp-2">${blog.title}</h3>
-                                    <p class="text-gray-600 mb-4 line-clamp-2">${summary}</p>
-                                    <a href="blog-detail.html?id=${blog.id}" class="text-primary font-medium hover:underline">
-                                        阅读详情 <i class="fa fa-arrow-right ml-1"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                } else {
-                    document.getElementById('blog-preview').innerHTML = `
-                        <div class="col-span-3 text-center text-gray-500 py-8">
-                            <p>加载失败，请刷新重试</p>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                console.error('加载博客预览错误:', error);
-                document.getElementById('blog-preview').innerHTML = `
-                    <div class="col-span-3 text-center text-gray-500 py-8">
-                        <p>无法连接到服务器</p>
-                    </div>
-                `;
-            }
-        }
-
-        // 页面加载时加载博客预览
+    renderDots();
+    setInterval(() => {
+      bannerIndex = (bannerIndex + 1) % bannerImages.length;
+      updateBanner();
+    }, 5000);
+  </script>
+  <script>
         document.addEventListener('DOMContentLoaded', () => {
-            loadBlogPreview();
+            const userMenuContainer = document.getElementById('user-menu-container');
+            const userLoginLink = document.getElementById('user-login-link');
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userName = document.getElementById('user-name');
+            const adminLink = document.getElementById('admin-link');
+            const logoutButton = document.getElementById('logout-button');
+            const dropdownMenu = userMenuContainer?.querySelector('.dropdown-menu');
+
+            const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
+
+            if (token && userStr) {
+                let user = null;
+                try {
+                    user = JSON.parse(userStr);
+                } catch (error) {
+                    user = null;
+                }
+
+                if (user) {
+                    userLoginLink.classList.add('hidden');
+                    userMenuButton.classList.remove('hidden');
+                    userMenuButton.classList.add('flex', 'items-center');
+                    userName.textContent = user.username || '用户';
+
+                    const isAdmin = user.role && user.role.toUpperCase() === 'ADMIN';
+                    if (isAdmin) {
+                        adminLink.classList.remove('hidden');
+                        adminLink.classList.add('flex');
+                    }
+                }
+            }
+
+            userMenuButton?.addEventListener('click', (event) => {
+                event.stopPropagation();
+                dropdownMenu?.classList.toggle('opacity-0');
+                dropdownMenu?.classList.toggle('invisible');
+                dropdownMenu?.classList.toggle('-translate-y-2');
+            });
+
+            document.addEventListener('click', () => {
+                if (!dropdownMenu) return;
+                dropdownMenu.classList.add('opacity-0', 'invisible', '-translate-y-2');
+            });
+
+            logoutButton?.addEventListener('click', () => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('isAdmin');
+                window.location.href = 'index.html';
+            });
         });
     </script>
-    <script src="auth-navbar.js"></script>
-    <script src="membership-check.js"></script>
 </body>
 </html>
