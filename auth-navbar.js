@@ -86,10 +86,8 @@
             if (isLoggedIn) {
                 topBarLoginLink.innerHTML = `<i class="fa fa-user mr-1"></i> ${user.username}`;
                 topBarLoginLink.href = '#';
-                topBarLoginLink.onclick = (e) => {
-                    e.preventDefault();
-                    showUserMenu(e);
-                };
+                // 移除点击事件，改为悬停展开（通过CSS实现）
+                topBarLoginLink.onclick = null;
                 
                 // 先移除所有可能存在的管理员链接（包括登录入口和管理后台）
                 const topBar = document.querySelector('.bg-primary .flex.gap-4');
@@ -200,7 +198,7 @@
                         <span>${user.username}</span>
                         <i class="fa fa-chevron-down text-xs"></i>
                     </button>
-                    <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                    <div id="user-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border-2 border-gray-200 opacity-0 invisible -translate-y-2 transition" style="background-color: #FFFFFF; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);">
                         ${dropdownContent}
                     </div>
                 `;
@@ -208,22 +206,26 @@
                 // 在"加入会员"按钮后面添加用户菜单
                 desktopNav.appendChild(userMenu);
                 
-                // 添加下拉菜单交互
-                const menuBtn = document.getElementById('user-menu-btn');
-                const dropdown = document.getElementById('user-dropdown');
-                const logoutBtn = document.getElementById('logout-btn');
+                // 添加悬停样式到 userMenu 容器
+                userMenu.style.position = 'relative';
+                userMenu.className = 'relative';
                 
-                if (menuBtn && dropdown) {
-                    menuBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        dropdown.classList.toggle('hidden');
-                    });
-                    
-                    // 点击外部关闭菜单
-                    document.addEventListener('click', () => {
-                        dropdown.classList.add('hidden');
-                    });
+                // 添加 CSS 样式用于悬停展开
+                if (!document.getElementById('hover-dropdown-style')) {
+                    const style = document.createElement('style');
+                    style.id = 'hover-dropdown-style';
+                    style.textContent = `
+                        .relative:hover #user-dropdown,
+                        .relative:focus-within #user-dropdown {
+                            opacity: 1 !important;
+                            visibility: visible !important;
+                            transform: translateY(0) !important;
+                        }
+                    `;
+                    document.head.appendChild(style);
                 }
+                
+                const logoutBtn = document.getElementById('logout-btn');
                 
                 if (logoutBtn) {
                     logoutBtn.addEventListener('click', (e) => {
@@ -349,9 +351,11 @@
 
         const menu = document.createElement('div');
         menu.id = 'top-user-menu';
-        menu.className = 'absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50';
+        menu.className = 'absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border-2 border-gray-200';
         menu.style.top = event.target.getBoundingClientRect().bottom + 'px';
         menu.style.right = '1rem';
+        menu.style.backgroundColor = '#FFFFFF';
+        menu.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.15)';
         
         let menuContent = `
             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">

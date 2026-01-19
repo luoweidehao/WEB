@@ -13,3 +13,5 @@ target/
 application-local.yml
 application-prod.yml
 photos/membership/*
+
+*.patch
