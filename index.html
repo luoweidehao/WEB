@@ -27,28 +27,36 @@
       transform: translateY(0);
     }
     /* 用户下拉菜单样式 - 确保背景色始终可见 */
+    #user-menu-container {
+      position: relative;
+    }
     #user-menu-container .dropdown-menu {
       background-color: #FFFFFF !important;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
       border: 2px solid #E5E7EB !important;
+      pointer-events: auto;
     }
-    /* 用户菜单悬停展开 */
-    #user-menu-container:hover .dropdown-menu,
-    #user-menu-container:focus-within .dropdown-menu {
-      opacity: 1 !important;
-      visibility: visible !important;
-      transform: translateY(0) !important;
+    /* 在下拉菜单上方创建不可见的悬停桥接区域，连接按钮和菜单 */
+    #user-menu-container .dropdown-menu::before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: transparent;
     }
-    /* 用户菜单悬停效果 */
+    /* 用户菜单悬停展开 - 当鼠标在容器或下拉菜单上时都保持展开 */
     #user-menu-container:hover .dropdown-menu,
-    #user-menu-container:focus-within .dropdown-menu {
+    #user-menu-container:focus-within .dropdown-menu,
+    #user-menu-container .dropdown-menu:hover {
       opacity: 1 !important;
       visibility: visible !important;
       transform: translateY(0) !important;
     }
   </style>
 </head>
-<body class="bg-[#F5F9FF] text-[#333333] font-sans">
+<body class="bg-[#F5F9FF] text-[#333333] font-sans"> 
   <!-- 顶栏 -->
   <header class="sticky top-0 z-50 shadow-sm">
     <div class="bg-[#2A59A6] text-white">
@@ -74,7 +82,7 @@
                 <span id="user-name"></span>
                 <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
               </button>
-              <div class="dropdown-menu absolute right-0 top-full mt-3 w-44 bg-white text-[#333333] border-2 border-gray-200 shadow-2xl rounded-md py-2 opacity-0 invisible -translate-y-2 transition z-50">
+              <div class="dropdown-menu absolute right-0 top-full mt-0 w-44 bg-white text-[#333333] border-2 border-gray-200 shadow-2xl rounded-md py-2 pt-2 opacity-0 invisible -translate-y-2 transition z-50">
                 <a class="block px-4 py-2 text-sm hover:bg-[#F8F9FA]" href="#">个人资料</a>
                 <a class="block px-4 py-2 text-sm hover:bg-[#F8F9FA]" href="#">账户设置</a>
                 <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-[#F8F9FA]" id="logout-button" type="button">
