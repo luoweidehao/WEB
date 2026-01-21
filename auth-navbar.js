@@ -6,6 +6,11 @@
 (function() {
     'use strict';
 
+    function shouldSkipNavbarUpdate() {
+        const path = (window.location.pathname || '').toLowerCase();
+        return path.endsWith('/login.html') || path.endsWith('/register.html');
+    }
+
     // 检查用户登录状态
     function checkAuthStatus() {
         const token = localStorage.getItem('token');
@@ -67,6 +72,9 @@
 
     // 更新导航栏
     async function updateNavbar() {
+        if (shouldSkipNavbarUpdate()) {
+            return;
+        }
         let { isLoggedIn, user } = checkAuthStatus();
         
         // 如果用户已登录，从服务器获取最新的用户信息（包括membership状态）

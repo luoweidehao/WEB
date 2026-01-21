@@ -66,7 +66,7 @@
             <span class="block text-xs uppercase text-white/70">China-Europe Cardiometabolic Alliance</span>
             <span class="text-xl font-bold">中欧心血管代谢联盟</span>
           </div>
-          <div class="flex items-center space-x-6 text-sm" id="topbar-actions">
+          <div class="hidden md:flex items-center space-x-6 text-sm" id="topbar-actions">
             <button class="flex items-center space-x-2 hover:text-[#3A86FF] transition" type="button">
               <span class="iconify" data-icon="material-symbols:search"></span>
               <span>搜索</span>
@@ -95,12 +95,15 @@
               <span>管理员管理</span>
             </a>
           </div>
+          <button class="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-md border border-white/30 hover:bg-white/10 transition" id="mobileMenuButton" type="button" aria-label="打开菜单">
+            <span class="iconify text-xl" data-icon="tabler:menu-2"></span>
+          </button>
         </div>
       </div>
     </div>
     <div class="bg-white">
       <div class="max-w-[1240px] mx-auto px-6">
-        <nav class="h-16 flex items-center justify-between text-lg text-[#D94141]">
+        <nav class="h-16 hidden md:flex items-center justify-between text-lg text-[#D94141]">
           <a class="font-semibold text-[#D94141] nav-underline" href="#">首页</a>
           <div class="relative nav-dropdown">
             <button class="flex items-center gap-1 hover:text-[#B83232] transition font-medium" type="button">
@@ -176,26 +179,105 @@
         </nav>
       </div>
     </div>
+    <div class="md:hidden bg-white border-t border-gray-100 hidden" id="mobileMenu">
+      <div class="px-6 py-4 space-y-3 text-[#333333]">
+        <a class="block text-base font-semibold text-[#D94141]" href="#">首页</a>
+        <a class="block text-sm text-[#333333] hover:text-[#B83232]" href="login.html">用户登录</a>
+        <a class="hidden text-sm text-[#333333] hover:text-[#B83232]" href="admin-dashboard.html" id="mobile-admin-link">管理员管理</a>
+        <a class="block text-sm text-[#333333] hover:text-[#B83232]" href="apply-membership.html">加入会员</a>
+        <details class="group">
+          <summary class="cursor-pointer list-none flex items-center justify-between text-sm font-medium text-[#333333]">
+            关于我们
+            <span class="iconify text-base text-gray-500 group-open:rotate-180 transition" data-icon="tabler:chevron-down"></span>
+          </summary>
+          <div class="mt-2 space-y-2 pl-2 text-sm text-[#666666]">
+            <a class="block hover:text-[#B83232]" href="#">学会简介</a>
+            <a class="block hover:text-[#B83232]" href="#">学会领导</a>
+            <a class="block hover:text-[#B83232]" href="#">组织构架</a>
+            <a class="block hover:text-[#B83232]" href="#">学会动态</a>
+            <a class="block hover:text-[#B83232]" href="#">联系我们</a>
+          </div>
+        </details>
+        <details class="group">
+          <summary class="cursor-pointer list-none flex items-center justify-between text-sm font-medium text-[#333333]">
+            学术资源
+            <span class="iconify text-base text-gray-500 group-open:rotate-180 transition" data-icon="tabler:chevron-down"></span>
+          </summary>
+          <div class="mt-2 space-y-2 pl-2 text-sm text-[#666666]">
+            <a class="block hover:text-[#B83232]" href="#">研究进展</a>
+            <a class="block hover:text-[#B83232]" href="#">文献解读</a>
+            <a class="block hover:text-[#B83232]" href="#">学术工具</a>
+          </div>
+        </details>
+        <details class="group">
+          <summary class="cursor-pointer list-none flex items-center justify-between text-sm font-medium text-[#333333]">
+            合作交流
+            <span class="iconify text-base text-gray-500 group-open:rotate-180 transition" data-icon="tabler:chevron-down"></span>
+          </summary>
+          <div class="mt-2 space-y-2 pl-2 text-sm text-[#666666]">
+            <a class="block hover:text-[#B83232]" href="#">合作项目</a>
+            <a class="block hover:text-[#B83232]" href="#">合作机构</a>
+            <a class="block hover:text-[#B83232]" href="#">成果展示</a>
+            <a class="block hover:text-[#B83232]" href="#">访问交流</a>
+          </div>
+        </details>
+        <details class="group">
+          <summary class="cursor-pointer list-none flex items-center justify-between text-sm font-medium text-[#333333]">
+            会议信息
+            <span class="iconify text-base text-gray-500 group-open:rotate-180 transition" data-icon="tabler:chevron-down"></span>
+          </summary>
+          <div class="mt-2 space-y-2 pl-2 text-sm text-[#666666]">
+            <a class="block hover:text-[#B83232]" href="#">年度大会</a>
+            <a class="block hover:text-[#B83232]" href="#">会议日历</a>
+            <a class="block hover:text-[#B83232]" href="#">直播与回放</a>
+            <a class="block hover:text-[#B83232]" href="#">会议资料</a>
+          </div>
+        </details>
+        <details class="group">
+          <summary class="cursor-pointer list-none flex items-center justify-between text-sm font-medium text-[#333333]">
+            指南与共识
+            <span class="iconify text-base text-gray-500 group-open:rotate-180 transition" data-icon="tabler:chevron-down"></span>
+          </summary>
+          <div class="mt-2 space-y-2 pl-2 text-sm text-[#666666]">
+            <a class="block hover:text-[#B83232]" href="#">指南库</a>
+            <a class="block hover:text-[#B83232]" href="#">共识申明</a>
+            <a class="block hover:text-[#B83232]" href="#">指南解读</a>
+            <a class="block hover:text-[#B83232]" href="#">患者教育</a>
+          </div>
+        </details>
+        <details class="group">
+          <summary class="cursor-pointer list-none flex items-center justify-between text-sm font-medium text-[#333333]">
+            会员服务
+            <span class="iconify text-base text-gray-500 group-open:rotate-180 transition" data-icon="tabler:chevron-down"></span>
+          </summary>
+          <div class="mt-2 space-y-2 pl-2 text-sm text-[#666666]">
+            <a class="block hover:text-[#B83232]" href="#">会员权益</a>
+            <a class="block hover:text-[#B83232]" href="apply-membership.html">加入我们</a>
+            <a class="block hover:text-[#B83232]" href="#">会员专区</a>
+          </div>
+        </details>
+      </div>
+    </div>
   </header>
 
   <!-- Banner -->
-  <section class="relative h-[500px] bg-gradient-to-r from-[#2A59A6] via-[#3570C0] to-[#4087DA] text-white">
-    <div class="max-w-[1240px] mx-auto px-6 h-full flex items-center">
+  <section class="relative min-h-[520px] md:h-[500px] bg-gradient-to-r from-[#2A59A6] via-[#3570C0] to-[#4087DA] text-white">
+    <div class="max-w-[1240px] mx-auto px-4 sm:px-6 h-full flex items-center py-10 md:py-0">
       <div class="grid grid-cols-12 gap-10 w-full items-center">
         <div class="col-span-12 lg:col-span-6 space-y-6">
           <p class="text-sm uppercase tracking-[0.3em] text-white/70">Official Academic Medical Alliance</p>
-          <h1 class="text-4xl font-bold leading-tight">以心血管代谢为核心的<br />国际学术协作平台</h1>
+          <h1 class="text-3xl md:text-4xl font-bold leading-tight">以心血管代谢为核心的<br />国际学术协作平台</h1>
           <p class="text-base text-white/80 leading-relaxed">
             联合中欧顶尖医疗机构与科研团队，推动心血管代谢领域的基础研究、临床转化与国际交流。
           </p>
-          <div class="flex items-center space-x-4">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0">
             <button class="bg-[#3A86FF] text-white px-6 py-3 rounded-md font-semibold hover:opacity-90 transition">了解联盟</button>
             <button class="border border-[#3A86FF] text-[#3A86FF] px-6 py-3 rounded-md font-semibold hover:bg-white hover:text-[#2A59A6] transition">加入合作</button>
           </div>
         </div>
         <div class="col-span-12 lg:col-span-6">
           <div class="bg-white/10 rounded-2xl p-6">
-            <div class="relative overflow-hidden rounded-xl h-[320px]" id="banner-carousel">
+            <div class="relative overflow-hidden rounded-xl h-[240px] sm:h-[280px] md:h-[320px]" id="banner-carousel">
               <img
                 alt="联盟核心成员"
                 class="w-full h-full object-cover transition-opacity duration-500"
@@ -450,12 +532,15 @@
   </script>
   <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
             const userMenuContainer = document.getElementById('user-menu-container');
             const userLoginLink = document.getElementById('user-login-link');
             const userMenuButton = document.getElementById('user-menu-button');
             const userName = document.getElementById('user-name');
             const adminLink = document.getElementById('admin-link');
             const logoutButton = document.getElementById('logout-button');
+            const mobileAdminLink = document.getElementById('mobile-admin-link');
             const dropdownMenu = userMenuContainer?.querySelector('.dropdown-menu');
 
             const token = localStorage.getItem('token');
@@ -480,6 +565,7 @@
                     if (isAdmin) {
                         adminLink.classList.remove('hidden');
                         adminLink.classList.add('flex');
+                        mobileAdminLink?.classList.remove('hidden');
                     }
                 } else {
                     userLoginLink.classList.remove('hidden');
@@ -487,6 +573,7 @@
                     userName.textContent = '';
                     dropdownMenu?.classList.add('hidden');
                     adminLink.classList.add('hidden');
+                    mobileAdminLink?.classList.add('hidden');
                 }
             }
             if (!token || !userStr) {
@@ -495,6 +582,7 @@
                 userMenuButton.classList.add('hidden');
                 userName.textContent = '';
                 adminLink.classList.add('hidden');
+                mobileAdminLink?.classList.add('hidden');
             }
 
             // 移除点击事件，改为悬停展开
@@ -506,6 +594,16 @@
                 localStorage.removeItem('adminToken');
                 localStorage.removeItem('isAdmin');
                 window.location.href = 'index.html';
+            });
+
+            mobileMenuButton?.addEventListener('click', () => {
+                mobileMenu?.classList.toggle('hidden');
+            });
+
+            mobileMenu?.querySelectorAll('a').forEach((link) => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
             });
         });
     </script>
