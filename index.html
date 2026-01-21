@@ -82,7 +82,7 @@
                 <span id="user-name"></span>
                 <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
               </button>
-              <div class="dropdown-menu absolute right-0 top-full mt-0 w-44 bg-white text-[#333333] border-2 border-gray-200 shadow-2xl rounded-md py-2 pt-2 opacity-0 invisible -translate-y-2 transition z-50">
+              <div class="dropdown-menu absolute right-0 top-full mt-0 w-44 bg-white text-[#333333] border-2 border-gray-200 shadow-2xl rounded-md py-2 pt-2 opacity-0 invisible -translate-y-2 transition z-50 hidden">
                 <a class="block px-4 py-2 text-sm hover:bg-[#F8F9FA]" href="#">个人资料</a>
                 <a class="block px-4 py-2 text-sm hover:bg-[#F8F9FA]" href="#">账户设置</a>
                 <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-[#F8F9FA]" id="logout-button" type="button">
@@ -474,13 +474,27 @@
                     userMenuButton.classList.remove('hidden');
                     userMenuButton.classList.add('flex', 'items-center');
                     userName.textContent = user.username || '用户';
+                    dropdownMenu?.classList.remove('hidden');
 
                     const isAdmin = user.role && user.role.toUpperCase() === 'ADMIN';
                     if (isAdmin) {
                         adminLink.classList.remove('hidden');
                         adminLink.classList.add('flex');
                     }
+                } else {
+                    userLoginLink.classList.remove('hidden');
+                    userMenuButton.classList.add('hidden');
+                    userName.textContent = '';
+                    dropdownMenu?.classList.add('hidden');
+                    adminLink.classList.add('hidden');
                 }
+            }
+            if (!token || !userStr) {
+                dropdownMenu?.classList.add('hidden');
+                userLoginLink.classList.remove('hidden');
+                userMenuButton.classList.add('hidden');
+                userName.textContent = '';
+                adminLink.classList.add('hidden');
             }
 
             // 移除点击事件，改为悬停展开

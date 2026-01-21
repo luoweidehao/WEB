@@ -29,9 +29,12 @@
                 content: "";
                 display: block;
                 height: 2px;
-                background: #1a2b4c;
+                background: #D94141;
                 width: 100%;
                 margin-top: 6px;
+            }
+            .nav-dropdown {
+                padding-bottom: 0.75rem;
             }
             .nav-dropdown:hover .dropdown-menu,
             .nav-dropdown:focus-within .dropdown-menu {
@@ -39,12 +42,40 @@
                 visibility: visible;
                 transform: translateY(0);
             }
+            /* 用户下拉菜单样式 - 确保背景色始终可见 */
+            #user-menu-container {
+                position: relative;
+            }
+            #user-menu-container .dropdown-menu {
+                background-color: #FFFFFF !important;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+                border: 2px solid #E5E7EB !important;
+                pointer-events: auto;
+            }
+            /* 在下拉菜单上方创建不可见的悬停桥接区域 */
+            #user-menu-container .dropdown-menu::before {
+                content: '';
+                position: absolute;
+                bottom: 100%;
+                left: 0;
+                right: 0;
+                height: 8px;
+                background: transparent;
+            }
+            /* 用户菜单悬停展开 */
+            #user-menu-container:hover .dropdown-menu,
+            #user-menu-container:focus-within .dropdown-menu,
+            #user-menu-container .dropdown-menu:hover {
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: translateY(0) !important;
+            }
         }
     </style>
 </head>
 <body class="font-sans text-dark bg-light flex flex-col min-h-screen">
     <header class="sticky top-0 z-50 shadow-sm">
-        <div class="bg-[#1A2B4C] text-white">
+        <div class="bg-[#2A59A6] text-white">
             <div class="max-w-[1240px] mx-auto px-6">
                 <div class="h-12 flex items-center justify-between">
                     <div class="text-lg font-semibold tracking-wide">
@@ -67,7 +98,7 @@
                                 <span id="user-name"></span>
                                 <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
                             </button>
-                            <div class="dropdown-menu absolute right-0 top-full mt-3 w-44 bg-white text-[#333333] border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                            <div class="dropdown-menu absolute right-0 top-full mt-0 w-44 bg-white text-[#333333] border-2 border-gray-200 shadow-2xl rounded-md py-2 pt-2 opacity-0 invisible -translate-y-2 transition z-50 hidden">
                                 <a class="block px-4 py-2 text-sm hover:bg-[#F8F9FA]" href="#">个人资料</a>
                                 <a class="block px-4 py-2 text-sm hover:bg-[#F8F9FA]" href="#">账户设置</a>
                                 <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-[#F8F9FA]" id="logout-button" type="button">
@@ -85,14 +116,14 @@
         </div>
         <div class="bg-white">
             <div class="max-w-[1240px] mx-auto px-6">
-                <nav class="h-16 flex items-center justify-between text-lg text-[#333333]">
-                    <a class="font-semibold text-[#1A2B4C] nav-underline" href="index.html">首页</a>
+                <nav class="h-16 flex items-center justify-between text-lg text-[#D94141]">
+                    <a class="font-semibold text-[#D94141] nav-underline" href="index.html">首页</a>
                     <div class="relative nav-dropdown">
-                        <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+                        <button class="flex items-center gap-1 hover:text-[#B83232] transition font-medium" type="button">
                             关于我们
                             <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
                         </button>
-                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                        <div class="dropdown-menu absolute left-0 top-full mt-0 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">学会简介</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">学会领导</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">组织构架</a>
@@ -101,22 +132,22 @@
                         </div>
                     </div>
                     <div class="relative nav-dropdown">
-                        <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+                        <button class="flex items-center gap-1 hover:text-[#B83232] transition font-medium" type="button">
                             学术资源
                             <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
                         </button>
-                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                        <div class="dropdown-menu absolute left-0 top-full mt-0 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">研究进展</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">文献解读</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">学术工具</a>
                         </div>
                     </div>
                     <div class="relative nav-dropdown">
-                        <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+                        <button class="flex items-center gap-1 hover:text-[#B83232] transition font-medium" type="button">
                             合作交流
                             <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
                         </button>
-                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                        <div class="dropdown-menu absolute left-0 top-full mt-0 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">合作项目</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">合作机构</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">成果展示</a>
@@ -124,11 +155,11 @@
                         </div>
                     </div>
                     <div class="relative nav-dropdown">
-                        <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+                        <button class="flex items-center gap-1 hover:text-[#B83232] transition font-medium" type="button">
                             会议信息
                             <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
                         </button>
-                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                        <div class="dropdown-menu absolute left-0 top-full mt-0 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">年度大会</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">会议日历</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">直播与回放</a>
@@ -136,11 +167,11 @@
                         </div>
                     </div>
                     <div class="relative nav-dropdown">
-                        <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+                        <button class="flex items-center gap-1 hover:text-[#B83232] transition font-medium" type="button">
                             指南与共识
                             <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
                         </button>
-                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                        <div class="dropdown-menu absolute left-0 top-full mt-0 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">指南库</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">共识申明</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">指南解读</a>
@@ -148,11 +179,11 @@
                         </div>
                     </div>
                     <div class="relative nav-dropdown">
-                        <button class="flex items-center gap-1 hover:text-[#1A2B4C] transition font-medium" type="button">
+                        <button class="flex items-center gap-1 hover:text-[#B83232] transition font-medium" type="button">
                             会员服务
                             <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
                         </button>
-                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                        <div class="dropdown-menu absolute left-0 top-full mt-0 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">会员权益</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">加入我们</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">会员专区</a>
@@ -434,26 +465,28 @@
                     userMenuButton.classList.remove('hidden');
                     userMenuButton.classList.add('flex', 'items-center');
                     userName.textContent = user.username || '用户';
+                    dropdownMenu?.classList.remove('hidden');
 
                     const isAdmin = user.role && user.role.toUpperCase() === 'ADMIN';
                     if (isAdmin) {
                         adminLink.classList.remove('hidden');
                         adminLink.classList.add('flex');
                     }
+                } else {
+                    userLoginLink.classList.remove('hidden');
+                    userMenuButton.classList.add('hidden');
+                    userName.textContent = '';
+                    dropdownMenu?.classList.add('hidden');
+                    adminLink.classList.add('hidden');
                 }
             }
-
-            userMenuButton?.addEventListener('click', (event) => {
-                event.stopPropagation();
-                dropdownMenu?.classList.toggle('opacity-0');
-                dropdownMenu?.classList.toggle('invisible');
-                dropdownMenu?.classList.toggle('-translate-y-2');
-            });
-
-            document.addEventListener('click', () => {
-                if (!dropdownMenu) return;
-                dropdownMenu.classList.add('opacity-0', 'invisible', '-translate-y-2');
-            });
+            if (!token || !userStr) {
+                dropdownMenu?.classList.add('hidden');
+                userLoginLink.classList.remove('hidden');
+                userMenuButton.classList.add('hidden');
+                userName.textContent = '';
+                adminLink.classList.add('hidden');
+            }
 
             logoutButton?.addEventListener('click', () => {
                 localStorage.removeItem('token');

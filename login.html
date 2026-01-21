@@ -29,15 +29,46 @@
                 content: "";
                 display: block;
                 height: 2px;
-                background: #2A59A6;
+                background: #D94141;
                 width: 100%;
                 margin-top: 6px;
+            }
+            .nav-dropdown {
+                padding-bottom: 0.75rem;
             }
             .nav-dropdown:hover .dropdown-menu,
             .nav-dropdown:focus-within .dropdown-menu {
                 opacity: 1;
                 visibility: visible;
                 transform: translateY(0);
+            }
+            /* 用户下拉菜单样式 - 确保背景色始终可见 */
+            #user-menu-container {
+                position: relative;
+            }
+            #user-menu-container .dropdown-menu {
+                background-color: #FFFFFF !important;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+                border: 2px solid #E5E7EB !important;
+                pointer-events: auto;
+            }
+            /* 在下拉菜单上方创建不可见的悬停桥接区域 */
+            #user-menu-container .dropdown-menu::before {
+                content: '';
+                position: absolute;
+                bottom: 100%;
+                left: 0;
+                right: 0;
+                height: 8px;
+                background: transparent;
+            }
+            /* 用户菜单悬停展开 */
+            #user-menu-container:hover .dropdown-menu,
+            #user-menu-container:focus-within .dropdown-menu,
+            #user-menu-container .dropdown-menu:hover {
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: translateY(0) !important;
             }
         }
     </style>
@@ -51,30 +82,47 @@
                         <span class="block text-xs uppercase text-white/70">China-Europe Cardiometabolic Alliance</span>
                         <span class="text-xl font-bold">中欧心血管代谢联盟</span>
                     </div>
-                    <div class="flex items-center space-x-6 text-sm">
+                    <div class="flex items-center space-x-6 text-sm" id="topbar-actions">
                         <button class="flex items-center space-x-2 hover:text-[#3A86FF] transition" type="button">
                             <span class="iconify" data-icon="material-symbols:search"></span>
                             <span>搜索</span>
                         </button>
                         <button class="hover:text-[#3A86FF] transition" type="button">EN / 中文</button>
-                        <span class="flex items-center space-x-2 text-[#3A86FF]">
-                            <span class="iconify" data-icon="material-symbols:person"></span>
-                            <span>用户登录</span>
-                        </span>
-                    </div>
+                        <div class="relative" id="user-menu-container">
+                            <a class="flex items-center space-x-2 hover:text-[#3A86FF] transition" href="login.html" id="user-login-link">
+                                <span class="iconify" data-icon="material-symbols:person"></span>
+                                <span>用户登录</span>
+                            </a>
+                            <button class="hidden items-center space-x-2" id="user-menu-button" type="button">
+                                <span class="iconify" data-icon="material-symbols:person"></span>
+                                <span id="user-name"></span>
+                                <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
+                            </button>
+                            <div class="dropdown-menu absolute right-0 top-full mt-0 w-44 bg-white text-[#333333] border-2 border-gray-200 shadow-2xl rounded-md py-2 pt-2 opacity-0 invisible -translate-y-2 transition z-50 hidden">
+                                <a class="block px-4 py-2 text-sm hover:bg-[#F8F9FA]" href="#">个人资料</a>
+                                <a class="block px-4 py-2 text-sm hover:bg-[#F8F9FA]" href="#">账户设置</a>
+                                <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-[#F8F9FA]" id="logout-button" type="button">
+                                    退出登录
+                                </button>
+                            </div>
+                        </div>
+                        <a class="hidden flex items-center space-x-2 hover:text-[#3A86FF] transition" href="admin-dashboard.html" id="admin-link">
+                            <span class="iconify" data-icon="material-symbols:shield-person"></span>
+                            <span>管理员管理</span>
+                        </a>
                 </div>
             </div>
         </div>
         <div class="bg-white">
             <div class="max-w-[1240px] mx-auto px-6">
-                <nav class="h-16 flex items-center justify-between text-lg text-[#333333]">
-                    <a class="font-semibold text-[#2A59A6] nav-underline" href="index.html">首页</a>
+                <nav class="h-16 flex items-center justify-between text-lg text-[#D94141]">
+                    <a class="font-semibold text-[#D94141] nav-underline" href="index.html">首页</a>
                     <div class="relative nav-dropdown">
-                        <button class="flex items-center gap-1 hover:text-[#2A59A6] transition font-medium" type="button">
+                        <button class="flex items-center gap-1 hover:text-[#B83232] transition font-medium" type="button">
                             关于我们
                             <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
                         </button>
-                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                        <div class="dropdown-menu absolute left-0 top-full mt-0 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">学会简介</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">学会领导</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">组织构架</a>
@@ -83,22 +131,22 @@
                         </div>
                     </div>
                     <div class="relative nav-dropdown">
-                        <button class="flex items-center gap-1 hover:text-[#2A59A6] transition font-medium" type="button">
+                        <button class="flex items-center gap-1 hover:text-[#B83232] transition font-medium" type="button">
                             学术资源
                             <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
                         </button>
-                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                        <div class="dropdown-menu absolute left-0 top-full mt-0 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">研究进展</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">文献解读</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">学术工具</a>
                         </div>
                     </div>
                     <div class="relative nav-dropdown">
-                        <button class="flex items-center gap-1 hover:text-[#2A59A6] transition font-medium" type="button">
+                        <button class="flex items-center gap-1 hover:text-[#B83232] transition font-medium" type="button">
                             合作交流
                             <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
                         </button>
-                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                        <div class="dropdown-menu absolute left-0 top-full mt-0 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">合作项目</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">合作机构</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">成果展示</a>
@@ -106,11 +154,11 @@
                         </div>
                     </div>
                     <div class="relative nav-dropdown">
-                        <button class="flex items-center gap-1 hover:text-[#2A59A6] transition font-medium" type="button">
+                        <button class="flex items-center gap-1 hover:text-[#B83232] transition font-medium" type="button">
                             会议信息
                             <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
                         </button>
-                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                        <div class="dropdown-menu absolute left-0 top-full mt-0 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">年度大会</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">会议日历</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">直播与回放</a>
@@ -118,11 +166,11 @@
                         </div>
                     </div>
                     <div class="relative nav-dropdown">
-                        <button class="flex items-center gap-1 hover:text-[#2A59A6] transition font-medium" type="button">
+                        <button class="flex items-center gap-1 hover:text-[#B83232] transition font-medium" type="button">
                             指南与共识
                             <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
                         </button>
-                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                        <div class="dropdown-menu absolute left-0 top-full mt-0 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">指南库</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">共识申明</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">指南解读</a>
@@ -130,11 +178,11 @@
                         </div>
                     </div>
                     <div class="relative nav-dropdown">
-                        <button class="flex items-center gap-1 hover:text-[#2A59A6] transition font-medium" type="button">
+                        <button class="flex items-center gap-1 hover:text-[#B83232] transition font-medium" type="button">
                             会员服务
                             <span class="iconify text-sm" data-icon="tabler:chevron-down"></span>
                         </button>
-                        <div class="dropdown-menu absolute left-0 top-full mt-3 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
+                        <div class="dropdown-menu absolute left-0 top-full mt-0 w-44 bg-white border border-gray-100 shadow-lg rounded-md py-2 opacity-0 invisible -translate-y-2 transition">
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">会员权益</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">加入我们</a>
                             <a class="block px-4 py-2 text-sm text-[#333333] hover:bg-[#F8F9FA]" href="#">会员专区</a>
@@ -205,9 +253,13 @@
                 
                 <div id="error-message" class="mt-4 text-center font-medium"></div>
 
-                <div class="mt-8 text-center">
+                <div class="mt-8 text-center space-y-2">
                     <p class="text-gray-600">
-                        需要加入联盟？请通过联盟秘书处或管理员入口申请开通。
+                        还没有账户？
+                        <a href="register.html" class="text-primary font-medium hover:underline">立即注册</a>
+                    </p>
+                    <p class="text-sm text-gray-500">
+                        或通过联盟秘书处/管理员入口申请开通
                     </p>
                 </div>
             </div>
@@ -359,6 +411,64 @@
                         : '<i class="fa fa-times"></i>';
                 });
             }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userMenuContainer = document.getElementById('user-menu-container');
+            const userLoginLink = document.getElementById('user-login-link');
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userName = document.getElementById('user-name');
+            const adminLink = document.getElementById('admin-link');
+            const logoutButton = document.getElementById('logout-button');
+            const dropdownMenu = userMenuContainer?.querySelector('.dropdown-menu');
+
+            const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
+
+            if (token && userStr) {
+                let user = null;
+                try {
+                    user = JSON.parse(userStr);
+                } catch (error) {
+                    user = null;
+                }
+
+                if (user) {
+                    userLoginLink.classList.add('hidden');
+                    userMenuButton.classList.remove('hidden');
+                    userMenuButton.classList.add('flex', 'items-center');
+                    userName.textContent = user.username || '用户';
+                    dropdownMenu?.classList.remove('hidden');
+
+                    const isAdmin = user.role && user.role.toUpperCase() === 'ADMIN';
+                    if (isAdmin) {
+                        adminLink.classList.remove('hidden');
+                        adminLink.classList.add('flex');
+                    }
+                } else {
+                    userLoginLink.classList.remove('hidden');
+                    userMenuButton.classList.add('hidden');
+                    userName.textContent = '';
+                    dropdownMenu?.classList.add('hidden');
+                    adminLink.classList.add('hidden');
+                }
+            }
+            if (!token || !userStr) {
+                dropdownMenu?.classList.add('hidden');
+                userLoginLink.classList.remove('hidden');
+                userMenuButton.classList.add('hidden');
+                userName.textContent = '';
+                adminLink.classList.add('hidden');
+            }
+
+            logoutButton?.addEventListener('click', () => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('isAdmin');
+                window.location.href = 'index.html';
+            });
         });
     </script>
     <script src="auth-navbar.js"></script>
